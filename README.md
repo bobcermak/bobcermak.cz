@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# bobcermak.cz | Portfolio — Bob Čermák
 
-## Getting Started
+![Náhled portfolia bobcermak.cz](/)
 
-First, run the development server:
+> 🌐 Osobní portfolio – moderní, responzivní, postavené v **Next.js**
+
+[🚀 Otevřít web](https://bobcermak.cz)
+
+> 🛠️ Portfolio full stack developera — weby s administrací, rezervační & vlastní systémy a mobilní appky. Postaveno v **Next.js 16** (App Router) + **TypeScript**.
+
+---
+
+## O projektu
+
+Jsem **Bob Čermák**, 19, full stack developer z Prahy a Liberce — freelance a v PROCONOM. Tenhle web je moje portfolio: ukazuje, co dělám, za kolik, a na čem právě teď pracuju. Žádný korporátní žargon, žádné stockové fotky — jen věci, co si na nic nehrajou.
+
+Web zahrnuje:
+
+- 🌐 **prezentaci služeb** (Weby s administrací · Rezervační & vlastní systémy · Mobilní appky),
+- 🧮 interaktivní **kalkulačku ceny** webu / appky,
+- 💼 **přehled projektů** (klientské i vlastní / soutěžní),
+- ⚡ sekci **„Co teď kóduju"** připravenou na napojení na GitHub API,
+- ✉️ **poptávkový formulář** s odesíláním e-mailů.
+
+---
+
+## Tech stack
+
+| Vrstva | Technologie |
+|---|---|
+| Framework | Next.js 16 (App Router), TypeScript (strict) |
+| Styling | Tailwind CSS v4 (`@theme`, design tokeny), `tailwind-merge` |
+| Animace | GSAP + `@gsap/react`, Lenis (smooth scroll) |
+| DB / Auth / Storage | Supabase (Postgres, Auth, Storage) |
+| Kalendář a data | `react-day-picker`, `date-fns` |
+| Ikony | `@phosphor-icons/react` |
+| E-maily | Resend + `@react-email/components` |
+
+---
+
+## Design
+
+Vizuální styl staví na neutrální paletě (černá `#111111`, teplé off-white plochy) doplněné o drobné akcenty (levandulová, broskvová, fialová) — **neutrály nesou ~95 % plochy, akcenty jsou jen koření** (logo tečky, proužky karet, grafy). Typografie: **Montserrat**. Kompletní design systém a obsah jsou v [`AGENTS.md`](AGENTS.md).
+
+---
+
+## Spuštění projektu
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # vývojový server (http://localhost:3000)
+npm run build      # produkční build
+npm run start      # spuštění buildu
+npm run lint       # eslint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Struktura
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+app/                # routy (App Router), globals.css, layout, loading, not-found
+components/
+  buttons/          # sdílené UI (Button s variantami primary/secondary/tertiary/danger/light)
+  layout/           # FloatNav (plovoucí navigace), HeroSection, Footer
+  layout/wrappers/  # PageWrapper (Lenis + GSAP), RevealSection
+  animations/       # znovupoužitelné animační hooky (useRevealAnimation přes GSAP)
+public/images/      # statická obrazová data
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Licence
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Open source pod licencí **MIT** — kód si můžeš prohlédnout, učit se z něj i použít ve vlastních projektech. Podrobnosti v souboru [LICENSE](LICENSE.txt).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+**Autor:** Bob Čermák 🛠️ · [bobcermak.cz](https://bobcermak.cz) · [@bobcermak](https://github.com/bobcermak) · ahoj@bobcermak.cz
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> ⚡ „Stavím weby a appky, které si na nic nehrajou."
