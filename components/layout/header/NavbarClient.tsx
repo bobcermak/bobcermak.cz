@@ -52,8 +52,8 @@ const NavbarClient: FC<NavbarClientProps> = ({ logo, children }) => {
     };
   }, [isOpen]);
   return (
-    <div className="pointer-events-none fixed inset-x-0 top-6 z-50 flex justify-center w-container mx-auto">
-      <div ref={rootRef} className="pointer-events-none relative w-full max-w-280">
+    <div className="pointer-events-none fixed inset-x-0 top-6 z-50 flex justify-center w-container desktop:w-section mx-auto">
+      <div ref={rootRef} className="pointer-events-none relative w-full">
         <nav
           aria-label="Hlavní navigace"
           className={`pointer-events-auto relative flex items-center justify-between gap-5 rounded-full pl-5 pr-3

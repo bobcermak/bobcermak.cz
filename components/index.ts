@@ -3,3 +3,5 @@ export { default as RevealSection } from "./layout/wrappers/RevealSection";
 export { default as Button } from "./buttons/Button";
 export { default as Navbar } from "./layout/header/Navbar";
 export { default as NavbarClient } from "./layout/header/NavbarClient";
+export { default as HeroSection } from "./layout/HeroSection";
+export { default as ReactiveBg } from "./layout/ReactiveBg";

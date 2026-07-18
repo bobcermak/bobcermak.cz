@@ -33,8 +33,7 @@ type ButtonProps = LinkButtonProps | NativeButtonProps;
 const EXTERNAL_HREF = /^https?:\/\//i;
 const VARIANT_STYLES: Record<ButtonVariant, string> = {
   primary: "bg-ink text-white hover:bg-ink-hover active:bg-ink-hover",
-  secondary:
-    "text-ink border border-border-mid hover:border-ink hover:bg-ink hover:text-white active:border-ink active:bg-ink active:text-white",
+  secondary: "text-ink border border-border-mid hover:bg-ink/2 active:bg-ink/2",
   tertiary: "bg-white text-ink hover:bg-ink hover:text-white active:bg-ink active:text-white",
   dark: "text-ink border border-ink hover:bg-ink hover:text-white active:bg-ink active:text-white",
   light: "bg-transparent text-white border border-white/70 hover:bg-white/10 active:bg-white/10",

@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xxd)",
+      "Read(//f/pw2/**)",
+      "Bash(curl -s -o /dev/null -w \"card.glb: %{http_code}\\\\n\" http://localhost:3987/lanyard/card.glb)",
+      "Bash(curl -s -o /dev/null -w \"lanyard.png: %{http_code}\\\\n\" http://localhost:3987/lanyard/lanyard.png)",
+      "Bash(curl -s -o /dev/null -w \"page: %{http_code}\\\\n\" http://localhost:3987/)",
+      "Bash(curl -s -o /dev/null -w \"card.glb: %{http_code}\\\\n\" http://localhost:3000/lanyard/card.glb)",
+      "Bash(curl -s -o /dev/null -w \"lanyard.png: %{http_code}\\\\n\" http://localhost:3000/lanyard/lanyard.png)",
+      "Bash(curl -s -o /dev/null -w \"page: %{http_code}\\\\n\" http://localhost:3000/)",
+      "Bash(curl -s \"https://api.github.com/search/code?q=card.glb+repo:DavidHDev/react-bits\" -H \"Accept: application/vnd.github+json\")",
+      "Bash(curl -s \"https://api.github.com/repos/DavidHDev/react-bits/git/trees/main?recursive=1\")",
+      "Bash(mkdir -p public/lanyard)",
+      "Bash(curl -sL -o public/lanyard/card.glb \"https://raw.githubusercontent.com/DavidHDev/react-bits/main/src/assets/lanyard/card.glb\")",
+      "Bash(curl -sL -o public/lanyard/lanyard.png \"https://raw.githubusercontent.com/DavidHDev/react-bits/main/src/assets/lanyard/lanyard.png\")",
+      "Bash(file public/lanyard/*)",
+      "Bash(node -e ' *)",
+      "Bash(TMP=\"F:/pw-temp\" TEMP=\"F:/pw-temp\" PLAYWRIGHT_BROWSERS_PATH=\"F:/pw-browsers\" node probe.mjs)",
+      "Bash(TMP=\"F:/pw-temp\" TEMP=\"F:/pw-temp\" PLAYWRIGHT_BROWSERS_PATH=\"F:/pw-browsers\" node mobile.mjs)",
+      "Bash(TMP=F:/pw-temp TEMP=F:/pw-temp PLAYWRIGHT_BROWSERS_PATH=F:/pw-browsers node -e ' *)",
+      "Bash(TMP=\"F:/pw-temp\" TEMP=\"F:/pw-temp\" PLAYWRIGHT_BROWSERS_PATH=\"F:/pw-browsers\" node allcheck.mjs)"
+    ]
+  }
+}

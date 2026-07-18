@@ -1,4 +1,4 @@
-import { PageWrapper, Navbar } from "@/components";
+import { PageWrapper, Navbar, ReactiveBg } from "@/components";
 import { Montserrat } from "next/font/google";
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
@@ -107,8 +107,9 @@ export default function RootLayout({
         />
       </head>
       <body className="font-montserrat">
+        <ReactiveBg/>
         <header>
-          <Navbar />
+          <Navbar/>
         </header>
         <PageWrapper>
           <main>{children}</main>
