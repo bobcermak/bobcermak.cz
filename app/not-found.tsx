@@ -4,7 +4,7 @@ const NotFoundPage = () => {
   return (
     <section
       aria-label="Stránka nenalezena"
-      className="mx-auto flex min-h-[80dvh] w-container max-w-280 flex-col items-center justify-center gap-6 py-32 text-center"
+      className="mx-auto flex min-h-dvh w-container max-w-280 flex-col items-center justify-center gap-6 py-32 text-center"
     >
       <p className="text-[clamp(4rem,14vw,9rem)] font-semibold leading-none tracking-[-0.04em] text-muted-num">
         404

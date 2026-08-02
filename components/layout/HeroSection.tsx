@@ -1,5 +1,6 @@
 import { Button, RevealSection } from "@/components";
 import HeroLanyard from "./HeroLanyard";
+import ScrollHint from "./ScrollHint";
 import { type FC } from "react";
 
 type HeroSectionProps = {
@@ -49,6 +50,7 @@ const HeroSection: FC<HeroSectionProps> = ({ eyebrow = "K dispozici pro nové pr
         </span>
       </div>
       <HeroLanyard/>
+      <ScrollHint/>
     </RevealSection>
   );
 };

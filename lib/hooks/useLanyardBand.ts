@@ -8,7 +8,7 @@ import { drawLanyardCard } from "../helpers/drawLanyardCard";
 import { drawLanyardBand } from "../helpers/drawLanyardBand";
 
 const CARD_GLB = "/lanyard/card.glb";
-const PROFILE_PHOTO = "/images/content/bob-profile.jpeg";
+const PROFILE_PHOTO = "/images/content/bob-profile.webp";
 const CARD_NAME = "Bob Čermák";
 const CARD_ROLE = "Full stack developer";
 const CARD_SITE = "bobcermak.cz";

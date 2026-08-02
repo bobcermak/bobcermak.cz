@@ -61,6 +61,8 @@
   --width-xcontent: 85svw;
   --width-content: 80vw;
   --width-content: 80svw;
+  --width-xsection: 70vw;
+  --width-xsection: 70svw;
   --width-section: 60vw;
   --width-section: 60svw;
 }
@@ -153,6 +155,24 @@ body {
   to {
     opacity: 1;
     transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes scrollDot {
+  0% {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+  35% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(9px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(9px);
   }
 }
 

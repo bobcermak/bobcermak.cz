@@ -41,7 +41,7 @@ const ServiceRow: FC<ServiceRowProps> = ({ service }) => {
       </div>
       <footer aria-hidden="true" className="pt-1 laptop:pt-0">
         <ArrowUpRightIcon
-          size={22}
+          size={20}
           className="text-muted-num transition-[color,rotate] duration-250 ease-[cubic-bezier(.2,.8,.25,1)] group-hover:rotate-45 group-active:rotate-45 group-hover:text-ink group-active:text-ink"
         />
       </footer>

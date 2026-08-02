@@ -5,4 +5,5 @@ export { default as Navbar } from "./layout/header/Navbar";
 export { default as NavbarClient } from "./layout/header/NavbarClient";
 export { default as HeroSection } from "./layout/HeroSection";
 export { default as ServicesSection } from "./layout/services/ServicesSection";
+export { default as FeaturedProjects } from "./layout/projects/FeaturedProjects";
 export { default as ReactiveBg } from "./layout/ReactiveBg";
