@@ -39,7 +39,7 @@ const HeroLanyard = () => {
       <LanyardScene
         className="h-full w-full"
         position={narrowMd ? [0, 0, 16] : [0, 0, 20]}
-        offsetX={narrow ? 0.3 : narrowXl ? 1.9 : narrowLg ? 2.5 : narrowMd ? 1.8 : 1.5}
+        offsetX={narrow ? 0.3 : narrowXl ? 1.8 : narrowLg ? 2.5 : narrowMd ? 1.8 : 1.5}
         bandLength={narrow ? 1.9 : 1}
         bandWidth={narrow ? 3 : 1}
       />

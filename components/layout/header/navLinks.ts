@@ -4,5 +4,5 @@ export type NavItem = {
 };
 export const NAV_LINKS: NavItem[] = [
   { href: "/projekty", label: "Projekty" },
-  { href: "#kalkulacka", label: "Kalkulačka" },
+  { href: "#calculator", label: "Kalkulačka" },
 ];

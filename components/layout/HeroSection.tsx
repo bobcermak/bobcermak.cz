@@ -10,7 +10,7 @@ type HeroSectionProps = {
 const HeroSection: FC<HeroSectionProps> = ({ eyebrow = "K dispozici pro nové projekty", title = "Stavím weby a appky, které si na nic nehrajou.", subtitle = "Full stack developer — Next.js, React Native, Supabase. Od statického webu po rezervační systém s vlastním CMS." }) => {
   return (
     <RevealSection scrollTrigger={false} id="hero" aria-label="Úvod" className="relative w-full overflow-hidden">
-      <div className="pointer-events-none relative mx-auto flex min-h-[130dvh] w-container flex-col justify-start pt-44 stablet:pt-48 tablet:min-h-dvh tablet:justify-center tablet:pt-0 desktop:w-section">
+      <div className="pointer-events-none relative mx-auto flex min-h-[150dvh] w-container flex-col justify-start pt-44 stablet:pt-48 tablet:min-h-dvh tablet:justify-center tablet:pt-0 desktop:w-section">
         <div className="pointer-events-none tablet:pointer-events-auto backdrop-blur-md tablet:backdrop-blur-none bg-white/10 tablet:bg-transparent z-10 tablet:z-0 w-fit py-10 px-5 tablet:p-0 rounded-[20px] tablet:rounded-none">
           <header className="pointer-events-none tablet:pointer-events-auto">
             <p
@@ -34,8 +34,10 @@ const HeroSection: FC<HeroSectionProps> = ({ eyebrow = "K dispozici pro nové pr
             data-reveal
             className="pointer-events-auto relative z-30 mt-8 flex flex-col items-stretch gap-2 tablet:flex-row tablet:items-center"
           >
-            <Button href="#kalkulacka" ariaLabel="Spočítat cenu projektu">
-              Spočítat cenu projektu
+            <Button className="flex" href="#calculator" ariaLabel="Spočítat cenu projektu">
+              <span className="whitespace-nowrap">
+                Spočítat cenu <span className="hidden phone:inline">projektu</span>
+              </span>
             </Button>
             <Button href="/projekty" variant="secondary" isArrow={false} ariaLabel="Moje projekty">
               Moje projekty
