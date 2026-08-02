@@ -25,12 +25,13 @@ const LanyardCard: FC<LanyardCardProps> = ({ cardRef, dragged, nodes, materials,
             map={cardTexture ?? materials.base.map}
             map-anisotropy={16}
             clearcoat={1}
-            clearcoatRoughness={0.15}
-            roughness={0.9}
-            metalness={0.8}
+            clearcoatRoughness={0.35}
+            roughness={0.75}
+            metalness={0}
+            envMapIntensity={0.5}
           />
         </mesh>
-        <mesh geometry={nodes.clip.geometry} material={materials.metal} material-roughness={0.3} />
+        <mesh geometry={nodes.clip.geometry} material={materials.metal} material-roughness={0.3}/>
         <mesh geometry={nodes.clamp.geometry} material={materials.metal} />
       </group>
     </RigidBody>

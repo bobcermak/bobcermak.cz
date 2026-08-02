@@ -3,7 +3,12 @@ import LanyardCard from "../LanyardCard";
 import LanyardBandMesh from "./LanyardBandMesh";
 import { segmentProps, useLanyardBand } from "../../../lib/hooks/useLanyardBand";
 
-const LanyardBand = () => {
+type LanyardBandProps = {
+  offsetX?: number;
+  bandWidth?: number;
+  bandLength?: number;
+};
+const LanyardBand = ({ offsetX = 0, bandWidth = 1, bandLength = 1 }: LanyardBandProps) => {
   const {
     band,
     card,
@@ -22,10 +27,10 @@ const LanyardBand = () => {
     handlePointerOut,
     handlePointerUp,
     handlePointerDown,
-  } = useLanyardBand();
+  } = useLanyardBand({ segmentLength: bandLength });
   return (
     <>
-      <group position={[0, 4, 0]}>
+      <group position={[offsetX, 4, 0]}>
         <RigidBody ref={fixed} {...segmentProps} type="fixed" />
         <RigidBody position={[0.5, 0, 0]} ref={j1} {...segmentProps}>
           <BallCollider args={[0.1]} />
@@ -49,7 +54,7 @@ const LanyardBand = () => {
           onPointerDown={handlePointerDown}
         />
       </group>
-      <LanyardBandMesh bandRef={band} texture={texture} width={width} height={height} />
+      <LanyardBandMesh bandRef={band} texture={texture} width={width} height={height} lineWidth={bandWidth} />
     </>
   );
 };

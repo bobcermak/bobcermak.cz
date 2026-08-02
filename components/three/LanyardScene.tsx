@@ -12,6 +12,9 @@ type LanyardSceneProps = {
   transparent?: boolean,
   className?: string,
   mirrorX?: boolean,
+  offsetX?: number,
+  bandWidth?: number | { mobile?: number; desktop?: number },
+  bandLength?: number,
   fallback?: ReactNode
 };
 class SceneBoundary extends Component<{ children: ReactNode; fallback?: ReactNode }, { failed: boolean }> {

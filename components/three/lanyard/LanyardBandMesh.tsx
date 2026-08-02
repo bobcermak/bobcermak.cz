@@ -4,12 +4,9 @@ type LanyardBandMeshProps = {
   texture: any;
   width: number;
   height: number;
+  lineWidth?: number;
 };
-// Pozn.: `resolution` NEODVOZUJEME z živé velikosti plátna. Na širokém desktop
-// plátně (w-[145%], poměr ~2.3) meshline zdegeneruje do trojúhelníku — stejný
-// artefakt jako v originálu, když se předhodí extrémní poměr stran. Držíme proto
-// pevné čtvercové rozlišení + lineWidth=1 přesně jako referenční Lanyard.
-const LanyardBandMesh = ({ bandRef, texture }: LanyardBandMeshProps) => {
+const LanyardBandMesh = ({ bandRef, texture, lineWidth = 1 }: LanyardBandMeshProps) => {
   return (
     <mesh ref={bandRef}>
       <meshLineGeometry />
@@ -20,7 +17,7 @@ const LanyardBandMesh = ({ bandRef, texture }: LanyardBandMeshProps) => {
         useMap={1}
         map={texture}
         repeat={[-4, 1]}
-        lineWidth={1}
+        lineWidth={lineWidth}
       />
     </mesh>
   );

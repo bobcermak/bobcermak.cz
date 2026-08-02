@@ -28,16 +28,26 @@ const sourceSize = (image: CanvasImageSource) => {
   const el = image as HTMLImageElement;
   return { w: el.naturalWidth || (el.width as number), h: el.naturalHeight || (el.height as number) };
 };
-const fillPaper = (ctx: CanvasRenderingContext2D, base: CanvasImageSource, rect: Rect) => {
-  for (let y = rect.y; y < rect.y + rect.h; y += PAPER.h) {
-    for (let x = rect.x; x < rect.x + rect.w; x += PAPER.w) {
-      ctx.drawImage(base, PAPER.x, PAPER.y, PAPER.w, PAPER.h, x, y, PAPER.w, PAPER.h);
-    }
-  }
+let paperColorCache: string | null = null;
+const paperColor = (base: CanvasImageSource) => {
+  if (paperColorCache) return paperColorCache;
+  const c = document.createElement("canvas");
+  c.width = 1;
+  c.height = 1;
+  const cx = c.getContext("2d");
+  if (!cx) return "#ffffff";
+  cx.drawImage(base, PAPER.x, PAPER.y, PAPER.w, PAPER.h, 0, 0, 1, 1);
+  const [r, g, b] = cx.getImageData(0, 0, 1, 1).data;
+  paperColorCache = `rgb(${r}, ${g}, ${b})`;
+  return paperColorCache;
 };
-const drawCover = (ctx: CanvasRenderingContext2D, image: CanvasImageSource, rect: Rect, radius: number) => {
+const fillPaper = (ctx: CanvasRenderingContext2D, base: CanvasImageSource, rect: Rect) => {
+  ctx.fillStyle = paperColor(base);
+  ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
+};
+const drawContain = (ctx: CanvasRenderingContext2D, image: CanvasImageSource, rect: Rect, radius: number) => {
   const src = sourceSize(image);
-  const scale = Math.max(rect.w / src.w, rect.h / src.h);
+  const scale = Math.min(rect.w / src.w, rect.h / src.h);
   const w = src.w * scale;
   const h = src.h * scale;
   ctx.save();
@@ -62,13 +72,14 @@ const drawRole = (ctx: CanvasRenderingContext2D, cx: number, y: number, role: st
 const drawFace = (ctx: CanvasRenderingContext2D, { base, photo, name, fontFamily }: DrawOptions) => {
   fillPaper(ctx, base, FACE);
   const cx = FACE.x + FACE.w / 2;
-  drawCover(ctx, photo, { x: FACE.x + 28, y: FACE.y + 28, w: FACE.w - 56, h: 1075 }, 40);
+  const photoW = FACE.w - 90;
+  const photoH = (photoW * 4) / 3;
+  drawContain(ctx, photo, { x: FACE.x + (FACE.w - photoW) / 2, y: FACE.y + 95, w: photoW, h: photoH }, 40);
   ctx.textAlign = "center";
   ctx.textBaseline = "alphabetic";
   ctx.fillStyle = INK;
   ctx.font = `600 84px ${fontFamily}`;
   ctx.letterSpacing = "-0.02em";
-  // Jméno je pod fotkou samo, tak sedí na střed zbylého pruhu.
   ctx.fillText(name, cx, FACE.y + 1214);
   ctx.letterSpacing = "0px";
 };
@@ -95,7 +106,6 @@ export const drawLanyardCard = (canvas: HTMLCanvasElement, options: DrawOptions)
   ctx.clip();
   drawFace(ctx, options);
   ctx.restore();
-
   ctx.save();
   ctx.beginPath();
   ctx.rect(REVERSE.x, REVERSE.y, REVERSE.w, REVERSE.h);

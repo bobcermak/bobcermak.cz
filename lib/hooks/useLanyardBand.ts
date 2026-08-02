@@ -8,7 +8,7 @@ import { drawLanyardCard } from "../helpers/drawLanyardCard";
 import { drawLanyardBand } from "../helpers/drawLanyardBand";
 
 const CARD_GLB = "/lanyard/card.glb";
-const PROFILE_PHOTO = "/images/content/bob-profile.png";
+const PROFILE_PHOTO = "/images/content/bob-profile.jpeg";
 const CARD_NAME = "Bob Čermák";
 const CARD_ROLE = "Full stack developer";
 const CARD_SITE = "bobcermak.cz";
@@ -28,8 +28,9 @@ export const segmentProps = {
 type UseLanyardBandOptions = {
   maxSpeed?: number;
   minSpeed?: number;
+  segmentLength?: number;
 };
-export const useLanyardBand = ({ maxSpeed = 50, minSpeed = 0 }: UseLanyardBandOptions = {}) => {
+export const useLanyardBand = ({ maxSpeed = 50, minSpeed = 0, segmentLength = 1 }: UseLanyardBandOptions = {}) => {
   const band = useRef<any>(null);
   const fixed = useRef<any>(null);
   const j1 = useRef<any>(null);
@@ -92,8 +93,6 @@ export const useLanyardBand = ({ maxSpeed = 50, minSpeed = 0 }: UseLanyardBandOp
   useEffect(() => {
     let cancelled = false;
     const fontFamily = resolveFontFamily();
-    // Prvni vykresleni v useMemo mohlo padnout na fallback font — po nacteni
-    // Montserratu popruh prekreslime.
     document.fonts
       .load(`700 116px ${fontFamily}`)
       .then(() => {
@@ -120,7 +119,6 @@ export const useLanyardBand = ({ maxSpeed = 50, minSpeed = 0 }: UseLanyardBandOp
   });
   const [dragged, drag] = useState<false | THREE.Vector3>(false);
   const [hovered, hover] = useState(false);
-  // Pod tabletem (< 761px): menší karta přes vzdálenější kameru (řídí Lanyard).
   const [narrow, setNarrow] = useState(false);
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 760px)");
@@ -129,9 +127,9 @@ export const useLanyardBand = ({ maxSpeed = 50, minSpeed = 0 }: UseLanyardBandOp
     mq.addEventListener("change", update);
     return () => mq.removeEventListener("change", update);
   }, []);
-  useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]);
-  useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]);
-  useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 1]);
+  useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], segmentLength]);
+  useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], segmentLength]);
+  useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], segmentLength]);
   useSphericalJoint(j3, card, [[0, 0, 0], [0, 1.5, 0]]);
   useEffect(() => {
     if (!hovered) return;

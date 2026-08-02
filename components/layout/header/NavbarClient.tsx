@@ -52,17 +52,18 @@ const NavbarClient: FC<NavbarClientProps> = ({ logo, children }) => {
     };
   }, [isOpen]);
   return (
-    <div className="pointer-events-none fixed inset-x-0 top-6 z-50 flex justify-center w-container desktop:w-section mx-auto">
+    <>
+      <div
+        aria-hidden
+        onClick={close}
+        className={`fixed inset-0 z-40 bg-white/10 backdrop-blur-md transition-opacity duration-300 laptop:hidden
+          ${isOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"}`}
+      />
+      <div className="pointer-events-none fixed inset-x-0 top-6 z-50 flex justify-center w-container desktop:w-section mx-auto">
       <div ref={rootRef} className="pointer-events-none relative w-full">
         <nav
           aria-label="Hlavní navigace"
-          className={`pointer-events-auto relative flex items-center justify-between gap-5 rounded-full pl-5 pr-3
-            border border-white/70 backdrop-blur-xl backdrop-saturate-150
-            animate-[navDrop_0.7s_cubic-bezier(.2,.8,.25,1)_both]
-            transition-[box-shadow,background-color,padding] duration-250 motion-reduce:animate-none
-            ${scrolled ? "py-2" : "py-2.75"}
-            ${isOpen ? "bg-white/85 shadow-nav" : scrolled ? "bg-white/85 shadow-nav-scrolled" : "bg-white/60 shadow-nav"}`}
-        >
+          className={`pointer-events-auto relative flex items-center justify-between gap-5 rounded-full pl-5 pr-3 border border-white/70 backdrop-blur-xl backdrop-saturate-150 animate-[navDrop_0.7s_cubic-bezier(.2,.8,.25,1)_both] transition-[box-shadow,background-color,padding] duration-250 motion-reduce:animate-none py-2.75 bg-white/60 shadow-nav`}>
           {logo}
           <ul
             ref={listRef}
@@ -85,7 +86,8 @@ const NavbarClient: FC<NavbarClientProps> = ({ logo, children }) => {
           />
         </nav>
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 export default NavbarClient;
