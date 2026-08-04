@@ -16,7 +16,7 @@ const ProjectLinks = ({ href, github, title }: ProjectLinksProps) => (
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`${title} — GitHub`}
-          className="pointer-events-auto text-text-3 transition-colors duration-250 hover:text-ink"
+          className="pointer-events-auto text-text-3 transition-colors duration-250 hover:text-ink active:text-ink"
         >
           <GithubLogoIcon size={20} weight="fill" />
         </Link>
@@ -24,7 +24,7 @@ const ProjectLinks = ({ href, github, title }: ProjectLinksProps) => (
       <ArrowSquareOutIcon
         size={20}
         weight="bold"
-        className="text-text-3 transition-[translate,color] duration-250 ease-[cubic-bezier(.2,.8,.25,1)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-ink"
+        className="text-text-3 transition-[translate,color] duration-250 ease-[cubic-bezier(.2,.8,.25,1)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-ink group-active:-translate-y-0.5 group-active:translate-x-0.5 group-active:text-ink"
       />
     </div>
     <Link

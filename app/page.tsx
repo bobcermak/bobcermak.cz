@@ -1,4 +1,4 @@
-import { HeroSection, ServicesSection, FeaturedProjects } from "@/components";
+import { HeroSection, ServicesSection, FeaturedProjects, CalculatorSection, SharedApis } from "@/components";
 
 const HomePage = () => {
   return (
@@ -6,6 +6,8 @@ const HomePage = () => {
       <HeroSection/>
       <ServicesSection/>
       <FeaturedProjects/>
+      <SharedApis/>
+      <CalculatorSection/>
     </>
   );
 };

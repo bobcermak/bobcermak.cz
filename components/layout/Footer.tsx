@@ -35,7 +35,7 @@ const Footer = () => {
           </p>
           <Link
             href="mailto:ahoj@bobcermak.cz"
-            className="mt-5 inline-block text-sub font-medium text-ink transition-colors hover:text-text-2"
+            className="mt-5 inline-block text-sub font-medium text-ink transition-colors hover:text-text-2 active:text-text-2"
           >
             ahoj@bobcermak.cz
           </Link>
@@ -48,7 +48,7 @@ const Footer = () => {
               aria-label={social.label}
               target={social.href.startsWith("http") ? "_blank" : undefined}
               rel={social.href.startsWith("http") ? "noopener noreferrer" : undefined}
-              className="flex size-[34px] items-center justify-center rounded-[10px] border border-border bg-white text-ink transition-colors hover:border-ink hover:bg-bg-tint"
+              className="flex size-[34px] items-center justify-center rounded-[10px] border border-border bg-white text-ink transition-colors hover:border-ink hover:bg-bg-tint active:border-ink active:bg-bg-tint"
             >
               <svg viewBox="0 0 24 24" fill="currentColor" className="size-[18px]" aria-hidden="true">
                 {social.icon}
@@ -63,7 +63,7 @@ const Footer = () => {
           href="https://github.com/bobcermak/bobcermak.cz"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-text-3 transition-colors hover:text-ink"
+          className="text-text-3 transition-colors hover:text-ink active:text-ink"
         >
           Open source · GitHub
         </Link>

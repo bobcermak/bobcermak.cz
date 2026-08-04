@@ -66,7 +66,7 @@ const Button: FC<ButtonProps> = (props) => {
   const showArrow = variant === "primary" && isArrow;
   const joinArrow = showArrow && !disabled;
   const wrapperClass = twMerge(
-    "group inline-flex items-center",
+    "group inline-flex items-center cursor-pointer",
     wFull ? "w-full" : "w-fit",
     isShadow ? DROP_SHADOW_STYLES[variant] : "",
     disabled ? "pointer-events-none cursor-not-allowed opacity-40" : "",

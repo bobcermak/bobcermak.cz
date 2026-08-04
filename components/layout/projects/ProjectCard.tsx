@@ -9,11 +9,11 @@ const ProjectCard = ({ project }: { project: Project }) => {
   return (
     <article
       data-reveal
-      className="group relative flex overflow-hidden rounded-[15px] border border-border bg-white text-ink transition-[translate,border-color,box-shadow] duration-250 ease-[cubic-bezier(.2,.8,.25,1)] hover:-translate-y-[5px] active:-translate-y-[5px] hover:border-border-mid hover:shadow-card active:border-border-mid active:shadow-card"
+      className="group relative flex flex-col stablet:flex-row overflow-hidden rounded-[15px] border border-border bg-white text-ink transition-[translate,border-color,box-shadow] duration-250 ease-[cubic-bezier(.2,.8,.25,1)] hover:-translate-y-[5px] active:-translate-y-[5px] hover:border-border-mid hover:shadow-card active:border-border-mid active:shadow-card"
     >
-      <div className={`relative w-[42%] flex-none ${num === "03" ? "bg-[#4795a7]" : "bg-bg-tint"}`}>
-        <ProjectImage src={img} title={title} sizes="(max-width: 620px) 45vw, 340px" fit={fit} />
-      </div>
+      <figure className={`relative w-full flex-none aspect-16/11 stablet:aspect-auto stablet:w-[42%] ${num === "03" ? "bg-[#4795a7]" : "bg-white"}`}>
+        <ProjectImage src={img} title={title} sizes="(max-width: 640px) 92vw, 340px" fit={fit} />
+      </figure>
       <div className="flex min-w-0 flex-1 flex-col px-6 py-5">
         <span className="mb-auto text-[1.5rem] font-light leading-none text-muted-num">{num}</span>
         <h3 className="mb-2 mt-5 text-[1.3rem] font-semibold tracking-[-0.015em]">{title}</h3>

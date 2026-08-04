@@ -10,24 +10,25 @@ if (typeof window !== "undefined") {
 }
 export type RevealOptions = {
   scrollTrigger?: boolean;
-  /** Počáteční posun po ose Y (px). Default 20. Vyšší = výraznější vjezd. */
   y?: number;
-  /** Počáteční posun po ose X (px). Default 0 (např. pro vjezd z boku). */
   x?: number;
-  /** Délka animace (s). Default 0.8. */
+  scale?: number;
   duration?: number;
-  /** Prodleva mezi prvky (s). Default 0.12. Vyšší = znatelnější stagger. */
   stagger?: number;
-  /** GSAP ease. Default "power3.out". */
   ease?: string;
+  start?: string;
+  perTarget?: boolean;
 };
 export const useRevealAnimation = <T extends HTMLElement>({
   scrollTrigger = true,
   y = 20,
   x = 0,
+  scale = 1,
   duration = 0.8,
   stagger = 0.12,
   ease = "power3.out",
+  start = "top 80%",
+  perTarget = false,
 }: RevealOptions = {}) => {
   const ref = useRef<T>(null);
   useGSAP(
@@ -37,26 +38,37 @@ export const useRevealAnimation = <T extends HTMLElement>({
       const found = el.querySelectorAll<HTMLElement>("[data-reveal]");
       const targets: HTMLElement[] = found.length ? Array.from(found) : [el];
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        gsap.set(targets, { opacity: 1, x: 0, y: 0 });
+        gsap.set(targets, { opacity: 1, x: 0, y: 0, scale: 1 });
         return;
       }
-      gsap.fromTo(
-        targets,
-        { opacity: 0, x, y },
-        {
-          opacity: 1,
-          x: 0,
-          y: 0,
-          duration,
-          ease,
-          stagger,
-          ...(scrollTrigger
-            ? { scrollTrigger: { trigger: el, start: "top 80%", once: true } }
-            : {}),
-        }
-      );
+      const from = { opacity: 0, x, y, scale };
+      const to = { opacity: 1, x: 0, y: 0, scale: 1, duration, ease };
+      if (perTarget && scrollTrigger) {
+        const tops = targets.map((target) => target.getBoundingClientRect().top);
+        let rowTop = Number.NEGATIVE_INFINITY;
+        let indexInRow = 0;
+        targets.forEach((target, i) => {
+          if (Math.abs(tops[i] - rowTop) > 8) {
+            rowTop = tops[i];
+            indexInRow = 0;
+          } else {
+            indexInRow += 1;
+          }
+          gsap.fromTo(target, from, {
+            ...to,
+            delay: indexInRow * stagger,
+            scrollTrigger: { trigger: target, start, once: true },
+          });
+        });
+        return;
+      }
+      gsap.fromTo(targets, from, {
+        ...to,
+        stagger,
+        ...(scrollTrigger ? { scrollTrigger: { trigger: el, start, once: true } } : {}),
+      });
     },
-    { scope: ref, dependencies: [scrollTrigger, y, x, duration, stagger, ease] }
+    { scope: ref, dependencies: [scrollTrigger, y, x, scale, duration, stagger, ease, start, perTarget] }
   );
   return ref;
 };

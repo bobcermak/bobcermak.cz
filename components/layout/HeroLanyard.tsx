@@ -35,7 +35,7 @@ const HeroLanyard = () => {
     };
   }, []);
   return (
-    <div className="absolute -top-50 bottom-0 z-0 w-full touch-pan-y" aria-hidden="true">
+    <div className="absolute -top-50 bottom-0 z-0 tablet:z-20 w-full touch-pan-y" aria-hidden="true">
       <LanyardScene
         className="h-full w-full"
         position={narrowMd ? [0, 0, 16] : [0, 0, 20]}

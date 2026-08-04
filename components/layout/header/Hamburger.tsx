@@ -28,12 +28,13 @@ const Hamburger: FC<HamburgerProps> = ({ isOpen, onToggle, controls, className }
           bg-[conic-gradient(from_140deg,#96ace8,#cebeec,#f3ccb2,#cebeec,#96ace8)]
           animate-[spin_7s_linear_infinite] transition-[filter] duration-500
           group-hover:[animation-duration:2.2s] group-hover:saturate-150
+          group-active:[animation-duration:2.2s] group-active:saturate-150
           ${isOpen ? "saturate-150" : ""}`}
       />
       <span
         aria-hidden
         className={`absolute inset-0 rounded-full transition-colors duration-300
-          ${isOpen ? "bg-white/40" : "bg-white/60 group-hover:bg-white/45"}`}
+          ${isOpen ? "bg-white/40" : "bg-white/60 group-hover:bg-white/45 group-active:bg-white/45"}`}
       />
       <span className="relative block h-4 w-4.5">
         <span className={`${BAR} ${isOpen ? "top-1/2 -translate-y-1/2 rotate-45" : "top-0.75"}`} />

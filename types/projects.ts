@@ -17,6 +17,7 @@ export const featuredLead: Project = {
   tags: ["Mobilní app", "AI", "2025-26"],
   img: "/images/content/yumi-mockup.png",
   href: "https://github.com/bobcermak/Yumi-App",
+  fit: "contain",
 };
 export const featuredRest: Project[] = [
   {
@@ -27,6 +28,7 @@ export const featuredRest: Project[] = [
     tags: ["Web", "E-shop"],
     img: "/images/content/bezecka-skola-mockup.png",
     href: "https://bezeckaskola.cz/",
+    fit: "contain",
   },
   {
     num: "03",

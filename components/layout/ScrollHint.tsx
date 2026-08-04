@@ -1,6 +1,7 @@
 const ScrollHint = () => (
   <div
     aria-hidden="true"
+    data-scroll-out="0.75"
     className="pointer-events-none absolute inset-x-0 bottom-8 z-30 hidden flex-col items-center gap-2.5 laptop:flex"
   >
     <span className="text-eyebrow font-semibold uppercase tracking-[0.14em] text-text-3">Scroll</span>
