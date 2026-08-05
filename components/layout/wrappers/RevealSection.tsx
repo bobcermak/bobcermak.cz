@@ -3,22 +3,32 @@
 import { useCallback, type ComponentPropsWithoutRef } from "react";
 import { useRevealAnimation, type RevealOptions } from "../../animations/useRevealAnimation";
 import { useScrollOut, type ScrollOutOptions } from "../../animations/useScrollOut";
+import { useScrollDrift, type ScrollDriftOptions } from "../../animations/useScrollDrift";
 
 type RevealSectionProps = ComponentPropsWithoutRef<"section"> & {
   scrollTrigger?: boolean;
   reveal?: Omit<RevealOptions, "scrollTrigger">;
-  /** Ladění odjezdu prvků s `data-scroll-out`. Bez nich se nic neděje. */
   scrollOut?: ScrollOutOptions;
+  drift?: ScrollDriftOptions;
 };
-const RevealSection = ({ scrollTrigger = true, reveal, scrollOut, children, ...rest }: RevealSectionProps) => {
+const RevealSection = ({
+  scrollTrigger = true,
+  reveal,
+  scrollOut,
+  drift,
+  children,
+  ...rest
+}: RevealSectionProps) => {
   const revealRef = useRevealAnimation<HTMLElement>({ scrollTrigger, ...reveal });
   const scrollOutRef = useScrollOut<HTMLElement>(scrollOut);
+  const driftRef = useScrollDrift<HTMLElement>(drift);
   const setRefs = useCallback(
     (node: HTMLElement | null) => {
       revealRef.current = node;
       scrollOutRef.current = node;
+      driftRef.current = node;
     },
-    [revealRef, scrollOutRef]
+    [revealRef, scrollOutRef, driftRef]
   );
   return (
     <section ref={setRefs} {...rest}>

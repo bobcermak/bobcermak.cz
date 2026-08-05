@@ -2,6 +2,7 @@ import type { FC, ReactNode } from "react";
 import { Body, Column, Container, Font, Head, Html, Link, Preview, Row, Section, Text } from "@react-email/components";
 import EmailLogo from "./EmailLogo";
 import { body, card, chip, content, EMAIL_COLORS, footer, header } from "./emailTheme";
+import { CONTACT_PHONE, CONTACT_PHONE_HREF } from "@/types/contact";
 
 type EmailShellProps = {
   preview: string;
@@ -43,6 +44,10 @@ const EmailShell: FC<EmailShellProps> = ({ preview, label, accent, children }) =
           bobcermak.cz
         </Link>
         {" · "}
+        <Link href={CONTACT_PHONE_HREF} style={{ color: EMAIL_COLORS.text3, textDecoration: "none" }}>
+          {CONTACT_PHONE}
+        </Link>
+        <br />
         Full stack developer — weby, systémy a mobilní appky
       </Text>
     </Body>

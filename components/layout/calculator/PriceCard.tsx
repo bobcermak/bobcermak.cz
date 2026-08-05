@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState, type FC, type FormEvent } from "react";
 import { ApproximateEqualsIcon, CheckIcon, LockIcon, WarningIcon } from "@phosphor-icons/react";
 import Button from "@/components/buttons/Button";
-import LeadModal from "./LeadModal";
-import LeadErrorModal, { type LeadErrorKind } from "./LeadErrorModal";
+import FormSuccessModal from "@/components/overlays/FormSuccessModal";
+import FormErrorModal, { type FormErrorKind } from "@/components/overlays/FormErrorModal";
 import { ACCENT_STYLES, YEARLY_PRICE } from "@/types/calculator";
 import { formatCzk, type CalculatorResult } from "@/lib/calculator";
 import { LEAD_ENDPOINT, type LeadResponse, type LeadSelection } from "@/types/lead";
@@ -24,7 +24,7 @@ const PriceCard: FC<PriceCardProps> = ({ result, yearly, selection }) => {
   const [gdpr, setGdpr] = useState<boolean>(false);
   const honeypotRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string>("");
-  const [failure, setFailure] = useState<{ kind: LeadErrorKind; message: string } | null>(null);
+  const [failure, setFailure] = useState<{ kind: FormErrorKind; message: string } | null>(null);
   const [sending, setSending] = useState<boolean>(false);
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -35,7 +35,7 @@ const PriceCard: FC<PriceCardProps> = ({ result, yearly, selection }) => {
   useEffect(() => {
     openedAt.current = Date.now();
   }, []);
-  const reject = (kind: LeadErrorKind, message: string) => {
+  const reject = (kind: FormErrorKind, message: string) => {
     setError(message);
     setFailure({ kind, message });
   };
@@ -247,14 +247,15 @@ const PriceCard: FC<PriceCardProps> = ({ result, yearly, selection }) => {
           </form>
         </div>
       )}
-      <LeadModal
+      <FormSuccessModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         name={name}
         email={email.trim()}
+        what="Potvrzení se shrnutím"
         confirmationSent={confirmationSent}
       />
-      <LeadErrorModal
+      <FormErrorModal
         open={!!failure}
         onClose={() => setFailure(null)}
         kind={failure?.kind ?? "send"}

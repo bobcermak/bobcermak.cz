@@ -3,6 +3,8 @@
 @theme {
   /*Font Families*/
   --font-montserrat: var(--font-montserrat-next);
+  --font-orbitron: var(--font-orbitron-next);
+  --font-outfit: var(--font-outfit-next);
   /*Font Sizes*/
   --text-eyebrow: 0.75rem; /* 12px */
   --text-body: 1rem; /* 16px */

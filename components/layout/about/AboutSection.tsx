@@ -11,11 +11,11 @@ const AboutSection = () => {
       id={ABOUT_SECTION_ID}
       aria-label="O mně"
       className="w-full py-15"
-      reveal={{ perTarget: true, y: 36, duration: 0.8, stagger: 0.1, start: "top 88%" }}
+      drift={{ distance: 160, rotate: 3.5, duration: 1.35, direction: "left" }}
     >
-      <div className="mx-auto grid w-container grid-cols-1 items-center gap-8 stablet:grid-cols-[200px_minmax(0,1fr)] stablet:gap-11 laptop:grid-cols-[240px_minmax(0,1fr)] desktop:w-xsection">
+      <div className="mx-auto grid w-container grid-cols-1 items-center gap-8 stablet:grid-cols-[200px_minmax(0,1fr)] stablet:gap-11 laptop:grid-cols-[240px_minmax(0,1fr)] desktop:w-section">
         <header
-          data-reveal
+          data-drift
           className="relative aspect-square w-full max-w-55 overflow-hidden rounded-2xl border border-border bg-bg-tint stablet:max-w-none"
         >
           <Image
@@ -26,7 +26,7 @@ const AboutSection = () => {
             className="object-cover"
           />
         </header>
-        <div data-reveal className="min-w-0">
+        <div data-drift="0.55" className="min-w-0">
           <p className="mb-4 text-eyebrow font-semibold uppercase tracking-[0.14em] text-text-3">
             O mně
           </p>
@@ -35,7 +35,7 @@ const AboutSection = () => {
           </p>
           <ul className="flex flex-wrap gap-2">
             {ABOUT_STACK.map((item) => (
-              <li key={item}>
+              <li key={item} data-drift-item>
                 <ProjectTag>{item}</ProjectTag>
               </li>
             ))}

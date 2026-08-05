@@ -36,7 +36,8 @@ export const useRevealAnimation = <T extends HTMLElement>({
       const el = ref.current;
       if (!el) return;
       const found = el.querySelectorAll<HTMLElement>("[data-reveal]");
-      const targets: HTMLElement[] = found.length ? Array.from(found) : [el];
+      if (!found.length) return;
+      const targets: HTMLElement[] = Array.from(found);
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         gsap.set(targets, { opacity: 1, x: 0, y: 0, scale: 1 });
         return;

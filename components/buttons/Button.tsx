@@ -17,6 +17,8 @@ type ButtonSharedProps = {
   className?: string;
   wFull?: boolean;
   disabled?: boolean;
+  noStyle?: boolean;
+  hover?: string;
   children: ReactNode;
 };
 type LinkButtonProps = ButtonSharedProps & {
@@ -60,16 +62,22 @@ const Button: FC<ButtonProps> = (props) => {
     className,
     wFull = false,
     disabled = false,
+    noStyle = false,
+    hover,
     children,
   } = props;
   const dims = SIZE_STYLES[size];
-  const showArrow = variant === "primary" && isArrow;
+  const showArrow = variant === "primary" && isArrow && !noStyle;
   const joinArrow = showArrow && !disabled;
   const wrapperClass = twMerge(
-    "group inline-flex items-center cursor-pointer",
-    wFull ? "w-full" : "w-fit",
-    isShadow ? DROP_SHADOW_STYLES[variant] : "",
+    // Bez stylů musí zůstat běžný inline text — `inline-flex items-center` by
+    // z každého <span> udělalo flex položku a rozhodilo účaří různě velkých písem.
+    noStyle ? "cursor-pointer" : "group inline-flex items-center cursor-pointer",
+    !noStyle && wFull ? "w-full" : "",
+    !noStyle && !wFull ? "w-fit" : "",
+    !noStyle && isShadow ? DROP_SHADOW_STYLES[variant] : "",
     disabled ? "pointer-events-none cursor-not-allowed opacity-40" : "",
+    hover,
     className
   );
   const labelClass = twMerge(
@@ -87,7 +95,9 @@ const Button: FC<ButtonProps> = (props) => {
     dims.circle,
     "group-hover:-translate-x-2 group-active:-translate-x-2 group-hover:rounded-l-none group-active:rounded-l-none"
   );
-  const content = (
+  const content = noStyle ? (
+    children
+  ) : (
     <span className={twMerge("flex items-center gap-2", wFull ? "w-full" : "")}>
       <span className={labelClass}>{children}</span>
       {showArrow && (

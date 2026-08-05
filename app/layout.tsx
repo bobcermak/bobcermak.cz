@@ -1,6 +1,7 @@
-import { PageWrapper, Navbar, ReactiveBg } from "@/components";
-import { Montserrat } from "next/font/google";
+import { PageWrapper, Navbar, ReactiveBg, Footer } from "@/components";
+import { Montserrat, Orbitron, Outfit } from "next/font/google";
 import type { Metadata, Viewport } from "next";
+import { CONTACT_EMAIL, CONTACT_PHONE, GITHUB_URL, LINKEDIN_URL } from "@/types/contact";
 import "./globals.css";
 
 const montserrat = Montserrat({
@@ -9,6 +10,18 @@ const montserrat = Montserrat({
   style: ["normal", "italic"],
   display: "swap",
   variable: "--font-montserrat-next",
+});
+const orbitron = Orbitron({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
+  variable: "--font-orbitron-next",
+});
+const outfit = Outfit({
+  subsets: ["latin", "latin-ext"],
+  weight: ["700"],
+  display: "swap",
+  variable: "--font-outfit-next",
 });
 const SITE_URL = "https://bobcermak.cz";
 const DESCRIPTION = "Bob Čermák — full stack developer z Prahy a Liberce. Stavím weby, rezervační systémy a mobilní appky v Next.js, React Native a Supabase. Od nápadu po nasazení.";
@@ -69,7 +82,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="cs" className={montserrat.variable}>
+    <html lang="cs" className={`${montserrat.variable} ${orbitron.variable} ${outfit.variable}`}>
       <head>
         <script
           type="application/ld+json"
@@ -79,7 +92,8 @@ export default function RootLayout({
               "@type": "Person",
               name: "Bob Čermák",
               url: SITE_URL,
-              email: "bob.cermak.dev@gmail.com",
+              email: CONTACT_EMAIL,
+              telephone: CONTACT_PHONE,
               jobTitle: "Full stack developer",
               description:
                 "Full stack developer — weby s administrací, rezervační a vlastní systémy a mobilní aplikace v Next.js, React Native a Supabase.",
@@ -89,10 +103,7 @@ export default function RootLayout({
                 addressRegion: "Liberec",
                 addressCountry: "CZ",
               },
-              sameAs: [
-                "https://github.com/bobcermak",
-                "https://www.linkedin.com/in/bobcermak",
-              ],
+              sameAs: [GITHUB_URL, LINKEDIN_URL],
               knowsAbout: [
                 "TypeScript",
                 "React",
@@ -113,6 +124,7 @@ export default function RootLayout({
         </header>
         <PageWrapper>
           <main>{children}</main>
+          <Footer/>
         </PageWrapper>
       </body>
     </html>

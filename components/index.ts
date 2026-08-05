@@ -8,5 +8,8 @@ export { default as ServicesSection } from "./layout/services/ServicesSection";
 export { default as FeaturedProjects } from "./layout/projects/FeaturedProjects";
 export { default as CalculatorSection } from "./layout/calculator/CalculatorSection";
 export { default as AboutSection } from "./layout/about/AboutSection";
+export { default as ContactSection } from "./layout/contact/ContactSection";
 export { default as SharedApis } from "./layout/apis/SharedApis";
 export { default as ReactiveBg } from "./layout/ReactiveBg";
+export { default as Footer } from "./layout/Footer";
+export { default as PoweredBy } from "./layout/PoweredBy";
