@@ -5,7 +5,6 @@ export type Service = {
   title: string;
   tag: string;
   desc: string;
-  /** Typ projektu, který se po kliknutí rozklikne v kalkulačce. */
   calc: CalculatorType;
 };
 export const services: Service[] = [

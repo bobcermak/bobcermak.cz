@@ -31,16 +31,21 @@ const CalculatorPanel: FC<CalculatorPanelProps> = ({ types, extras, rushContent,
     window.addEventListener(CALCULATOR_SELECT_EVENT, onSelect);
     return () => window.removeEventListener(CALCULATOR_SELECT_EVENT, onSelect);
   }, []);
+  const pickedExtras = useMemo(
+    () => calculatorExtras.filter((extra) => picked[extra.id]),
+    [picked]
+  );
+  const pickedIds = useMemo(() => pickedExtras.map((extra) => extra.id), [pickedExtras]);
   const result = useMemo(
     () =>
       calculatePrice({
         type: projectTypes.find((item) => item.id === type) ?? projectTypes[0],
         pages,
-        extras: calculatorExtras.filter((extra) => picked[extra.id]),
+        extras: pickedExtras,
         rush,
         yearly,
       }),
-    [type, pages, picked, rush, yearly]
+    [type, pages, pickedExtras, rush, yearly]
   );
   return (
     <div className="grid grid-cols-1 items-start gap-8 mlaptop:grid-cols-[minmax(0,1fr)_minmax(0,460px)] mlaptop:gap-10 desktop:grid-cols-[minmax(0,1fr)_minmax(0,560px)]">
@@ -83,7 +88,11 @@ const CalculatorPanel: FC<CalculatorPanelProps> = ({ types, extras, rushContent,
           </div>
         </CalculatorStep>
       </div>
-      <PriceCard result={result} yearly={yearly}/>
+      <PriceCard
+        result={result}
+        yearly={yearly}
+        selection={{ type, pages, extras: pickedIds, rush, yearly }}
+      />
     </div>
   );
 };

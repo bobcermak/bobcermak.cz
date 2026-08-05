@@ -6,6 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
 import { usePathname } from "next/navigation";
+import { setLenis } from "@/lib/lenis";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -20,6 +21,7 @@ export const PageWrapper = ({ children }: { children: React.ReactNode }) => {
       duration: 2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     });
+    setLenis(lenis);
     lenis.on("scroll", ScrollTrigger.update);
     gsap.ticker.add((time) => {
       lenis.raf(time * 1000);
@@ -52,6 +54,7 @@ export const PageWrapper = ({ children }: { children: React.ReactNode }) => {
     document.addEventListener("click", handleLinkClick);
     return () => {
       document.removeEventListener("click", handleLinkClick);
+      setLenis(null);
       lenis.destroy();
       gsap.ticker.remove(lenis.raf);
     };

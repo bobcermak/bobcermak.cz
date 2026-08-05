@@ -17,7 +17,7 @@ const Footer = () => {
       ),
     },
     {
-      href: "mailto:ahoj@bobcermak.cz",
+      href: "mailto:bob.cermak.dev@gmail.com",
       label: "Email",
       icon: (
         <path d="M2 5.5A1.5 1.5 0 0 1 3.5 4h17A1.5 1.5 0 0 1 22 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-17A1.5 1.5 0 0 1 2 18.5v-13Zm2.4.5 7.6 5.05L19.6 6H4.4ZM20 7.28l-7.44 4.94a1 1 0 0 1-1.12 0L4 7.28V18h16V7.28Z" />
@@ -34,10 +34,10 @@ const Footer = () => {
             <span className="text-placeholder">Napiš mi.</span>
           </p>
           <Link
-            href="mailto:ahoj@bobcermak.cz"
+            href="mailto:bob.cermak.dev@gmail.com"
             className="mt-5 inline-block text-sub font-medium text-ink transition-colors hover:text-text-2 active:text-text-2"
           >
-            ahoj@bobcermak.cz
+            bob.cermak.dev@gmail.com
           </Link>
         </div>
         <nav aria-label="Sociální sítě" className="flex items-center gap-3">

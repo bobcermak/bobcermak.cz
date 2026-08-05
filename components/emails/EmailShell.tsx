@@ -1,58 +1,50 @@
 import type { FC, ReactNode } from "react";
-import { Body, Container, Head, Html, Preview, Section, Text } from "@react-email/components";
-import { body, card, EMAIL_COLORS, footer, inner } from "./emailTheme";
+import { Body, Column, Container, Font, Head, Html, Link, Preview, Row, Section, Text } from "@react-email/components";
+import EmailLogo from "./EmailLogo";
+import { body, card, chip, content, EMAIL_COLORS, footer, header } from "./emailTheme";
 
-const DOTS = [EMAIL_COLORS.blue, EMAIL_COLORS.peach, EMAIL_COLORS.purple, EMAIL_COLORS.ink];
 type EmailShellProps = {
   preview: string;
+  label: string;
   accent: string;
   children: ReactNode;
 };
-const EmailShell: FC<EmailShellProps> = ({ preview, accent, children }) => (
+const EmailShell: FC<EmailShellProps> = ({ preview, label, accent, children }) => (
   <Html lang="cs">
-    <Head/>
+    <Head>
+      <Font
+        fontFamily="Montserrat"
+        fallbackFontFamily="Helvetica"
+        webFont={{ url: "https://fonts.gstatic.com/s/montserrat/v26/JTUSjIg1_i6t8kCHKm459Wlhyw.woff2", format: "woff2" }}
+        fontWeight={400}
+        fontStyle="normal"
+      />
+    </Head>
     <Preview>{preview}</Preview>
     <Body style={body}>
       <Container style={card}>
-        <Section style={{ height: "5px", backgroundColor: accent, lineHeight: "5px" }}>&nbsp;</Section>
-        <Section style={{ padding: "22px 28px 0" }}>
-          <table role="presentation" cellPadding={0} cellSpacing={0} style={{ borderCollapse: "collapse" }}>
-            <tbody>
-              <tr>
-                <td
-                  style={{
-                    paddingRight: "8px",
-                    fontSize: "20px",
-                    fontWeight: 700,
-                    letterSpacing: "-0.11em",
-                    color: EMAIL_COLORS.ink,
-                  }}
-                >
-                  bc
-                </td>
-                <td>
-                  <table role="presentation" cellPadding={0} cellSpacing={0} style={{ borderCollapse: "separate", borderSpacing: "3px" }}>
-                    <tbody>
-                      <tr>
-                        {DOTS.slice(0, 2).map((color) => (
-                          <td key={color} style={{ width: "5px", height: "5px", backgroundColor: color, borderRadius: "50%", fontSize: 0, lineHeight: 0 }}>&nbsp;</td>
-                        ))}
-                      </tr>
-                      <tr>
-                        {DOTS.slice(2).map((color) => (
-                          <td key={color} style={{ width: "5px", height: "5px", backgroundColor: color, borderRadius: "50%", fontSize: 0, lineHeight: 0 }}>&nbsp;</td>
-                        ))}
-                      </tr>
-                    </tbody>
-                  </table>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <Section style={{ height: "3px", backgroundColor: accent, lineHeight: "3px", fontSize: 0 }}>
+          &nbsp;
         </Section>
-        <Section style={inner}>{children}</Section>
+        <Section style={header}>
+          <Row>
+            <Column>
+              <EmailLogo />
+            </Column>
+            <Column align="right">
+              <Text style={chip}>{label}</Text>
+            </Column>
+          </Row>
+        </Section>
+        <Section style={content}>{children}</Section>
       </Container>
-      <Text style={footer}>bobcermak.cz · ahoj@bobcermak.cz</Text>
+      <Text style={footer}>
+        <Link href="https://bobcermak.cz" style={{ color: EMAIL_COLORS.text3, textDecoration: "none" }}>
+          bobcermak.cz
+        </Link>
+        {" · "}
+        Full stack developer — weby, systémy a mobilní appky
+      </Text>
     </Body>
   </Html>
 );

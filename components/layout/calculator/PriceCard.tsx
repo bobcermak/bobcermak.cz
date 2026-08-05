@@ -1,10 +1,13 @@
 "use client";
 
-import { useState, type FC, type FormEvent } from "react";
-import { ApproximateEqualsIcon, LockIcon } from "@phosphor-icons/react";
+import { useEffect, useRef, useState, type FC, type FormEvent } from "react";
+import { ApproximateEqualsIcon, CheckIcon, LockIcon, WarningIcon } from "@phosphor-icons/react";
 import Button from "@/components/buttons/Button";
+import LeadModal from "./LeadModal";
+import LeadErrorModal, { type LeadErrorKind } from "./LeadErrorModal";
 import { ACCENT_STYLES, YEARLY_PRICE } from "@/types/calculator";
 import { formatCzk, type CalculatorResult } from "@/lib/calculator";
+import { LEAD_ENDPOINT, type LeadResponse, type LeadSelection } from "@/types/lead";
 
 const EMAIL = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 const FIELD =
@@ -12,24 +15,64 @@ const FIELD =
 type PriceCardProps = {
   result: CalculatorResult;
   yearly: boolean;
+  selection: LeadSelection;
 };
-const PriceCard: FC<PriceCardProps> = ({ result, yearly }) => {
+const PriceCard: FC<PriceCardProps> = ({ result, yearly, selection }) => {
   //Hooks
   const [email, setEmail] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [gdpr, setGdpr] = useState<boolean>(false);
-  const [honeypot, setHoneypot] = useState<string>("");
+  const honeypotRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string>("");
+  const [failure, setFailure] = useState<{ kind: LeadErrorKind; message: string } | null>(null);
+  const [sending, setSending] = useState<boolean>(false);
   const [submitted, setSubmitted] = useState<boolean>(false);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [confirmationSent, setConfirmationSent] = useState<boolean>(true);
+  const openedAt = useRef<number>(0);
   const accent = ACCENT_STYLES[result.accent];
 
-  const submit = (event: FormEvent) => {
+  useEffect(() => {
+    openedAt.current = Date.now();
+  }, []);
+  const reject = (kind: LeadErrorKind, message: string) => {
+    setError(message);
+    setFailure({ kind, message });
+  };
+  const submit = async (event: FormEvent) => {
     event.preventDefault();
-    if (honeypot) return;
-    if (!EMAIL.test(email.trim())) return setError("Zadej platný e-mail.");
-    if (!gdpr) return setError("Potřebuju souhlas se zpracováním e-mailu.");
+    if (sending) return;
+    if (!EMAIL.test(email.trim())) return reject("form", "Zadejte platný e-mail.");
+    if (!gdpr) return reject("form", "Potřebuju souhlas se zpracováním e-mailu.");
     setError("");
-    setSubmitted(true);
+    setFailure(null);
+    setSending(true);
+    try {
+      const response = await fetch(LEAD_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...selection,
+          email: email.trim(),
+          name: name.trim(),
+          gdpr,
+          company: honeypotRef.current?.value ?? "",
+          elapsedMs: Date.now() - openedAt.current,
+        }),
+      });
+      const data: LeadResponse = await response.json();
+      if (!data.ok) {
+        reject("send", data.error);
+        return;
+      }
+      setConfirmationSent(data.confirmationSent);
+      setSubmitted(true);
+      setModalOpen(true);
+    } catch {
+      reject("send", "Nepodařilo se spojit se serverem. Zkontrolujte připojení a zkuste to znovu.");
+    } finally {
+      setSending(false);
+    }
   };
   return (
     <div
@@ -107,23 +150,17 @@ const PriceCard: FC<PriceCardProps> = ({ result, yearly }) => {
           </p>
           <form onSubmit={submit} className="flex flex-col gap-2.5" noValidate>
             <input
+              ref={honeypotRef}
               type="text"
-              value={honeypot}
-              onChange={(event) => setHoneypot(event.target.value)}
+              defaultValue=""
+              readOnly
               tabIndex={-1}
               autoComplete="off"
               aria-hidden="true"
+              data-lpignore="true"
+              data-1p-ignore
+              data-form-type="other"
               className="pointer-events-none absolute size-px opacity-0"
-            />
-            <input
-              type="email"
-              required
-              autoComplete="email"
-              placeholder="tvůj@email.cz"
-              aria-label="E-mail"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              className={FIELD}
             />
             <input
               type="text"
@@ -134,22 +171,75 @@ const PriceCard: FC<PriceCardProps> = ({ result, yearly }) => {
               onChange={(event) => setName(event.target.value)}
               className={FIELD}
             />
-            <label className="flex cursor-pointer items-start gap-2.5 text-[12.5px] leading-[1.45] text-text-3">
+            <input
+              type="email"
+              required
+              autoComplete="email"
+              placeholder="tvůj@email.cz"
+              aria-label="E-mail"
+              value={email}
+              onChange={(event) => {
+                setEmail(event.target.value);
+                setError("");
+              }}
+              className={FIELD}
+            />
+            <label className="group flex cursor-pointer items-start gap-2.5 text-[12.5px] leading-[1.45] text-text-3">
               <input
                 type="checkbox"
                 checked={gdpr}
-                onChange={(event) => setGdpr(event.target.checked)}
-                className="mt-0.5 size-4 flex-none accent-ink"
+                onChange={(event) => {
+                  setGdpr(event.target.checked);
+                  setError("");
+                }}
+                className="peer sr-only"
               />
-              <span>Souhlasím se zpracováním e-mailu za účelem zaslání kalkulace a kontaktu.</span>
+              <span
+                aria-hidden="true"
+                className={`mt-px grid size-[18px] flex-none place-items-center rounded-md border-2 transition-[background-color,border-color,box-shadow] duration-250 ease-[cubic-bezier(.2,.8,.25,1)] peer-focus-visible:ring-2 peer-focus-visible:ring-ink/25 ${
+                  gdpr
+                    ? "border-ink bg-ink text-white"
+                    : "border-muted-num bg-white group-hover:border-border-mid group-active:border-border-mid"
+                }`}
+              >
+                {gdpr && <CheckIcon size={11} weight="bold"/>}
+              </span>
+              <span className="transition-colors duration-250 group-hover:text-text-2 group-active:text-text-2">
+                Souhlasím se zpracováním e-mailu za účelem zaslání kalkulace a kontaktu.
+              </span>
             </label>
             {error && (
-              <p role="alert" className="text-[13px] text-accent-peach-strong">
+              <p
+                role="alert"
+                className="flex items-start gap-2 rounded-[10px] border border-accent-peach-strong/50 bg-accent-peach-strong/12 px-3 py-2.5 text-[13px] font-medium leading-[1.45] text-ink"
+              >
+                <WarningIcon
+                  size={15}
+                  weight="fill"
+                  aria-hidden="true"
+                  className="mt-px flex-none text-accent-peach-strong"
+                />
                 {error}
               </p>
             )}
-            <Button type="submit" wFull ariaLabel="Zobrazit rozpad ceny" className="mt-1">
-              Zobrazit rozpad ceny
+            <Button
+              type="submit"
+              variant="dark"
+              wFull
+              disabled={sending}
+              ariaLabel="Odeslat poptávku a zobrazit rozpad ceny"
+              className="mt-1 min-[376px]:hidden"
+            >
+              {sending ? "Odesílám…" : "Zobrazit rozpad ceny"}
+            </Button>
+            <Button
+              type="submit"
+              wFull
+              disabled={sending}
+              ariaLabel="Odeslat poptávku a zobrazit rozpad ceny"
+              className="mt-1 hidden min-[376px]:inline-flex"
+            >
+              {sending ? "Odesílám…" : "Zobrazit rozpad ceny"}
             </Button>
             <p className="text-center text-[11.5px] text-placeholder">
               Žádný spam. Pošlu ti shrnutí a ozvu se osobně.
@@ -157,6 +247,19 @@ const PriceCard: FC<PriceCardProps> = ({ result, yearly }) => {
           </form>
         </div>
       )}
+      <LeadModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        name={name}
+        email={email.trim()}
+        confirmationSent={confirmationSent}
+      />
+      <LeadErrorModal
+        open={!!failure}
+        onClose={() => setFailure(null)}
+        kind={failure?.kind ?? "send"}
+        message={failure?.message ?? ""}
+      />
     </div>
   );
 };

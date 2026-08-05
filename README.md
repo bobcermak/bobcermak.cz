@@ -1,6 +1,6 @@
 # bobcermak.cz | Portfolio — Bob Čermák
 
-![Náhled portfolia bobcermak.cz](/)
+![Náhled portfolia bobcermak.cz](/public/images/content/bobcermak-mockup.png)
 
 > 🌐 Osobní portfolio – moderní, responzivní, postavené v **Next.js**
 
@@ -76,6 +76,6 @@ Open source pod licencí **MIT** — kód si můžeš prohlédnout, učit se z n
 
 ---
 
-**Autor:** Bob Čermák 🛠️ · [bobcermak.cz](https://bobcermak.cz) · [@bobcermak](https://github.com/bobcermak) · ahoj@bobcermak.cz
+**Autor:** Bob Čermák 🛠️ · [bobcermak.cz](https://bobcermak.cz) · [@bobcermak](https://github.com/bobcermak) · bob.cermak.dev@gmail.com
 
 > ⚡ „Stavím weby a appky, které si na nic nehrajou."

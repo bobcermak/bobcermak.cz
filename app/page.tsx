@@ -1,5 +1,6 @@
-import { HeroSection, ServicesSection, FeaturedProjects, CalculatorSection, SharedApis } from "@/components";
+import { HeroSection, ServicesSection, FeaturedProjects, SharedApis, CalculatorSection, AboutSection } from "@/components";
 
+export const revalidate = 86400;
 const HomePage = () => {
   return (
     <>
@@ -8,6 +9,7 @@ const HomePage = () => {
       <FeaturedProjects/>
       <SharedApis/>
       <CalculatorSection/>
+      <AboutSection/>
     </>
   );
 };

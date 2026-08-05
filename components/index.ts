@@ -7,5 +7,6 @@ export { default as HeroSection } from "./layout/HeroSection";
 export { default as ServicesSection } from "./layout/services/ServicesSection";
 export { default as FeaturedProjects } from "./layout/projects/FeaturedProjects";
 export { default as CalculatorSection } from "./layout/calculator/CalculatorSection";
+export { default as AboutSection } from "./layout/about/AboutSection";
 export { default as SharedApis } from "./layout/apis/SharedApis";
 export { default as ReactiveBg } from "./layout/ReactiveBg";

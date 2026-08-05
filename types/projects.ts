@@ -8,6 +8,7 @@ export type Project = {
   href?: string;
   github?: string;
   fit?: "cover" | "contain";
+  accent?: string;
 };
 export const featuredLead: Project = {
   num: "01",
@@ -18,6 +19,7 @@ export const featuredLead: Project = {
   img: "/images/content/yumi-mockup.png",
   href: "https://github.com/bobcermak/Yumi-App",
   fit: "contain",
+  accent: "#C5E384",
 };
 export const featuredRest: Project[] = [
   {
@@ -29,6 +31,7 @@ export const featuredRest: Project[] = [
     img: "/images/content/bezecka-skola-mockup.png",
     href: "https://bezeckaskola.cz/",
     fit: "contain",
+    accent: "#bf311a",
   },
   {
     num: "03",
@@ -40,5 +43,6 @@ export const featuredRest: Project[] = [
     fit: "contain",
     href: "https://id-117.pslib.cloud/",
     github: "https://github.com/bobcermak/ClashOfBrynza",
+    accent: "#4795a7",
   },
 ];

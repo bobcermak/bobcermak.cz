@@ -79,7 +79,7 @@ export default function RootLayout({
               "@type": "Person",
               name: "Bob Čermák",
               url: SITE_URL,
-              email: "ahoj@bobcermak.cz",
+              email: "bob.cermak.dev@gmail.com",
               jobTitle: "Full stack developer",
               description:
                 "Full stack developer — weby s administrací, rezervační a vlastní systémy a mobilní aplikace v Next.js, React Native a Supabase.",

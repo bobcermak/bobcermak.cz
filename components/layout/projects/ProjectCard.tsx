@@ -1,17 +1,22 @@
 import ProjectImage from "./ProjectImage";
 import ProjectTag from "./ProjectTag";
 import ProjectLinks from "./ProjectLinks";
+import type { CSSProperties } from "react";
 import type { Project } from "@/types/projects";
 
 const ProjectCard = ({ project }: { project: Project }) => {
-  const { num, slug, title, desc, tags, img, href, github, fit } = project;
+  const { num, slug, title, desc, tags, img, href, github, fit, accent } = project;
   const mainHref = href ?? `/projekty/${slug}`;
   return (
     <article
       data-reveal
-      className="group relative flex flex-col stablet:flex-row overflow-hidden rounded-[15px] border border-border bg-white text-ink transition-[translate,border-color,box-shadow] duration-250 ease-[cubic-bezier(.2,.8,.25,1)] hover:-translate-y-[5px] active:-translate-y-[5px] hover:border-border-mid hover:shadow-card active:border-border-mid active:shadow-card"
+      style={{ "--accent": accent ?? "var(--color-border-mid)" } as CSSProperties}
+      className="group relative flex flex-col stablet:flex-row overflow-hidden rounded-[15px] border border-border bg-white text-ink transition-[translate,border-color,box-shadow] duration-250 ease-[cubic-bezier(.2,.8,.25,1)] hover:-translate-y-[5px] active:-translate-y-[5px] hover:border-(--accent) hover:shadow-card active:border-(--accent) active:shadow-card"
     >
-      <figure className={`relative w-full flex-none aspect-16/11 stablet:aspect-auto stablet:w-[42%] ${num === "03" ? "bg-[#4795a7]" : "bg-white"}`}>
+      <figure
+        style={{ backgroundColor: num === "02" ? "var(--color-white)" : accent ?? "var(--color-white)" }}
+        className="relative w-full flex-none aspect-16/11 stablet:aspect-auto stablet:w-[42%]"
+      >
         <ProjectImage src={img} title={title} sizes="(max-width: 640px) 92vw, 340px" fit={fit} />
       </figure>
       <div className="flex min-w-0 flex-1 flex-col px-6 py-5">
