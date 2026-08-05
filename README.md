@@ -1,4 +1,4 @@
-# bobcermak.cz | Portfolio — Bob Čermák
+# Bob Čermák | Full stack developer — weby, systémy & mobilní appky
 
 ![Náhled portfolia bobcermak.cz](/public/images/content/bobcermak-mockup.png)
 
