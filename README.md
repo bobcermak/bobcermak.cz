@@ -12,7 +12,7 @@
 
 ## O projektu
 
-Jsem **Bob Čermák**, 19, full stack developer z Prahy a Liberce — freelance a v PROCONOM. Tenhle web je moje portfolio: ukazuje, co dělám, za kolik, a na čem právě teď pracuju. Žádný korporátní žargon, žádné stockové fotky — jen věci, co si na nic nehrajou.
+Jsem **Bob Čermák**, 19, full stack developer z Prahy a Liberce — freelancer. Tenhle web je moje portfolio: ukazuje, co dělám, za kolik, a na čem právě teď pracuju. Žádný korporátní žargon, žádné stockové fotky — jen věci, co si na nic nehrajou.
 
 Web zahrnuje:
 
