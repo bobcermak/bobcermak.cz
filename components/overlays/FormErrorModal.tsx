@@ -4,8 +4,8 @@ import type { FC } from "react";
 import Modal from "./Modal";
 import Button from "@/components/buttons/Button";
 import { FALLBACK_CONTACT } from "@/types/lead";
+import type { FormErrorKind } from "@/types/formState";
 
-export type FormErrorKind = "form" | "send";
 type FormErrorModalProps = {
   open: boolean;
   onClose: () => void;

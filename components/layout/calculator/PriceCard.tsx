@@ -1,15 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState, type FC, type FormEvent } from "react";
+import { useActionState, useEffect, useRef, useState, type FC } from "react";
 import { ApproximateEqualsIcon, CheckIcon, LockIcon, WarningIcon } from "@phosphor-icons/react";
 import Button from "@/components/buttons/Button";
 import FormSuccessModal from "@/components/overlays/FormSuccessModal";
-import FormErrorModal, { type FormErrorKind } from "@/components/overlays/FormErrorModal";
+import FormErrorModal from "@/components/overlays/FormErrorModal";
+import { submitLead } from "@/lib/actions/lead";
 import { ACCENT_STYLES, YEARLY_PRICE } from "@/types/calculator";
 import { formatCzk, type CalculatorResult } from "@/lib/calculator";
-import { LEAD_ENDPOINT, type LeadResponse, type LeadSelection } from "@/types/lead";
+import { type LeadSelection } from "@/types/lead";
+import { FORM_IDLE, type FormState } from "@/types/formState";
 
-const EMAIL = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 const FIELD =
   "w-full rounded-[10px] border border-border-mid bg-white px-4 py-3 text-[15px] text-ink outline-none transition-colors duration-250 placeholder:text-placeholder focus:border-ink";
 type PriceCardProps = {
@@ -19,61 +20,28 @@ type PriceCardProps = {
 };
 const PriceCard: FC<PriceCardProps> = ({ result, yearly, selection }) => {
   //Hooks
+  const [state, formAction, sending] = useActionState(
+    submitLead.bind(null, selection),
+    FORM_IDLE
+  );
   const [email, setEmail] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [gdpr, setGdpr] = useState<boolean>(false);
-  const honeypotRef = useRef<HTMLInputElement>(null);
-  const [error, setError] = useState<string>("");
-  const [failure, setFailure] = useState<{ kind: FormErrorKind; message: string } | null>(null);
-  const [sending, setSending] = useState<boolean>(false);
-  const [submitted, setSubmitted] = useState<boolean>(false);
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [confirmationSent, setConfirmationSent] = useState<boolean>(true);
+  const [dismissedState, setDismissedState] = useState<FormState | null>(null);
   const openedAt = useRef<number>(0);
   const accent = ACCENT_STYLES[result.accent];
 
   useEffect(() => {
     openedAt.current = Date.now();
   }, []);
-  const reject = (kind: FormErrorKind, message: string) => {
-    setError(message);
-    setFailure({ kind, message });
+  const submit = (data: FormData) => {
+    data.set("elapsedMs", String(Date.now() - openedAt.current));
+    formAction(data);
   };
-  const submit = async (event: FormEvent) => {
-    event.preventDefault();
-    if (sending) return;
-    if (!EMAIL.test(email.trim())) return reject("form", "Zadejte platný e-mail.");
-    if (!gdpr) return reject("form", "Potřebuju souhlas se zpracováním e-mailu.");
-    setError("");
-    setFailure(null);
-    setSending(true);
-    try {
-      const response = await fetch(LEAD_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...selection,
-          email: email.trim(),
-          name: name.trim(),
-          gdpr,
-          company: honeypotRef.current?.value ?? "",
-          elapsedMs: Date.now() - openedAt.current,
-        }),
-      });
-      const data: LeadResponse = await response.json();
-      if (!data.ok) {
-        reject("send", data.error);
-        return;
-      }
-      setConfirmationSent(data.confirmationSent);
-      setSubmitted(true);
-      setModalOpen(true);
-    } catch {
-      reject("send", "Nepodařilo se spojit se serverem. Zkontrolujte připojení a zkuste to znovu.");
-    } finally {
-      setSending(false);
-    }
-  };
+  const clearResult = () => setDismissedState(state);
+  const shown = state !== dismissedState;
+  const submitted = state.status === "sent";
+  const failure = state.status === "failed" && shown ? state : null;
   return (
     <div
       data-reveal
@@ -148,10 +116,10 @@ const PriceCard: FC<PriceCardProps> = ({ result, yearly, selection }) => {
             <LockIcon size={16} weight="fill" aria-hidden="true" className="mt-0.5 flex-none text-text-3" />
             Detailní rozpad a shrnutí ti pošlu na e-mail.
           </p>
-          <form onSubmit={submit} className="flex flex-col gap-2.5" noValidate>
+          <form action={submit} className="flex flex-col gap-2.5" noValidate>
             <input
-              ref={honeypotRef}
               type="text"
+              name="company"
               defaultValue=""
               readOnly
               tabIndex={-1}
@@ -164,6 +132,7 @@ const PriceCard: FC<PriceCardProps> = ({ result, yearly, selection }) => {
             />
             <input
               type="text"
+              name="name"
               autoComplete="name"
               placeholder="Jméno (volitelné)"
               aria-label="Jméno"
@@ -173,6 +142,7 @@ const PriceCard: FC<PriceCardProps> = ({ result, yearly, selection }) => {
             />
             <input
               type="email"
+              name="email"
               required
               autoComplete="email"
               placeholder="tvůj@email.cz"
@@ -180,17 +150,18 @@ const PriceCard: FC<PriceCardProps> = ({ result, yearly, selection }) => {
               value={email}
               onChange={(event) => {
                 setEmail(event.target.value);
-                setError("");
+                clearResult();
               }}
               className={FIELD}
             />
             <label className="group flex cursor-pointer items-start gap-2.5 text-[12.5px] leading-[1.45] text-text-3">
               <input
                 type="checkbox"
+                name="gdpr"
                 checked={gdpr}
                 onChange={(event) => {
                   setGdpr(event.target.checked);
-                  setError("");
+                  clearResult();
                 }}
                 className="peer sr-only"
               />
@@ -208,7 +179,7 @@ const PriceCard: FC<PriceCardProps> = ({ result, yearly, selection }) => {
                 Souhlasím se zpracováním e-mailu za účelem zaslání kalkulace a kontaktu.
               </span>
             </label>
-            {error && (
+            {failure && (
               <p
                 role="alert"
                 className="flex items-start gap-2 rounded-[10px] border border-accent-peach-strong/50 bg-accent-peach-strong/12 px-3 py-2.5 text-[13px] font-medium leading-[1.45] text-ink"
@@ -219,7 +190,7 @@ const PriceCard: FC<PriceCardProps> = ({ result, yearly, selection }) => {
                   aria-hidden="true"
                   className="mt-px flex-none text-accent-peach-strong"
                 />
-                {error}
+                {failure.message}
               </p>
             )}
             <Button
@@ -248,17 +219,17 @@ const PriceCard: FC<PriceCardProps> = ({ result, yearly, selection }) => {
         </div>
       )}
       <FormSuccessModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
+        open={submitted && shown}
+        onClose={clearResult}
         name={name}
         email={email.trim()}
         what="Potvrzení se shrnutím"
-        confirmationSent={confirmationSent}
+        confirmationSent={state.status === "sent" ? state.confirmationSent : true}
       />
       <FormErrorModal
-        open={!!failure}
-        onClose={() => setFailure(null)}
-        kind={failure?.kind ?? "send"}
+        open={failure?.kind === "send"}
+        onClose={clearResult}
+        kind="send"
         message={failure?.message ?? ""}
       />
     </div>

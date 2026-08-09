@@ -1,80 +1,43 @@
 "use client";
 
-import { useEffect, useRef, useState, type FC, type FormEvent } from "react";
+import { useActionState, useEffect, useRef, useState, type FC } from "react";
 import { CheckIcon, WarningIcon } from "@phosphor-icons/react";
 import Button from "@/components/buttons/Button";
 import FormSuccessModal from "@/components/overlays/FormSuccessModal";
-import FormErrorModal, { type FormErrorKind } from "@/components/overlays/FormErrorModal";
-import { CONTACT_ENDPOINT, CONTACT_TOPICS, DEFAULT_TOPIC, MESSAGE_MAX, type ContactTopic } from "@/types/contact";
-import type { LeadResponse } from "@/types/lead";
+import FormErrorModal from "@/components/overlays/FormErrorModal";
+import { submitContact } from "@/lib/actions/contact";
+import { CONTACT_TOPICS, DEFAULT_TOPIC, MESSAGE_MAX, type ContactTopic } from "@/types/contact";
+import { FORM_IDLE, type FormState } from "@/types/formState";
 
-const EMAIL = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 const FIELD = "w-full rounded-[10px] border border-border-mid bg-white px-4 py-3 text-[15px] text-ink outline-none transition-colors duration-250 placeholder:text-placeholder focus:border-ink";
 const LABEL = "mb-1.5 block text-[13px] font-medium text-text-2";
 const ContactForm: FC = () => {
   //Hooks
+  const [state, formAction, sending] = useActionState(submitContact, FORM_IDLE);
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [topic, setTopic] = useState<ContactTopic>(DEFAULT_TOPIC);
   const [message, setMessage] = useState<string>("");
   const [gdpr, setGdpr] = useState<boolean>(false);
-  const honeypotRef = useRef<HTMLInputElement>(null);
-  const [error, setError] = useState<string>("");
-  const [failure, setFailure] = useState<{ kind: FormErrorKind; message: string } | null>(null);
-  const [sending, setSending] = useState<boolean>(false);
-  const [done, setDone] = useState<boolean>(false);
-  const [confirmationSent, setConfirmationSent] = useState<boolean>(true);
+  const [dismissedState, setDismissedState] = useState<FormState | null>(null);
   const openedAt = useRef<number>(0);
 
   useEffect(() => {
     openedAt.current = Date.now();
   }, []);
-  const reject = (kind: FormErrorKind, text: string) => {
-    setError(text);
-    setFailure({ kind, message: text });
+  const submit = (data: FormData) => {
+    data.set("elapsedMs", String(Date.now() - openedAt.current));
+    formAction(data);
   };
-  const submit = async (event: FormEvent) => {
-    event.preventDefault();
-    if (sending) return;
-    if (!EMAIL.test(email.trim())) return reject("form", "Zadejte platný e-mail.");
-    if (!message.trim()) return reject("form", "Napište prosím pár vět, s čím můžu pomoct.");
-    if (!gdpr) return reject("form", "Potřebuju souhlas se zpracováním údajů.");
-    setError("");
-    setFailure(null);
-    setSending(true);
-    try {
-      const response = await fetch(CONTACT_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: name.trim(),
-          email: email.trim(),
-          topic,
-          message: message.trim(),
-          gdpr,
-          company: honeypotRef.current?.value ?? "",
-          elapsedMs: Date.now() - openedAt.current,
-        }),
-      });
-      const data: LeadResponse = await response.json();
-      if (!data.ok) {
-        reject("send", data.error);
-        return;
-      }
-      setConfirmationSent(data.confirmationSent);
-      setDone(true);
-    } catch {
-      reject("send", "Nepodařilo se spojit se serverem. Zkontrolujte připojení a zkuste to znovu.");
-    } finally {
-      setSending(false);
-    }
-  };
+  const clearResult = () => setDismissedState(state);
+  const shown = state !== dismissedState;
+  const failure = state.status === "failed" && shown ? state : null;
   return (
     <>
-      <form onSubmit={submit} className="flex flex-col gap-4" noValidate>
+      <form action={submit} className="flex flex-col gap-4" noValidate>
         <input
-          ref={honeypotRef}
           type="text"
+          name="company"
           defaultValue=""
           readOnly
           tabIndex={-1}
@@ -92,6 +55,7 @@ const ContactForm: FC = () => {
             </label>
             <input
               id="contact-name"
+              name="name"
               type="text"
               autoComplete="name"
               placeholder="Jak ti mám říkat?"
@@ -106,6 +70,7 @@ const ContactForm: FC = () => {
             </label>
             <input
               id="contact-email"
+              name="email"
               type="email"
               required
               autoComplete="email"
@@ -113,7 +78,7 @@ const ContactForm: FC = () => {
               value={email}
               onChange={(event) => {
                 setEmail(event.target.value);
-                setError("");
+                clearResult();
               }}
               className={FIELD}
             />
@@ -121,6 +86,7 @@ const ContactForm: FC = () => {
         </div>
         <fieldset className="min-w-0">
           <legend className={LABEL}>O co jde?</legend>
+          <input type="hidden" name="topic" value={topic}/>
           <div className="flex flex-wrap gap-2">
             {CONTACT_TOPICS.map((item) => {
               const on = item === topic;
@@ -149,6 +115,7 @@ const ContactForm: FC = () => {
           </label>
           <textarea
             id="contact-message"
+            name="message"
             required
             rows={5}
             maxLength={MESSAGE_MAX}
@@ -156,7 +123,7 @@ const ContactForm: FC = () => {
             value={message}
             onChange={(event) => {
               setMessage(event.target.value);
-              setError("");
+              clearResult();
             }}
             className={`${FIELD} min-h-32 resize-y`}
           />
@@ -164,10 +131,11 @@ const ContactForm: FC = () => {
         <label className="group flex cursor-pointer items-start gap-2.5 text-[12.5px] leading-[1.45] text-text-3">
           <input
             type="checkbox"
+            name="gdpr"
             checked={gdpr}
             onChange={(event) => {
               setGdpr(event.target.checked);
-              setError("");
+              clearResult();
             }}
             className="peer sr-only"
           />
@@ -185,13 +153,13 @@ const ContactForm: FC = () => {
             Souhlasím se zpracováním kontaktních údajů za účelem odpovědi.
           </span>
         </label>
-        {error && (
+        {failure && (
           <p
             role="alert"
             className="flex items-start gap-2 rounded-[10px] border border-accent-peach-strong/50 bg-accent-peach-strong/12 px-3 py-2.5 text-[13px] font-medium leading-[1.45] text-ink"
           >
             <WarningIcon size={15} weight="fill" aria-hidden="true" className="mt-px flex-none text-accent-peach-strong"/>
-            {error}
+            {failure.message}
           </p>
         )}
         <Button type="submit" wFull disabled={sending} ariaLabel="Odeslat zprávu" className="mt-1">
@@ -199,17 +167,17 @@ const ContactForm: FC = () => {
         </Button>
       </form>
       <FormSuccessModal
-        open={done}
-        onClose={() => setDone(false)}
+        open={state.status === "sent" && shown}
+        onClose={clearResult}
         name={name}
         email={email.trim()}
         what="Kopie zprávy"
-        confirmationSent={confirmationSent}
+        confirmationSent={state.status === "sent" ? state.confirmationSent : true}
       />
       <FormErrorModal
-        open={!!failure}
-        onClose={() => setFailure(null)}
-        kind={failure?.kind ?? "send"}
+        open={failure?.kind === "send"}
+        onClose={clearResult}
+        kind="send"
         message={failure?.message ?? ""}
       />
     </>

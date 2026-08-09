@@ -1,5 +1,4 @@
 export const CONTACT_SECTION_ID = "napis-mi";
-export const CONTACT_ENDPOINT = "/api/contact";
 export const CONTACT_TOPICS = [
   "Spolupráce",
   "Projekt na míru",
@@ -10,15 +9,6 @@ export const CONTACT_TOPICS = [
 export type ContactTopic = (typeof CONTACT_TOPICS)[number];
 export const DEFAULT_TOPIC: ContactTopic = "Spolupráce";
 export const MESSAGE_MAX = 2000;
-export type ContactPayload = {
-  name: string;
-  email: string;
-  topic: string;
-  message: string;
-  gdpr: boolean;
-  company: string;
-  elapsedMs: number;
-};
 export const CONTACT_EMAIL = "bob.cermak.dev@gmail.com";
 export const CONTACT_PHONE = "+420 774 377 630";
 export const CONTACT_PHONE_HREF = `tel:${CONTACT_PHONE.replace(/\s/g, "")}`;

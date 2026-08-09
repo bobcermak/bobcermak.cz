@@ -7,17 +7,6 @@ export type LeadSelection = {
   rush: boolean;
   yearly: boolean;
 };
-export type LeadPayload = LeadSelection & {
-  email: string;
-  name: string;
-  gdpr: boolean;
-  company: string;
-  elapsedMs: number;
-};
-export type LeadResponse =
-  | { ok: true; confirmationSent: boolean }
-  | { ok: false; error: string };
-export const LEAD_ENDPOINT = "/api/lead";
 export const FALLBACK_CONTACT = "bob.cermak.dev@gmail.com";
 export const REPLY_WITHIN_HOURS = 24;
 export const MIN_FILL_MS = 800;
