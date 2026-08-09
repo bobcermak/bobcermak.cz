@@ -8,8 +8,8 @@ const ContactSection = () => {
     <RevealSection
       id={CONTACT_SECTION_ID}
       aria-label="Spolupráce a dotazy"
-      className="w-full pt-5 pb-10"
-      drift={{ distance: 120, rotate: 1.5, scale: 0.96, duration: 1.35, direction: "right" }}
+      className="w-full pt-5"
+      drift={{ distance: 120, rotate: 1.5, scale: 0.96, direction: "right" }}
     >
       <div
         data-drift

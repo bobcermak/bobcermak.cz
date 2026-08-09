@@ -2,14 +2,6 @@ import type { Metadata } from "next";
 import LegalPage from "@/components/layout/legal/LegalPage";
 import { CONTACT_EMAIL } from "@/types/contact";
 
-/*
- * POZOR — než tohle půjde do produkce, projdi si to a doplň:
- *   • IČO a sídlo (fakturační údaje)
- *   • jestli jsi plátce DPH
- *   • splatnost faktur a případnou zálohu
- *   • kdy přechází autorská práva ke kódu na klienta
- * Text níže popisuje jen to, co web sám slibuje. Není to právní posudek.
- */
 export const metadata: Metadata = {
   title: "Obchodní podmínky",
   description: "Jak probíhá spolupráce, co znamená cena z kalkulačky a co platí u zakázek.",
@@ -22,20 +14,18 @@ const TermsPage = () => (
       Tenhle text popisuje, jak u mě probíhá spolupráce. Nenahrazuje smlouvu — tu na každou
       zakázku uzavíráme zvlášť a má přednost před tím, co je tady.
     </p>
-
     <h2>Kdo je dodavatel</h2>
     <p>
-      Bob Čermák, kontakt <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. Fakturační
-      údaje najdete na každé faktuře.
+      Bohuslav Čermák, kontakt <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. Fakturační
+      údaje najdete na každé faktuře. <strong>Nejsem plátce DPH</strong> — všechny ceny, které
+      ode mě dostanete, jsou konečné a DPH se k nim nepřipočítává.
     </p>
-
     <h2>Cena z kalkulačky je orientační</h2>
     <p>
       Částka, kterou vám kalkulačka spočítá, je odhad — ne nabídka a ne závazek. Slouží k tomu,
       abyste věděli, v jakém řádu se projekt pohybuje. Závaznou cenu dostanete až po tom, co si
       projdeme zadání.
     </p>
-
     <h2>Jak spolupráce běží</h2>
     <ul>
       <li>Napíšete přes formulář nebo na e-mail. Ozvu se do 24 hodin.</li>
@@ -44,26 +34,48 @@ const TermsPage = () => (
       <li>Po odsouhlasení se pustím do práce a průběžně vám ukazuju, jak to roste.</li>
       <li>Předání, vaše připomínky, nasazení.</li>
     </ul>
-
     <h2>Poptávka nic nezavazuje</h2>
     <p>
       Odesláním formuláře si nic neobjednáváte a k ničemu se nezavazujete. Závazek vzniká teprve
       odsouhlasením konkrétní nabídky.
     </p>
-
     <h2>Změny v zadání</h2>
     <p>
       Když se v průběhu rozsah rozšíří nad rámec odsouhlasené nabídky, domluvíme se na ceně a
       termínu dřív, než na tom začnu dělat. Nikdy nic nepřifakturuju bez předchozí domluvy.
     </p>
-
+    <h2>Placení a záloha</h2>
+    <p>
+      Ceny jsou konečné, nejsem plátce DPH. Faktury jsou splatné do dvou týdnů od vystavení. Jestli
+      se platí záloha a jak velká, se domlouváme u každé zakázky zvlášť — u malých projektů
+      obvykle žádná není, u větších se na ní dohodneme předem a vždycky ji máte v nabídce,
+      kterou odsouhlasíte. Nikdy vás nepřekvapí až na faktuře.
+    </p>
+    <h2>Práva ke kódu</h2>
+    <p>
+      Autorská práva ke zdrojovému kódu zůstávají mně. Vy dostáváte právo výsledek používat pro
+      vlastní provoz — bez omezení na čas a i po skončení spolupráce. Kód není váš k dalšímu
+      prodeji ani k šíření dál.
+    </p>
+    <p>
+      Úpravy, rozšíření a zásahy do kódu dělám já. Není to schválnost — je to jediný způsob, jak
+      vám můžu ručit za to, že věci fungují, a opravovat chyby zdarma. Zásah někoho jiného do
+      kódu tuhle záruku ruší.
+    </p>
+    <p>
+      Části řešení, které nejsou šité na míru přímo vám (moje komponenty, pomocné knihovny,
+      obecné postupy), používám dál i na jiných projektech.
+    </p>
+    <p>
+      Potřebujete-li kód vlastnit celý — třeba kvůli internímu týmu nebo prodeji firmy — jde to
+      domluvit jako samostatný převod práv za příplatek. Napište mi a probereme to.
+    </p>
     <h2>Provoz a údržba</h2>
     <p>
       Hosting, doména a služby třetích stran (databáze, e-mailová brána, platební brána) běží na
       účet klienta, pokud se nedomluvíme jinak. Roční správu si můžete přiobjednat — obsahuje
       hosting, e-mailovou doménu, opravy a aktualizace.
     </p>
-
     <h2>Reklamace</h2>
     <p>
       Když po předání narazíte na chybu proti odsouhlasenému zadání, opravím ji zdarma. Napište

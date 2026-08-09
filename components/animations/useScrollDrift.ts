@@ -12,17 +12,21 @@ export type ScrollDriftOptions = {
   distance?: number;
   rotate?: number;
   scale?: number;
-  hold?: number;
   scrub?: number;
+  start?: string;
+  end?: string;
   direction?: "left" | "right";
+  maxShift?: number;
 };
 export const useScrollDrift = <T extends HTMLElement>({
   distance = 220,
   rotate = 3,
   scale = 0.94,
-  hold = 0.6,
-  scrub = 1.5,
+  scrub = 0.8,
+  start = "top bottom",
+  end = "top 20%",
   direction = "left",
+  maxShift = 0.12,
 }: ScrollDriftOptions = {}) => {
   const ref = useRef<T>(null);
   useGSAP(
@@ -33,14 +37,15 @@ export const useScrollDrift = <T extends HTMLElement>({
       const side = direction === "right" ? 1 : -1;
       el.querySelectorAll<HTMLElement>("[data-drift]").forEach((target) => {
         const factor = Number(target.dataset.drift) || 1;
-        const travel = distance * factor * side;
-        const tilt = rotate * factor * side;
+        const fit = () => Math.min(1, (window.innerWidth * maxShift) / (distance * factor));
+        const travel = () => distance * factor * side * fit();
+        const tilt = () => rotate * factor * side * fit();
         const items = target.querySelectorAll<HTMLElement>("[data-drift-item]");
         const timeline = gsap.timeline({
           scrollTrigger: {
             trigger: el,
-            start: "top bottom",
-            end: "bottom top",
+            start,
+            end,
             scrub,
             invalidateOnRefresh: true,
           },
@@ -58,19 +63,9 @@ export const useScrollDrift = <T extends HTMLElement>({
             "<0.4"
           );
         }
-        timeline
-          .to(target, { duration: hold })
-          .to(target, {
-            x: -travel,
-            rotate: -tilt,
-            scale,
-            opacity: 0,
-            ease: "none",
-            duration: 1,
-          });
       });
     },
-    { scope: ref, dependencies: [distance, rotate, scale, hold, scrub, direction] }
+    { scope: ref, dependencies: [distance, rotate, scale, scrub, start, end, direction, maxShift] }
   );
   return ref;
 };

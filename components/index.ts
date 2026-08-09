@@ -13,3 +13,4 @@ export { default as SharedApis } from "./layout/apis/SharedApis";
 export { default as ReactiveBg } from "./layout/ReactiveBg";
 export { default as Footer } from "./layout/Footer";
 export { default as PoweredBy } from "./layout/PoweredBy";
+export { default as PromoPopup } from "./overlays/PromoPopup";

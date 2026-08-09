@@ -11,7 +11,7 @@ const AboutSection = () => {
       id={ABOUT_SECTION_ID}
       aria-label="O mně"
       className="w-full py-15"
-      drift={{ distance: 160, rotate: 3.5, duration: 1.35, direction: "left" }}
+      drift={{ distance: 160, rotate: 3.5, direction: "left" }}
     >
       <div className="mx-auto grid w-container grid-cols-1 items-center gap-8 stablet:grid-cols-[200px_minmax(0,1fr)] stablet:gap-11 laptop:grid-cols-[240px_minmax(0,1fr)] desktop:w-section">
         <header

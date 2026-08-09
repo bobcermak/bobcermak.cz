@@ -11,7 +11,7 @@ const SOCIALS = [
 ];
 const MUTED_LINK = "text-text-3 transition-colors duration-250 hover:text-ink active:text-ink";
 const Footer = () => (
-  <footer id="kontakt" className="mt-24 border-t border-border bg-bg-soft">
+  <footer id="kontakt" className="mt-15 tablet:mt-20 border-t border-border bg-bg-soft">
     <div className="mx-auto w-container max-w-[1400px]">
       <div className="flex flex-col gap-10 py-14 slaptop:flex-row slaptop:items-start slaptop:justify-between slaptop:py-16">
         <div className="min-w-0">
@@ -69,7 +69,7 @@ const Footer = () => (
         </Link>
       </div>
       <div className="flex justify-center border-t border-border py-5">
-        <PoweredBy powered="powered" firstName="Bob" lastName="Čermák" link="/"/>
+        <PoweredBy powered="powered" firstName="Bob" lastName="Čermák" link="#hero"/>
       </div>
     </div>
   </footer>

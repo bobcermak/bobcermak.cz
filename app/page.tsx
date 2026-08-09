@@ -1,4 +1,4 @@
-import { HeroSection, ServicesSection, FeaturedProjects, SharedApis, CalculatorSection, AboutSection, ContactSection } from "@/components";
+import { HeroSection, ServicesSection, FeaturedProjects, SharedApis, CalculatorSection, AboutSection, ContactSection, PromoPopup } from "@/components";
 
 export const revalidate = 86400;
 const HomePage = () => {
@@ -11,6 +11,7 @@ const HomePage = () => {
       <CalculatorSection/>
       <AboutSection/>
       <ContactSection/>
+      <PromoPopup/>
     </>
   );
 };

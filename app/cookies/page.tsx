@@ -15,13 +15,11 @@ const CookiesPage = () => (
       cookies, žádná analytika, žádné pixely reklamních sítí. Nemusíte tedy nic odsouhlasit a
       nenajdete tu ani otravnou lištu se souhlasem.
     </p>
-
     <h2>Proč tu žádná lišta není</h2>
     <p>
       Souhlas se vyžaduje u cookies, které nejsou nezbytné pro provoz webu — typicky u měření
       návštěvnosti a reklamy. Nic z toho tu neběží, takže není s čím souhlasit.
     </p>
-
     <h2>Co se přesto může uložit</h2>
     <ul>
       <li>
@@ -33,7 +31,6 @@ const CookiesPage = () => (
         hosting při každém načtení stránky. Bez toho by web nešel doručit.
       </li>
     </ul>
-
     <h2>Kdyby se to změnilo</h2>
     <p>
       Až by na webu přibylo měření návštěvnosti, přibude s ním i lišta se souhlasem a tahle

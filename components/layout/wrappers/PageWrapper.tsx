@@ -23,14 +23,13 @@ export const PageWrapper = ({ children }: { children: React.ReactNode }) => {
     });
     setLenis(lenis);
     lenis.on("scroll", ScrollTrigger.update);
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
-    });
+    const raf = (time: number) => lenis.raf(time * 1000);
+    gsap.ticker.add(raf);
     gsap.ticker.lagSmoothing(0);
     const refresh = () => ScrollTrigger.refresh();
     refresh();
-    setTimeout(refresh, 500);
-    setTimeout(refresh, 2000);
+    const settle = window.setTimeout(refresh, 500);
+    const late = window.setTimeout(refresh, 2000);
     window.addEventListener("load", refresh);
     const handleLinkClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -54,9 +53,12 @@ export const PageWrapper = ({ children }: { children: React.ReactNode }) => {
     document.addEventListener("click", handleLinkClick);
     return () => {
       document.removeEventListener("click", handleLinkClick);
+      window.removeEventListener("load", refresh);
+      window.clearTimeout(settle);
+      window.clearTimeout(late);
       setLenis(null);
       lenis.destroy();
-      gsap.ticker.remove(lenis.raf);
+      gsap.ticker.remove(raf);
     };
   }, { scope: wrapperRef, dependencies: [pathname] });
   return (
