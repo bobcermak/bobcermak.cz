@@ -13,15 +13,13 @@ type CalculatorPanelProps = {
   types: CalculatorSlot<CalculatorType>[];
   extras: CalculatorSlot[];
   rushContent: ReactNode;
-  yearlyContent: ReactNode;
 };
-const CalculatorPanel: FC<CalculatorPanelProps> = ({ types, extras, rushContent, yearlyContent }) => {
+const CalculatorPanel: FC<CalculatorPanelProps> = ({ types, extras, rushContent }) => {
   //Hooks
   const [type, setType] = useState<CalculatorType>(DEFAULT_TYPE);
   const [pages, setPages] = useState<number>(PAGES_DEFAULT);
   const [picked, setPicked] = useState<Record<string, boolean>>({});
   const [rush, setRush] = useState<boolean>(false);
-  const [yearly, setYearly] = useState<boolean>(false);
 
   useEffect(() => {
     const onSelect = (event: Event) => {
@@ -43,9 +41,8 @@ const CalculatorPanel: FC<CalculatorPanelProps> = ({ types, extras, rushContent,
         pages,
         extras: pickedExtras,
         rush,
-        yearly,
       }),
-    [type, pages, pickedExtras, rush, yearly]
+    [type, pages, pickedExtras, rush]
   );
   return (
     <div className="grid grid-cols-1 items-start gap-8 mlaptop:grid-cols-[minmax(0,1fr)_minmax(0,460px)] mlaptop:gap-10 desktop:grid-cols-[minmax(0,1fr)_minmax(0,560px)]">
@@ -78,21 +75,14 @@ const CalculatorPanel: FC<CalculatorPanelProps> = ({ types, extras, rushContent,
               </OptionTile>
             ))}
           </div>
-          <div className="mt-3 flex flex-col gap-3">
+          <div className="mt-3">
             <OptionTile on={rush} onToggle={() => setRush((value) => !value)}>
               {rushContent}
-            </OptionTile>
-            <OptionTile on={yearly} onToggle={() => setYearly((value) => !value)}>
-              {yearlyContent}
             </OptionTile>
           </div>
         </CalculatorStep>
       </div>
-      <PriceCard
-        result={result}
-        yearly={yearly}
-        selection={{ type, pages, extras: pickedIds, rush, yearly }}
-      />
+      <PriceCard result={result} selection={{ type, pages, extras: pickedIds, rush }}/>
     </div>
   );
 };

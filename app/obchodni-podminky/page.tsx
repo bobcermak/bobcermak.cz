@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import LegalPage from "@/components/layout/legal/LegalPage";
+import { formatCzk } from "@/lib/calculator";
 import { CONTACT_EMAIL } from "@/types/contact";
+import { YEARLY_PRICE } from "@/types/calculator";
 
 export const metadata: Metadata = {
   title: "Obchodní podmínky",
@@ -72,9 +74,23 @@ const TermsPage = () => (
     </p>
     <h2>Provoz a údržba</h2>
     <p>
-      Hosting, doména a služby třetích stran (databáze, e-mailová brána, platební brána) běží na
-      účet klienta, pokud se nedomluvíme jinak. Roční správu si můžete přiobjednat — obsahuje
-      hosting, e-mailovou doménu, opravy a aktualizace.
+      Roční správa je součástí každé zakázky, není to volitelný doplněk. Stojí{" "}
+      {formatCzk(YEARLY_PRICE)} Kč/rok, běží od předání a obsahuje hosting, e-mailovou doménu,
+      opravy a aktualizace. Cena z kalkulačky ji už započítanou má. Fakturuje se rok dopředu.
+    </p>
+    <p>
+      Když platba za další rok nedorazí, ozvu se vám a upozorním na to. Od té výzvy máte 14 dnů na
+      doplacení. Teprve když ani potom platba nedorazí a nedomluvíme se jinak, web přestane běžet.
+      Nikdy nic nevypínám bez předchozího upozornění.
+    </p>
+    <p>
+      Po vypnutí držím zálohu dat 12 měsíců pro případ, že se domluvíme na obnovení — pak ji mažu.
+      Export dat vám na vyžádání pošlu kdykoliv.
+    </p>
+    <p>
+      Placené služby třetích stran nad rámec toho (platební brána, externí API, placené licence)
+      jdou na účet klienta, pokud se nedomluvíme jinak. Vždycky vám dopředu řeknu, co to bude
+      obnášet.
     </p>
     <h2>Reklamace</h2>
     <p>

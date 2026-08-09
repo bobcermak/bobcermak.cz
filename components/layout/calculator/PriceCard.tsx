@@ -15,10 +15,9 @@ const FIELD =
   "w-full rounded-[10px] border border-border-mid bg-white px-4 py-3 text-[15px] text-ink outline-none transition-colors duration-250 placeholder:text-placeholder focus:border-ink";
 type PriceCardProps = {
   result: CalculatorResult;
-  yearly: boolean;
   selection: LeadSelection;
 };
-const PriceCard: FC<PriceCardProps> = ({ result, yearly, selection }) => {
+const PriceCard: FC<PriceCardProps> = ({ result, selection }) => {
   //Hooks
   const [state, formAction, sending] = useActionState(
     submitLead.bind(null, selection),
@@ -78,7 +77,7 @@ const PriceCard: FC<PriceCardProps> = ({ result, yearly, selection }) => {
         {result.rangeLabel}
       </p>
       <p className="mt-2.5 text-xs text-text-3">
-        {yearly ? `+ ${formatCzk(YEARLY_PRICE)} Kč / rok za správu` : "jednorázová realizace · správa volitelně"}
+        jednorázově · + {formatCzk(YEARLY_PRICE)} Kč / rok za správu
       </p>
       {result.showCompare && (
         <p className="mt-2 flex items-center gap-1.5 text-[12.5px] font-semibold text-text-2">

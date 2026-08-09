@@ -40,12 +40,12 @@ const CalculatorSection = () => {
             content: <OptionContent label={extra.label} sub={`+${formatCzk(extra.price)} Kč`} emphasizeSub/>,
           }))}
           rushContent={<OptionContent label={RUSH_LABEL} sub={RUSH_SUB}/>}
-          yearlyContent={
-            <OptionContent label={YEARLY_LABEL} sub={`+${formatCzk(YEARLY_PRICE)} Kč/rok — ${YEARLY_NOTE}`}/>
-          }
         />
-        <p data-reveal className="mt-8 text-[12.5px] text-text-3">
+        <p data-reveal className="mt-8 text-[12.5px] leading-[1.6] text-text-3">
           * Statický web zdarma a cena mobilní aplikace se odvíjí od rozsahu — ozvi se a probereme to.
+          <br/>
+          {YEARLY_LABEL} {formatCzk(YEARLY_PRICE)} Kč/rok ({YEARLY_NOTE}) běží ke každé zakázce a je
+          v ceně už započítaná.
         </p>
       </div>
     </RevealSection>

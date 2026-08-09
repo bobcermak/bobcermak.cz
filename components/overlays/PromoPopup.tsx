@@ -6,7 +6,6 @@ import { ArrowRightIcon, SealPercentIcon, XIcon } from "@phosphor-icons/react";
 import { CALCULATOR_SECTION_ID } from "@/lib/calculator";
 import { PROMO_CTA, PROMO_DELAY, PROMO_EYEBROW, PROMO_LEAD, PROMO_STORAGE_KEY, PROMO_TITLE_AFTER, PROMO_TITLE_BEFORE, PROMO_TITLE_HIGHLIGHT,} from "@/types/promo";
 
-//sessionStorage umí házet (privátní režim, blokované cookies) — popup kvůli tomu nesmí spadnout.
 const wasDismissed = () => {
   try {
     return sessionStorage.getItem(PROMO_STORAGE_KEY) === "1";
@@ -18,12 +17,9 @@ const rememberDismissed = () => {
   try {
     sessionStorage.setItem(PROMO_STORAGE_KEY, "1");
   } catch {
-    //Bez úložiště se popup ukáže znovu — lepší než rozbitý klik na křížek.
   }
 };
-
 type PromoPopupProps = {
-  /** Prodleva před vyjetím v ms. */
   delay?: number;
 };
 const PromoPopup: FC<PromoPopupProps> = ({ delay = PROMO_DELAY }) => {
@@ -35,7 +31,6 @@ const PromoPopup: FC<PromoPopupProps> = ({ delay = PROMO_DELAY }) => {
     const timer = window.setTimeout(() => setOpen(true), delay);
     return () => window.clearTimeout(timer);
   }, [delay]);
-
   const dismiss = () => {
     rememberDismissed();
     setOpen(false);
@@ -47,7 +42,6 @@ const PromoPopup: FC<PromoPopupProps> = ({ delay = PROMO_DELAY }) => {
       className="fixed bottom-4 right-4 z-45 w-[calc(100%-2rem)] max-w-95 xphone:bottom-6 xphone:right-6 motion-safe:animate-[promoIn_0.6s_cubic-bezier(.22,1.15,.36,1)_both]"
     >
       <div className="relative overflow-hidden rounded-[18px] border border-border bg-white/95 shadow-[0_1px_3px_rgba(17,17,17,0.04),0_10px_34px_rgba(111,134,214,0.22)] backdrop-blur-md">
-        {/*Accent proužek nahoře — stejný vzor jako karty projektů.*/}
         <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1 bg-accent-blue-strong"/>
         <div className="flex gap-3.5 p-4 pt-5 xphone:gap-4 xphone:p-5 xphone:pt-6">
           <span

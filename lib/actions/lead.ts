@@ -45,7 +45,6 @@ export const submitLead = async (
     ),
     extras: calculatorExtras.filter((extra) => picked.includes(extra.id)),
     rush: selection.rush === true,
-    yearly: selection.yearly === true,
   };
   if (!EMAIL.test(lead.email)) return formFailed("form", "Zadejte platný e-mail.");
   if (data.get("gdpr") !== "on") {
@@ -62,7 +61,7 @@ export const submitLead = async (
     pages: lead.pages,
     extras: lead.extras.map((extra) => extra.id),
     rush: lead.rush,
-    yearly: lead.yearly,
+    yearly: true,
     priceLabel: result.rangeLabel,
     priceLow: lead.type.base + lead.extras.reduce((sum, extra) => sum + extra.price, 0),
   });
