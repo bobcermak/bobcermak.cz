@@ -4,6 +4,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { routeKey, wasVisited } from "@/lib/visitedRoutes";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -33,7 +34,14 @@ export const useScrollDrift = <T extends HTMLElement>({
     () => {
       const el = ref.current;
       if (!el) return;
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+        wasVisited(routeKey())
+      ) {
+        gsap.set(el.querySelectorAll("[data-drift]"), { x: 0, rotate: 0, scale: 1, opacity: 1 });
+        gsap.set(el.querySelectorAll("[data-drift-item]"), { y: 0, opacity: 1 });
+        return;
+      }
       const side = direction === "right" ? 1 : -1;
       el.querySelectorAll<HTMLElement>("[data-drift]").forEach((target) => {
         const factor = Number(target.dataset.drift) || 1;

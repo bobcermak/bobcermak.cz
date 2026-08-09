@@ -10,9 +10,10 @@ type ModalProps = {
   onClose: () => void;
   labelledBy: string;
   accentClass: string;
+  wide?: boolean;
   children: ReactNode;
 };
-const Modal: FC<ModalProps> = ({ open, onClose, labelledBy, accentClass, children }) => {
+const Modal: FC<ModalProps> = ({ open, onClose, labelledBy, accentClass, wide = false, children }) => {
   //Hooks
   const dialogRef = useRef<HTMLDivElement>(null);
   const restoreRef = useRef<HTMLElement | null>(null);
@@ -49,7 +50,9 @@ const Modal: FC<ModalProps> = ({ open, onClose, labelledBy, accentClass, childre
         aria-labelledby={labelledBy}
         tabIndex={-1}
         onClick={(event) => event.stopPropagation()}
-        className="relative w-full max-w-105 overflow-hidden rounded-[26px] border border-white/70 bg-white p-7 text-center shadow-nav outline-none xphone:p-9 motion-safe:animate-[floatUp_0.4s_cubic-bezier(.2,.8,.25,1)_both]"
+        className={`relative w-full overflow-hidden rounded-[26px] border border-white/70 bg-white p-7 text-center shadow-nav outline-none xphone:p-9 motion-safe:animate-[floatUp_0.4s_cubic-bezier(.2,.8,.25,1)_both] ${
+          wide ? "my-8 max-w-3xl" : "max-w-105"
+        }`}
       >
         <span aria-hidden="true" className={`absolute inset-x-0 top-0 h-1 ${accentClass}`}/>
         <button

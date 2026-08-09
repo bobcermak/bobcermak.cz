@@ -3,8 +3,8 @@
 import { useEffect, useState, type FC } from "react";
 import Link from "next/link";
 import { ArrowRightIcon, SealPercentIcon, XIcon } from "@phosphor-icons/react";
-import { CALCULATOR_SECTION_ID } from "@/lib/calculator";
-import { PROMO_CTA, PROMO_DELAY, PROMO_EYEBROW, PROMO_LEAD, PROMO_STORAGE_KEY, PROMO_TITLE_AFTER, PROMO_TITLE_BEFORE, PROMO_TITLE_HIGHLIGHT,} from "@/types/promo";
+import { CONTACT_SECTION_ID } from "@/types/contact";
+import { PROMO_CTA, PROMO_DELAY, PROMO_EYEBROW, PROMO_LEAD, PROMO_STORAGE_KEY, PROMO_TITLE_AFTER, PROMO_TITLE_BEFORE, PROMO_TITLE_HIGHLIGHT, promoHref } from "@/types/promo";
 
 const wasDismissed = () => {
   try {
@@ -63,7 +63,7 @@ const PromoPopup: FC<PromoPopupProps> = ({ delay = PROMO_DELAY }) => {
             </p>
             <p className="mb-3 text-[12.5px] leading-[1.45] text-text-3">{PROMO_LEAD}</p>
             <Link
-              href={`#${CALCULATOR_SECTION_ID}`}
+              href={promoHref(CONTACT_SECTION_ID)}
               onClick={dismiss}
               className="group inline-flex items-center gap-1.5 text-[13px] font-medium text-text-2 transition-colors duration-250 hover:text-ink"
             >

@@ -5,15 +5,17 @@ import PriceBreakdown from "./PriceBreakdown";
 import { button, divider, EMAIL_COLORS, eyebrow, heading, link, paragraph, price, priceBox, small } from "./emailTheme";
 import type { CalculatorResult } from "@/lib/calculator";
 import { REPLY_WITHIN_HOURS } from "@/types/lead";
+import { PROMO_CLAIM_LABEL, PROMO_CLAIM_NOTE } from "@/types/promo";
 
 type LeadCustomerEmailProps = {
   name: string;
   result: CalculatorResult;
   typeLabel: string;
+  promo?: boolean;
   accent: string;
   replyTo: string;
 };
-const LeadCustomerEmail: FC<LeadCustomerEmailProps> = ({ name, result, typeLabel, accent, replyTo }) => (
+const LeadCustomerEmail: FC<LeadCustomerEmailProps> = ({ name, result, typeLabel, promo, accent, replyTo }) => (
   <EmailShell
     preview={`${result.rangeLabel} — ozvu se do ${REPLY_WITHIN_HOURS} hodin.`}
     label="Potvrzení ceny"
@@ -31,6 +33,14 @@ const LeadCustomerEmail: FC<LeadCustomerEmailProps> = ({ name, result, typeLabel
         Orientační odhad — přesnou cenu doladíme podle detailů.
       </Text>
     </Section>
+    {promo && (
+      <Section style={{ ...priceBox, borderColor: EMAIL_COLORS.blueStrong }}>
+        <Text style={eyebrow}>{PROMO_CLAIM_LABEL}</Text>
+        <Text style={{ ...paragraph, margin: "10px 0 0", color: EMAIL_COLORS.ink }}>
+          {PROMO_CLAIM_NOTE}
+        </Text>
+      </Section>
+    )}
     <Text style={{ ...eyebrow, margin: "0 0 6px" }}>Co se do ceny počítá</Text>
     <PriceBreakdown rows={result.rows} />
     <Hr style={divider} />

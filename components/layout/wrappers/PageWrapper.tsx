@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
 import { usePathname } from "next/navigation";
 import { setLenis } from "@/lib/lenis";
+import { markVisited, routeKey, wasVisited } from "@/lib/visitedRoutes";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -51,11 +52,27 @@ export const PageWrapper = ({ children }: { children: React.ReactNode }) => {
       }
     };
     document.addEventListener("click", handleLinkClick);
+    const hash = window.location.hash.slice(1);
+    const anchor = window.setTimeout(() => {
+      const targetElem = hash ? document.getElementById(hash) : null;
+      if (targetElem) lenis.scrollTo(targetElem, { offset: -80, duration: 1.2 });
+    }, 120);
+    const page = wrapperRef.current;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (page && !reduced && wasVisited(routeKey()) === false) {
+      gsap.fromTo(
+        page,
+        { opacity: 0, x: 48, scale: 0.985 },
+        { opacity: 1, x: 0, scale: 1, duration: 0.55, ease: "power3.out", clearProps: "transform" }
+      );
+    }
     return () => {
+      markVisited(routeKey());
       document.removeEventListener("click", handleLinkClick);
       window.removeEventListener("load", refresh);
       window.clearTimeout(settle);
       window.clearTimeout(late);
+      window.clearTimeout(anchor);
       setLenis(null);
       lenis.destroy();
       gsap.ticker.remove(raf);

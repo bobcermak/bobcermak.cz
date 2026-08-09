@@ -9,8 +9,10 @@ export type ContactEmailArgs = {
   email: string;
   topic: string;
   message: string;
+  /** Přišel z promo popupu a uplatňuje slevu. */
+  promo?: boolean;
 };
-export const sendContactEmail = async ({ name, email, topic, message }: ContactEmailArgs) => {
+export const sendContactEmail = async ({ name, email, topic, message, promo }: ContactEmailArgs) => {
   const resend = getResend();
   const owner = ownerEmail();
   if (!resend || !owner) {
@@ -25,9 +27,9 @@ export const sendContactEmail = async ({ name, email, topic, message }: ContactE
       to: email,
       ...(email.toLowerCase() === owner.toLowerCase() ? {} : { bcc: owner }),
       replyTo: owner,
-      subject: `Dotazy — ${topic} · ozvu se do ${REPLY_WITHIN_HOURS} hodin`,
+      subject: `Dotazy — ${topic}${promo ? " · sleva 10 %" : ""} · ozvu se do ${REPLY_WITHIN_HOURS} hodin`,
     },
-    <ContactEmail name={name} topic={topic} message={message} accent={EMAIL_COLORS.blueStrong} replyTo={owner} />
+    <ContactEmail name={name} topic={topic} message={message} promo={promo} accent={EMAIL_COLORS.blueStrong} replyTo={owner} />
   );
   return { confirmationSent };
 };

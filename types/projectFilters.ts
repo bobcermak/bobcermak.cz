@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-export const PROJECT_TYPES = ["Web", "Mobilní app", "AI", "Systém/CMS", "Design"] as const;
+export const PROJECT_TYPES = ["Web", "Mobilní app", "AI", "Systém/CMS", "Hra", "Nástroj", "Design"] as const;
 export const PROJECT_CONTEXTS = ["Klientské", "Vlastní produkt", "Soutěž", "Škola"] as const;
 export type ProjectType = (typeof PROJECT_TYPES)[number];
 export type ProjectContext = (typeof PROJECT_CONTEXTS)[number];
@@ -20,9 +20,11 @@ export type ProjectIndexEntry = {
 export type ProjectSlot = {
   slug: string;
   content: ReactNode;
+  detail: ReactNode;
 };
 export type ProjectGroupSlot = {
   id: string;
   header: ReactNode;
+  accent: "blue" | "peach";
   projects: ProjectSlot[];
 };

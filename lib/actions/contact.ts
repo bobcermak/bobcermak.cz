@@ -6,6 +6,7 @@ import { sendContactEmail } from "@/lib/services/resend/sendContactEmail";
 import { lastSendError } from "@/lib/services/resend/send";
 import { CONTACT_TOPICS, DEFAULT_TOPIC, MESSAGE_MAX, type ContactTopic } from "@/types/contact";
 import { MIN_FILL_MS } from "@/types/lead";
+import { PROMO_PARAM, PROMO_PARAM_VALUE } from "@/types/promo";
 import { formFailed, formSent, type FormState } from "@/types/formState";
 
 const EMAIL = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
@@ -46,9 +47,10 @@ export const submitContact = async (_prev: FormState, data: FormData): Promise<F
     return formFailed("form", "Potřebuju souhlas se zpracováním údajů.");
   }
   if (isTracked(ip)) await recordAttempt(ip);
-  console.info(`[contact] Přijato od ${contact.email}`);
+  const promo = data.get(PROMO_PARAM) === PROMO_PARAM_VALUE;
+  console.info(`[contact] Přijato od ${contact.email}${promo ? " — nárok na slevu" : ""}`);
   const stored = await insertMessage(contact);
-  const { confirmationSent } = await sendContactEmail(contact);
+  const { confirmationSent } = await sendContactEmail({ ...contact, promo });
   if (!stored && !confirmationSent) {
     return formFailed(
       "send",

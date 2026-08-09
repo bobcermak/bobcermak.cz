@@ -70,8 +70,6 @@ const Button: FC<ButtonProps> = (props) => {
   const showArrow = variant === "primary" && isArrow && !noStyle;
   const joinArrow = showArrow && !disabled;
   const wrapperClass = twMerge(
-    // Bez stylů musí zůstat běžný inline text — `inline-flex items-center` by
-    // z každého <span> udělalo flex položku a rozhodilo účaří různě velkých písem.
     noStyle ? "cursor-pointer" : "group inline-flex items-center cursor-pointer",
     !noStyle && wFull ? "w-full" : "",
     !noStyle && !wFull ? "w-fit" : "",
@@ -136,6 +134,7 @@ const Button: FC<ButtonProps> = (props) => {
     <Link
       href={props.href}
       onClick={props.onClick}
+      scroll={props.href.includes("#") ? false : undefined}
       aria-label={ariaLabel}
       target={isExternal ? "_blank" : undefined}
       rel={isExternal ? "noopener noreferrer" : undefined}

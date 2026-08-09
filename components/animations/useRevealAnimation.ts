@@ -4,6 +4,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { routeKey, wasVisited } from "@/lib/visitedRoutes";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -38,7 +39,10 @@ export const useRevealAnimation = <T extends HTMLElement>({
       const found = el.querySelectorAll<HTMLElement>("[data-reveal]");
       if (!found.length) return;
       const targets: HTMLElement[] = Array.from(found);
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      if (
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+        wasVisited(routeKey())
+      ) {
         gsap.set(targets, { opacity: 1, x: 0, y: 0, scale: 1 });
         return;
       }

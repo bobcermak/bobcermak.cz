@@ -11,6 +11,7 @@ export type LeadEmailArgs = {
   name: string;
   type: ProjectType;
   result: CalculatorResult;
+  promo?: boolean;
 };
 export type LeadEmailOutcome = {
   customerSent: boolean;
@@ -30,12 +31,13 @@ export const sendLeadEmails = async (args: LeadEmailArgs): Promise<LeadEmailOutc
       to: args.email,
       ...(args.email.toLowerCase() === owner.toLowerCase() ? {} : { bcc: owner }),
       replyTo: owner,
-      subject: `Potvrzení ceny — ozvu se do ${REPLY_WITHIN_HOURS} hodin`,
+      subject: `Potvrzení ceny${args.promo ? " · sleva 10 %" : ""} — ozvu se do ${REPLY_WITHIN_HOURS} hodin`,
     },
     (
       <LeadCustomerEmail
         name={args.name}
         result={args.result}
+        promo={args.promo}
         typeLabel={args.type.label}
         accent={ACCENT_HEX[args.type.accent]}
         replyTo={owner}

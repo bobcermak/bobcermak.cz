@@ -8,6 +8,7 @@ import { lastSendError } from "@/lib/services/resend/send";
 import { calculatorExtras, PAGES_MAX, PAGES_MIN, projectTypes } from "@/types/calculator";
 import { MIN_FILL_MS, type LeadSelection } from "@/types/lead";
 import { formFailed, formSent, type FormState } from "@/types/formState";
+import { PROMO_PARAM, PROMO_PARAM_VALUE } from "@/types/promo";
 
 const EMAIL = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 const isDev = process.env.NODE_ENV !== "production";
@@ -65,7 +66,8 @@ export const submitLead = async (
     priceLabel: result.rangeLabel,
     priceLow: lead.type.base + lead.extras.reduce((sum, extra) => sum + extra.price, 0),
   });
-  const { customerSent } = await sendLeadEmails({ ...lead, result });
+  const promo = data.get(PROMO_PARAM) === PROMO_PARAM_VALUE;
+  const { customerSent } = await sendLeadEmails({ ...lead, result, promo });
   if (!stored && !customerSent) {
     return formFailed(
       "send",

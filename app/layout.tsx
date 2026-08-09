@@ -1,4 +1,4 @@
-import { PageWrapper, Navbar, ReactiveBg, Footer } from "@/components";
+import { PageWrapper, Navbar, ReactiveBg, Footer, PromoPopup } from "@/components";
 import { Montserrat, Orbitron, Outfit } from "next/font/google";
 import type { Metadata, Viewport } from "next";
 import { CONTACT_EMAIL, CONTACT_PHONE, GITHUB_URL, LINKEDIN_URL } from "@/types/contact";
@@ -126,6 +126,7 @@ export default function RootLayout({
           <main>{children}</main>
           <Footer/>
         </PageWrapper>
+        <PromoPopup/>
       </body>
     </html>
   );
