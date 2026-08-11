@@ -61,7 +61,7 @@ export const useRevealAnimation = <T extends HTMLElement>({
           }
           gsap.fromTo(target, from, {
             ...to,
-            delay: indexInRow * stagger,
+            delay: indexInRow * stagger + (Number(target.dataset.revealDelay) || 0),
             scrollTrigger: { trigger: target, start, once: true },
           });
         });

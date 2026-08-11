@@ -49,6 +49,7 @@ const ProjectDetail: FC<{ project: CatalogProject }> = ({ project }) => {
                   key={`${link.kind}-${link.href}`}
                   href={link.href}
                   variant={index === 0 ? "primary" : "secondary"}
+                  hover={index === 0 ? "hover:translate-y-[-2px] active:translate-y-[-2px] duration-250" : ""}
                   ariaLabel={`${title} — ${label}`}
                   size="sm"
                   isArrow={false}

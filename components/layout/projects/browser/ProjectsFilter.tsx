@@ -17,7 +17,7 @@ const ProjectsFilter: FC<ProjectsFilterProps> = ({ filters, onChange, shown, tot
   const patch = (next: Partial<ProjectFilters>) => onChange({ ...filters, ...next });
   return (
     <div>
-      <div className="relative mb-6 max-w-130">
+      <div data-reveal className="relative mb-6 max-w-130">
         <MagnifyingGlassIcon
           size={17}
           aria-hidden="true"
@@ -37,17 +37,21 @@ const ProjectsFilter: FC<ProjectsFilterProps> = ({ filters, onChange, shown, tot
           label="typ"
           items={PROJECT_TYPES}
           active={filters.type}
+          revealDelay={0.1}
           onPick={(type) => patch({ type })}
         />
         <FilterRow
           label="kontext"
           items={PROJECT_CONTEXTS}
           active={filters.context}
+          revealDelay={0.2}
           onPick={(context) => patch({ context })}
         />
       </div>
       <div
         aria-live="polite"
+        data-reveal
+        data-reveal-delay="0.3"
         className="mt-5.5 flex flex-wrap items-center gap-3.5 text-[13px] font-medium text-text-3"
       >
         <span>

@@ -175,7 +175,7 @@ export const PROJECT_GROUPS: ProjectGroup[] = [
         img: "/images/content/yumi-mockup.png",
         fit: "contain",
         imgBg: "#C5E384",
-        href: "https://github.com/bobcermak/Yumi-App",
+        github: "https://github.com/bobcermak/Yumi-App",
       },
       {
         slug: "lumio",
@@ -227,6 +227,7 @@ export const PROJECT_GROUPS: ProjectGroup[] = [
         img: "/images/content/RKservis-mockup.png",
         fit: "contain",
         imgBg: "white",
+        href: "https://bobcermak.github.io/RKservis/",
         github: "https://github.com/bobcermak/RKservis",
       },
       {
@@ -252,6 +253,7 @@ export const PROJECT_GROUPS: ProjectGroup[] = [
         img: "/images/content/robopomocnik.PNG",
         fit: "cover",
         github: "https://github.com/bobcermak/pxt-tpbot-robopomocnik",
+        links: [{ kind: "youtube", href: "https://www.youtube.com/watch?v=cEjl44lHPP4" }],
       },
       {
         slug: "enerforce-labs",

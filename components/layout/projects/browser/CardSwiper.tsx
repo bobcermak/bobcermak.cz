@@ -12,7 +12,7 @@ type CardSwiperProps = {
   slides: Slide[];
   label: string;
 };
-const ARROW = "grid size-11 cursor-pointer place-items-center rounded-full border border-border-mid bg-white text-ink transition-colors duration-250 hover:border-ink hover:bg-ink hover:text-white active:border-ink active:bg-ink active:text-white disabled:cursor-not-allowed disabled:border-border disabled:bg-white disabled:text-muted-num";
+const ARROW = "grid size-10 cursor-pointer place-items-center rounded-[10px] border border-border-mid bg-white text-ink transition-colors duration-250 hover:border-ink hover:bg-ink hover:text-white active:border-ink active:bg-ink active:text-white disabled:cursor-not-allowed disabled:border-border disabled:bg-white disabled:text-muted-num";
 const CardSwiper: FC<CardSwiperProps> = ({ slides, label }) => {
   //Hooks
   const [emblaRef, emblaApi] = useEmblaCarousel({
