@@ -1,6 +1,7 @@
 import { PageWrapper, Navbar, ReactiveBg, Footer, PromoPopup } from "@/components";
 import { Montserrat, Orbitron, Outfit } from "next/font/google";
 import type { Metadata, Viewport } from "next";
+import SiteSettingsProvider from "@/contexts/SiteSettingsProvider";
 import { CONTACT_EMAIL, CONTACT_PHONE, GITHUB_URL, LINKEDIN_URL } from "@/types/contact";
 import "./globals.css";
 
@@ -82,52 +83,54 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="cs" className={`${montserrat.variable} ${orbitron.variable} ${outfit.variable}`}>
-      <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Person",
-              name: "Bob Čermák",
-              url: SITE_URL,
-              email: CONTACT_EMAIL,
-              telephone: CONTACT_PHONE,
-              jobTitle: "Full stack developer",
-              description:
-                "Full stack developer — weby s administrací, rezervační a vlastní systémy a mobilní aplikace v Next.js, React Native a Supabase.",
-              address: {
-                "@type": "PostalAddress",
-                addressLocality: "Praha",
-                addressRegion: "Liberec",
-                addressCountry: "CZ",
-              },
-              sameAs: [GITHUB_URL, LINKEDIN_URL],
-              knowsAbout: [
-                "TypeScript",
-                "React",
-                "Next.js",
-                "React Native",
-                "Supabase",
-                ".NET",
-                "Figma",
-              ],
-            }),
-          }}
-        />
-      </head>
-      <body className="font-montserrat">
-        <ReactiveBg/>
-        <header>
-          <Navbar/>
-        </header>
-        <PageWrapper>
-          <main>{children}</main>
-          <Footer/>
-        </PageWrapper>
-        <PromoPopup/>
-      </body>
-    </html>
+    <SiteSettingsProvider>
+      <html lang="cs" className={`${montserrat.variable} ${orbitron.variable} ${outfit.variable}`}>
+        <head>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "Person",
+                name: "Bob Čermák",
+                url: SITE_URL,
+                email: CONTACT_EMAIL,
+                telephone: CONTACT_PHONE,
+                jobTitle: "Full stack developer",
+                description:
+                  "Full stack developer — weby s administrací, rezervační a vlastní systémy a mobilní aplikace v Next.js, React Native a Supabase.",
+                address: {
+                  "@type": "PostalAddress",
+                  addressLocality: "Praha",
+                  addressRegion: "Liberec",
+                  addressCountry: "CZ",
+                },
+                sameAs: [GITHUB_URL, LINKEDIN_URL],
+                knowsAbout: [
+                  "TypeScript",
+                  "React",
+                  "Next.js",
+                  "React Native",
+                  "Supabase",
+                  ".NET",
+                  "Figma",
+                ],
+              }),
+            }}
+          />
+        </head>
+        <body className="font-montserrat">
+          <ReactiveBg/>
+          <header>
+            <Navbar/>
+          </header>
+          <PageWrapper>
+            <main>{children}</main>
+            <Footer/>
+          </PageWrapper>
+          <PromoPopup/>
+        </body>
+      </html>
+    </SiteSettingsProvider>
   );
 }

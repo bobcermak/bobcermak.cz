@@ -3,45 +3,70 @@
 import { useEffect, useState, type FC } from "react";
 import Link from "next/link";
 import { ArrowRightIcon, SealPercentIcon, XIcon } from "@phosphor-icons/react";
-import { CONTACT_SECTION_ID } from "@/types/contact";
-import { PROMO_CTA, PROMO_DELAY, PROMO_EYEBROW, PROMO_LEAD, PROMO_STORAGE_KEY, PROMO_TITLE_AFTER, PROMO_TITLE_BEFORE, PROMO_TITLE_HIGHLIGHT, promoHref } from "@/types/promo";
+import { useSiteSettings } from "@/contexts/SiteSettingsContext";
+import { CALCULATOR_SECTION_ID } from "@/lib/calculator";
+import { PROMO_STORAGE_KEY, promoHref } from "@/types/promo";
 
-const wasDismissed = () => {
+const storageKey = (version: string) => (version ? `${PROMO_STORAGE_KEY}:${version}` : PROMO_STORAGE_KEY);
+const wasDismissed = (version: string) => {
   try {
-    return sessionStorage.getItem(PROMO_STORAGE_KEY) === "1";
+    return sessionStorage.getItem(storageKey(version)) === "1";
   } catch {
     return false;
   }
 };
-const rememberDismissed = () => {
+const rememberDismissed = (version: string) => {
   try {
-    sessionStorage.setItem(PROMO_STORAGE_KEY, "1");
+    sessionStorage.setItem(storageKey(version), "1");
   } catch {
   }
 };
+const LEAVE_MS = 320;
+type Phase = "hidden" | "in" | "out";
 type PromoPopupProps = {
   delay?: number;
 };
-const PromoPopup: FC<PromoPopupProps> = ({ delay = PROMO_DELAY }) => {
+const PromoPopup: FC<PromoPopupProps> = ({ delay }) => {
   //Hooks
-  const [open, setOpen] = useState<boolean>(false);
+  const {
+    updatedAt,
+    promoEnabled,
+    promoEyebrow,
+    promoTitleBefore,
+    promoTitleHighlight,
+    promoTitleAfter,
+    promoLead,
+    promoCta,
+    promoDelayMs,
+  } = useSiteSettings();
+  const [phase, setPhase] = useState<Phase>("hidden");
+  const wait = delay ?? promoDelayMs;
 
   useEffect(() => {
-    if (wasDismissed()) return;
-    const timer = window.setTimeout(() => setOpen(true), delay);
+    if (!promoEnabled || wasDismissed(updatedAt)) return;
+    const timer = window.setTimeout(() => setPhase("in"), wait);
     return () => window.clearTimeout(timer);
-  }, [delay]);
+  }, [promoEnabled, updatedAt, wait]);
+  useEffect(() => {
+    if (phase !== "out") return;
+    const timer = window.setTimeout(() => setPhase("hidden"), LEAVE_MS);
+    return () => window.clearTimeout(timer);
+  }, [phase]);
   const dismiss = () => {
-    rememberDismissed();
-    setOpen(false);
+    rememberDismissed(updatedAt);
+    setPhase("out");
   };
-  if (!open) return null;
+  if (phase === "hidden" || !promoEnabled) return null;
   return (
     <aside
       aria-label="Nabídka slevy"
-      className="fixed bottom-4 right-4 z-45 w-[calc(100%-2rem)] max-w-95 xphone:bottom-6 xphone:right-6 motion-safe:animate-[promoIn_0.6s_cubic-bezier(.22,1.15,.36,1)_both]"
+      className={`fixed bottom-4 right-4 z-45 w-[calc(100%-2rem)] max-w-95 xphone:bottom-6 xphone:right-6 ${
+        phase === "out"
+          ? "pointer-events-none motion-safe:animate-[promoOut_0.32s_cubic-bezier(.4,0,.9,.3)_both]"
+          : "motion-safe:animate-[promoIn_0.6s_cubic-bezier(.22,1.15,.36,1)_both]"
+      }`}
     >
-      <div className="relative overflow-hidden rounded-[18px] border border-border bg-white/95 shadow-[0_1px_3px_rgba(17,17,17,0.04),0_10px_34px_rgba(111,134,214,0.22)] backdrop-blur-md">
+      <div className="relative overflow-hidden rounded-[18px] border border-border bg-white shadow-[0_1px_3px_rgba(17,17,17,0.04),0_10px_34px_rgba(111,134,214,0.22)] backdrop-blur-md">
         <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1 bg-accent-blue-strong"/>
         <div className="flex gap-3.5 p-4 pt-5 xphone:gap-4 xphone:p-5 xphone:pt-6">
           <span
@@ -52,22 +77,23 @@ const PromoPopup: FC<PromoPopupProps> = ({ delay = PROMO_DELAY }) => {
           </span>
           <div className="min-w-0 pr-5">
             <p className="mb-1.5 text-eyebrow font-semibold uppercase tracking-[0.12em] text-accent-blue-strong">
-              {PROMO_EYEBROW}
+              {promoEyebrow}
             </p>
             <p className="mb-1 text-[14.5px] font-medium leading-[1.45] tracking-[-0.01em] text-ink">
-              {PROMO_TITLE_BEFORE}{" "}
+              {promoTitleBefore}{" "}
               <span className="text-[17px] font-semibold text-accent-blue-strong">
-                {PROMO_TITLE_HIGHLIGHT}
+                {promoTitleHighlight}
               </span>{" "}
-              {PROMO_TITLE_AFTER}
+              {promoTitleAfter}
             </p>
-            <p className="mb-3 text-[12.5px] leading-[1.45] text-text-3">{PROMO_LEAD}</p>
+            <p className="mb-3 text-[12.5px] leading-[1.45] text-text-3">{promoLead}</p>
             <Link
-              href={promoHref(CONTACT_SECTION_ID)}
+              href={promoHref(CALCULATOR_SECTION_ID)}
+              scroll={false}
               onClick={dismiss}
               className="group inline-flex items-center gap-1.5 text-[13px] font-medium text-text-2 transition-colors duration-250 hover:text-ink"
             >
-              {PROMO_CTA}
+              {promoCta}
               <ArrowRightIcon
                 size={13}
                 weight="bold"

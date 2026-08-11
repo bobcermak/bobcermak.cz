@@ -5,10 +5,11 @@ type LanyardBandMeshProps = {
   width: number;
   height: number;
   lineWidth?: number;
+  visible?: boolean;
 };
-const LanyardBandMesh = ({ bandRef, texture, lineWidth = 1 }: LanyardBandMeshProps) => {
+const LanyardBandMesh = ({ bandRef, texture, lineWidth = 1, visible = true }: LanyardBandMeshProps) => {
   return (
-    <mesh ref={bandRef}>
+    <mesh ref={bandRef} visible={visible}>
       <meshLineGeometry />
       <meshLineMaterial
         color="white"

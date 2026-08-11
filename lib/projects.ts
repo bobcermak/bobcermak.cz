@@ -1,6 +1,11 @@
-import type { CatalogProject } from "@/types/projectCatalog";
+import type { CatalogProject, ProjectLink } from "@/types/projectCatalog";
 import { FILTER_ALL, type ProjectFilters, type ProjectIndexEntry } from "@/types/projectFilters";
 
+export const detailLinks = (project: CatalogProject): ProjectLink[] => [
+  ...(project.href ? [{ kind: "web" as const, href: project.href }] : []),
+  ...(project.github ? [{ kind: "github" as const, href: project.github }] : []),
+  ...(project.links ?? []),
+];
 const fold = (value: string) =>
   value
     .toLowerCase()

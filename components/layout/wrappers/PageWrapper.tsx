@@ -7,7 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
 import { usePathname } from "next/navigation";
 import { setLenis } from "@/lib/lenis";
-import { markVisited, routeKey, wasVisited } from "@/lib/visitedRoutes";
+import { enterRoute } from "@/lib/visitedRoutes";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -38,18 +38,23 @@ export const PageWrapper = ({ children }: { children: React.ReactNode }) => {
       if (!link) return;
       const href = link.getAttribute("href");
       if (!href || !href.includes("#")) return;
-      const [path, hash] = href.split("#");
-      if ((path === "" || path === pathname) && hash) {
-        const targetElem = document.getElementById(hash);
-        if (targetElem) {
-          e.preventDefault();
-          lenis.scrollTo(targetElem, {
-            offset: -80,
-            duration: 1.5,
-            lock: true
-          });
-        }
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      if (link.target && link.target !== "_self") return;
+      let url: URL;
+      try {
+        url = new URL(href, window.location.href);
+      } catch {
+        return;
       }
+      if (url.origin !== window.location.origin || url.pathname !== window.location.pathname) return;
+      const targetElem = url.hash ? document.getElementById(url.hash.slice(1)) : null;
+      if (!targetElem) return;
+      if (url.search === window.location.search) e.preventDefault();
+      lenis.scrollTo(targetElem, {
+        offset: -80,
+        duration: 1.5,
+        lock: true
+      });
     };
     document.addEventListener("click", handleLinkClick);
     const hash = window.location.hash.slice(1);
@@ -59,7 +64,8 @@ export const PageWrapper = ({ children }: { children: React.ReactNode }) => {
     }, 120);
     const page = wrapperRef.current;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (page && !reduced && wasVisited(routeKey()) === false) {
+    const returning = enterRoute(pathname);
+    if (page && !reduced && returning) {
       gsap.fromTo(
         page,
         { opacity: 0, x: 48, scale: 0.985 },
@@ -67,7 +73,6 @@ export const PageWrapper = ({ children }: { children: React.ReactNode }) => {
       );
     }
     return () => {
-      markVisited(routeKey());
       document.removeEventListener("click", handleLinkClick);
       window.removeEventListener("load", refresh);
       window.clearTimeout(settle);

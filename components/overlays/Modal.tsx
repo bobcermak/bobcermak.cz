@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useRef, type FC, type ReactNode } from "react";
+import { useEffect, useRef, useState, type FC, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { XIcon } from "@phosphor-icons/react";
 import { lockScroll, unlockScroll } from "@/lib/lenis";
 
+const LEAVE_MS = 260;
+type Phase = "closed" | "open" | "leaving";
 type ModalProps = {
   open: boolean;
   onClose: () => void;
@@ -18,14 +20,25 @@ const Modal: FC<ModalProps> = ({ open, onClose, labelledBy, accentClass, wide = 
   const dialogRef = useRef<HTMLDivElement>(null);
   const restoreRef = useRef<HTMLElement | null>(null);
   const closeRef = useRef(onClose);
+  const [phase, setPhase] = useState<Phase>(open ? "open" : "closed");
+  const [prevOpen, setPrevOpen] = useState<boolean>(open);
 
+  if (open !== prevOpen) {
+    setPrevOpen(open);
+    setPhase(open ? "open" : "leaving");
+  }
   useEffect(() => {
     closeRef.current = onClose;
   }, [onClose]);
   useEffect(() => {
-    if (!open) return;
+    if (phase !== "leaving") return;
+    const timer = window.setTimeout(() => setPhase("closed"), LEAVE_MS);
+    return () => window.clearTimeout(timer);
+  }, [phase]);
+  useEffect(() => {
+    if (phase !== "open") return;
     restoreRef.current = document.activeElement as HTMLElement | null;
-    dialogRef.current?.focus();
+    dialogRef.current?.focus({ preventScroll: true });
     lockScroll();
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") closeRef.current();
@@ -34,13 +47,18 @@ const Modal: FC<ModalProps> = ({ open, onClose, labelledBy, accentClass, wide = 
     return () => {
       window.removeEventListener("keydown", onKey);
       unlockScroll();
-      restoreRef.current?.focus();
+      restoreRef.current?.focus({ preventScroll: true });
     };
-  }, [open]);
-  if (!open || typeof document === "undefined") return null;
+  }, [phase]);
+  if (phase === "closed" || typeof document === "undefined") return null;
+  const leaving = phase === "leaving";
   return createPortal(
     <div
-      className="fixed inset-0 z-100 grid place-items-center overflow-y-auto bg-ink/45 p-4 backdrop-blur-sm motion-safe:animate-[fadeIn_0.2s_ease-out_both]"
+      className={`fixed inset-0 z-100 grid place-items-center overflow-y-auto bg-ink/45 p-4 backdrop-blur-sm ${
+        leaving
+          ? "pointer-events-none motion-safe:animate-[fadeOut_0.26s_ease-in_both]"
+          : "motion-safe:animate-[fadeIn_0.2s_ease-out_both]"
+      }`}
       onClick={onClose}
     >
       <div
@@ -50,16 +68,20 @@ const Modal: FC<ModalProps> = ({ open, onClose, labelledBy, accentClass, wide = 
         aria-labelledby={labelledBy}
         tabIndex={-1}
         onClick={(event) => event.stopPropagation()}
-        className={`relative w-full overflow-hidden rounded-[26px] border border-white/70 bg-white p-7 text-center shadow-nav outline-none xphone:p-9 motion-safe:animate-[floatUp_0.4s_cubic-bezier(.2,.8,.25,1)_both] ${
+        className={`relative w-full overflow-hidden rounded-[26px] border border-white/70 bg-white p-7 text-center shadow-nav outline-none xphone:p-9 ${
           wide ? "my-8 max-w-3xl" : "max-w-105"
+        } ${
+          leaving
+            ? "motion-safe:animate-[floatDown_0.26s_cubic-bezier(.4,0,.9,.3)_both]"
+            : "motion-safe:animate-[floatUp_0.4s_cubic-bezier(.2,.8,.25,1)_both]"
         }`}
       >
-        <span aria-hidden="true" className={`absolute inset-x-0 top-0 h-1 ${accentClass}`}/>
+        <span aria-hidden="true" className={`absolute inset-x-0 top-0 z-20 h-1 ${accentClass}`}/>
         <button
           type="button"
           onClick={onClose}
           aria-label="Zavřít"
-          className="absolute right-4 top-4 grid size-9 cursor-pointer place-items-center rounded-full text-text-3 transition-colors duration-250 hover:bg-bg-tint hover:text-ink active:bg-bg-tint active:text-ink"
+          className="absolute right-4 top-4 z-20 grid size-9 cursor-pointer place-items-center rounded-full border border-border bg-white/85 text-text-2 shadow-card backdrop-blur-md transition-colors duration-250 hover:border-ink hover:bg-white hover:text-ink active:border-ink active:bg-white active:text-ink"
         >
           <XIcon size={18} weight="bold"/>
         </button>

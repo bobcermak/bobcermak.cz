@@ -11,6 +11,7 @@ type LanyardBandProps = {
 const LanyardBand = ({ offsetX = 0, bandWidth = 1, bandLength = 1 }: LanyardBandProps) => {
   const {
     band,
+    bandReady,
     card,
     fixed,
     j1,
@@ -54,7 +55,14 @@ const LanyardBand = ({ offsetX = 0, bandWidth = 1, bandLength = 1 }: LanyardBand
           onPointerDown={handlePointerDown}
         />
       </group>
-      <LanyardBandMesh bandRef={band} texture={texture} width={width} height={height} lineWidth={bandWidth} />
+      <LanyardBandMesh
+        bandRef={band}
+        texture={texture}
+        width={width}
+        height={height}
+        lineWidth={bandWidth}
+        visible={bandReady}
+      />
     </>
   );
 };

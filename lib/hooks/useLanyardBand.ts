@@ -120,6 +120,8 @@ export const useLanyardBand = ({ maxSpeed = 50, minSpeed = 0, segmentLength = 1 
   const [dragged, drag] = useState<false | THREE.Vector3>(false);
   const [hovered, hover] = useState(false);
   const [narrow, setNarrow] = useState(false);
+  const [bandReady, setBandReady] = useState(false);
+  const framesDrawn = useRef(0);
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 760px)");
     const update = () => setNarrow(mq.matches);
@@ -160,7 +162,7 @@ export const useLanyardBand = ({ maxSpeed = 50, minSpeed = 0, segmentLength = 1 
         z: vec.z - dragged.z,
       });
     }
-    if (fixed.current) {
+    if (fixed.current && band.current && j1.current && j2.current && j3.current && card.current) {
       [j1, j2].forEach((ref) => {
         const r = ref.current as any;
         if (!r.lerped) r.lerped = new THREE.Vector3().copy(r.translation());
@@ -172,6 +174,10 @@ export const useLanyardBand = ({ maxSpeed = 50, minSpeed = 0, segmentLength = 1 
       curve.points[2].copy((j1.current as any).lerped);
       curve.points[3].copy(fixed.current.translation() as any);
       band.current.geometry.setPoints(curve.getPoints(32));
+      if (framesDrawn.current < 2) {
+        framesDrawn.current += 1;
+        if (framesDrawn.current === 2) setBandReady(true);
+      }
       ang.copy(card.current!.angvel() as any);
       rot.copy(card.current!.rotation() as any);
       card.current!.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z }, false);
@@ -179,6 +185,7 @@ export const useLanyardBand = ({ maxSpeed = 50, minSpeed = 0, segmentLength = 1 
   });
   return {
     band,
+    bandReady,
     card,
     fixed,
     j1,

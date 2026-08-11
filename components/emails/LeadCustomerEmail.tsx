@@ -5,7 +5,7 @@ import PriceBreakdown from "./PriceBreakdown";
 import { button, divider, EMAIL_COLORS, eyebrow, heading, link, paragraph, price, priceBox, small } from "./emailTheme";
 import type { CalculatorResult } from "@/lib/calculator";
 import { REPLY_WITHIN_HOURS } from "@/types/lead";
-import { PROMO_CLAIM_LABEL, PROMO_CLAIM_NOTE } from "@/types/promo";
+import { DEFAULT_SITE_SETTINGS } from "@/types/siteSettings";
 
 type LeadCustomerEmailProps = {
   name: string;
@@ -14,8 +14,19 @@ type LeadCustomerEmailProps = {
   promo?: boolean;
   accent: string;
   replyTo: string;
+  promoClaimLabel?: string;
+  promoClaimNote?: string;
 };
-const LeadCustomerEmail: FC<LeadCustomerEmailProps> = ({ name, result, typeLabel, promo, accent, replyTo }) => (
+const LeadCustomerEmail: FC<LeadCustomerEmailProps> = ({
+  name,
+  result,
+  typeLabel,
+  promo,
+  accent,
+  replyTo,
+  promoClaimLabel = DEFAULT_SITE_SETTINGS.promoClaimLabel,
+  promoClaimNote = DEFAULT_SITE_SETTINGS.promoClaimNote,
+}) => (
   <EmailShell
     preview={`${result.rangeLabel} — ozvu se do ${REPLY_WITHIN_HOURS} hodin.`}
     label="Potvrzení ceny"
@@ -35,9 +46,9 @@ const LeadCustomerEmail: FC<LeadCustomerEmailProps> = ({ name, result, typeLabel
     </Section>
     {promo && (
       <Section style={{ ...priceBox, borderColor: EMAIL_COLORS.blueStrong }}>
-        <Text style={eyebrow}>{PROMO_CLAIM_LABEL}</Text>
+        <Text style={eyebrow}>{promoClaimLabel}</Text>
         <Text style={{ ...paragraph, margin: "10px 0 0", color: EMAIL_COLORS.ink }}>
-          {PROMO_CLAIM_NOTE}
+          {promoClaimNote}
         </Text>
       </Section>
     )}

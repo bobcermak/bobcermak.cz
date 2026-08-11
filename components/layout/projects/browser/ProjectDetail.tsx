@@ -1,12 +1,14 @@
 import type { FC } from "react";
-import { ArrowSquareOutIcon, GithubLogoIcon } from "@phosphor-icons/react/ssr";
 import Button from "@/components/buttons/Button";
 import ProjectImage from "../ProjectImage";
 import ProjectTag from "../ProjectTag";
+import { PROJECT_LINK_META } from "./projectLinkMeta";
+import { detailLinks } from "@/lib/projects";
 import type { CatalogProject } from "@/types/projectCatalog";
 
 const ProjectDetail: FC<{ project: CatalogProject }> = ({ project }) => {
-  const { title, year, status, desc, types, stack, img, href, github, fit, imgBg } = project;
+  const { title, year, status, desc, types, stack, img, fit, imgBg } = project;
+  const links = detailLinks(project);
   return (
     <>
       <figure
@@ -36,30 +38,28 @@ const ProjectDetail: FC<{ project: CatalogProject }> = ({ project }) => {
           Stack
         </p>
         <p className="mb-7 text-[14px] text-ink">{stack.join(" · ")}</p>
-        {(href || github) && (
+        {links.length > 0 && (
           <div className="flex flex-wrap gap-3">
-            {href && (
-              <Button href={href} ariaLabel={`${title} — otevřít`} size="sm" isArrow={false}>
-                <span className="inline-flex items-center gap-2">
-                  <ArrowSquareOutIcon size={15} weight="bold" aria-hidden="true"/>
-                  živý web
-                </span>
-              </Button>
-            )}
-            {github && (
-              <Button
-                href={github}
-                variant="secondary"
-                ariaLabel={`${title} — GitHub`}
-                size="sm"
-                isArrow={false}
-              >
-                <span className="inline-flex items-center gap-2">
-                  <GithubLogoIcon size={15} weight="fill" aria-hidden="true"/>
-                  github
-                </span>
-              </Button>
-            )}
+            {links.map((link, index) => {
+              const meta = PROJECT_LINK_META[link.kind];
+              const Icon = meta.icon;
+              const label = link.label ?? meta.label;
+              return (
+                <Button
+                  key={`${link.kind}-${link.href}`}
+                  href={link.href}
+                  variant={index === 0 ? "primary" : "secondary"}
+                  ariaLabel={`${title} — ${label}`}
+                  size="sm"
+                  isArrow={false}
+                >
+                  <span className="inline-flex items-center gap-2">
+                    <Icon size={15} weight={meta.weight} aria-hidden="true"/>
+                    {label}
+                  </span>
+                </Button>
+              );
+            })}
           </div>
         )}
       </div>

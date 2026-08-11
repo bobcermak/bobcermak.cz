@@ -39,7 +39,7 @@ export const featuredRest: Project[] = [
     title: "Clash of Brynza",
     desc: "Budovatelské RPG v prohlížeči — balancuješ ovce, populaci a půdu na hraně hladomoru.",
     tags: ["Hra", "ASP.NET", "React"],
-    img: "/images/content/game.webp",
+    img: "/images/content/clash-of-brynza-mockup.png",
     fit: "contain",
     href: "https://id-117.pslib.cloud/",
     github: "https://github.com/bobcermak/ClashOfBrynza",

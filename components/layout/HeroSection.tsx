@@ -1,4 +1,5 @@
 import { Button, RevealSection } from "@/components";
+import HeroEyebrow from "./HeroEyebrow";
 import HeroLanyard from "./HeroLanyard";
 import ScrollHint from "./ScrollHint";
 import { type FC } from "react";
@@ -8,19 +9,13 @@ type HeroSectionProps = {
   title?: string,
   subtitle?: string
 };
-const HeroSection: FC<HeroSectionProps> = ({ eyebrow = "K dispozici pro nové projekty", title = "Stavím weby a appky, které si na nic nehrajou.", subtitle = "Full stack developer — Next.js, React Native, Supabase. Od statického webu po rezervační systém s vlastním CMS." }) => {
+const HeroSection: FC<HeroSectionProps> = ({ eyebrow, title = "Stavím weby a appky, které si na nic nehrajou.", subtitle = "Full stack developer — Next.js, React Native, Supabase. Od statického webu po rezervační systém s vlastním CMS." }) => {
   return (
     <RevealSection scrollTrigger={false} id="hero" aria-label="Úvod" className="relative w-full overflow-hidden">
       <div className="pointer-events-none relative mx-auto flex min-h-[150dvh] w-container flex-col justify-start pt-44 stablet:pt-48 tablet:min-h-dvh tablet:justify-center tablet:pt-0 desktop:w-section">
         <div className="pointer-events-none tablet:pointer-events-auto backdrop-blur-md tablet:backdrop-blur-none bg-white/10 tablet:bg-transparent z-10 tablet:z-auto w-fit py-10 px-5 tablet:p-0 rounded-[20px] tablet:rounded-none">
           <header className="pointer-events-none tablet:pointer-events-auto">
-            <p
-              data-reveal
-              className="pointer-events-none relative mb-8 inline-flex w-fit items-center gap-3 text-eyebrow font-semibold uppercase tracking-[0.18em] text-text-3"
-            >
-              <span className="size-2 shrink-0 rounded-full bg-ink animate-pulse"/>
-              {eyebrow}
-            </p>
+            <HeroEyebrow text={eyebrow}/>
             <h1
               data-reveal
               className="pointer-events-none relative max-w-[15ch] text-[clamp(2.5rem,6vw,5rem)] font-bold leading-[1.02] tracking-[-0.03em] text-ink"

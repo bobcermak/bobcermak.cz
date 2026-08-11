@@ -1,5 +1,24 @@
 import type { ProjectContext, ProjectType } from "./projectFilters";
 
+export const PROJECT_LINK_KINDS = [
+  "web",
+  "github",
+  "youtube",
+  "appstore",
+  "googleplay",
+  "figma",
+  "instagram",
+  "behance",
+  "dribbble",
+  "doc",
+  "link",
+] as const;
+export type ProjectLinkKind = (typeof PROJECT_LINK_KINDS)[number];
+export type ProjectLink = {
+  kind: ProjectLinkKind;
+  href: string;
+  label?: string;
+};
 export type CatalogProject = {
   slug: string;
   title: string;
@@ -12,6 +31,7 @@ export type CatalogProject = {
   img?: string;
   href?: string;
   github?: string;
+  links?: ProjectLink[];
   fit?: "cover" | "contain";
   imgBg?: string;
 };
@@ -177,9 +197,9 @@ export const PROJECT_GROUPS: ProjectGroup[] = [
         types: ["Hra", "Web"],
         context: "Škola",
         stack: ["ASP.NET Core", "C#", "React", "Konva.js", "Docker"],
-        img: "/images/content/game.webp",
+        img: "/images/content/clash-of-brynza-mockup.png",
         fit: "contain",
-        imgBg: "#4795a7",
+        imgBg: "white",
         href: "https://id-117.pslib.cloud/",
         github: "https://github.com/bobcermak/ClashOfBrynza",
       },
@@ -191,9 +211,9 @@ export const PROJECT_GROUPS: ProjectGroup[] = [
         types: ["Hra"],
         context: "Škola",
         stack: ["Unity", "C#", "New Input System", "PlayerPrefs"],
-        img: "/images/content/gameplay.PNG",
+        img: "/images/content/gameplay-mockup.png",
         fit: "contain",
-        imgBg: "#C9805C",
+        imgBg: "white",
         github: "https://github.com/bobcermak/Ronin-s-Curse",
       },
       {

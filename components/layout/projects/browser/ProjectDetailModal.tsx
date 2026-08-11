@@ -1,6 +1,6 @@
 "use client";
 
-import type { FC, ReactNode } from "react";
+import { useState, type FC, type ReactNode } from "react";
 import Modal from "@/components/overlays/Modal";
 import { GROUP_ACCENT } from "./groupAccent";
 import type { GroupAccent } from "@/types/projectCatalog";
@@ -11,16 +11,20 @@ type ProjectDetailModalProps = {
   onClose: () => void;
 };
 const ProjectDetailModal: FC<ProjectDetailModalProps> = ({ detail, accent, onClose }) => {
-  if (!detail) return null;
+  //Hooks
+  const [shown, setShown] = useState<{ detail: ReactNode; accent: GroupAccent } | null>(null);
+
+  if (detail && detail !== shown?.detail) setShown({ detail, accent });
+  if (!shown) return null;
   return (
     <Modal
-      open
+      open={!!detail}
       onClose={onClose}
       labelledBy="project-detail-title"
-      accentClass={GROUP_ACCENT[accent].bg}
+      accentClass={GROUP_ACCENT[shown.accent].bg}
       wide
     >
-      {detail}
+      {shown.detail}
     </Modal>
   );
 };

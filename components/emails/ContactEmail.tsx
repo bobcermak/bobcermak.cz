@@ -3,7 +3,7 @@ import { Hr, Link, Section, Text } from "@react-email/components";
 import EmailShell from "./EmailShell";
 import { divider, EMAIL_COLORS, eyebrow, heading, link, paragraph, priceBox, small } from "./emailTheme";
 import { REPLY_WITHIN_HOURS } from "@/types/lead";
-import { PROMO_CLAIM_LABEL, PROMO_CLAIM_NOTE } from "@/types/promo";
+import { DEFAULT_SITE_SETTINGS } from "@/types/siteSettings";
 
 type ContactEmailProps = {
   name: string;
@@ -12,8 +12,19 @@ type ContactEmailProps = {
   promo?: boolean;
   accent: string;
   replyTo: string;
+  promoClaimLabel?: string;
+  promoClaimNote?: string;
 };
-const ContactEmail: FC<ContactEmailProps> = ({ name, topic, message, promo, accent, replyTo }) => (
+const ContactEmail: FC<ContactEmailProps> = ({
+  name,
+  topic,
+  message,
+  promo,
+  accent,
+  replyTo,
+  promoClaimLabel = DEFAULT_SITE_SETTINGS.promoClaimLabel,
+  promoClaimNote = DEFAULT_SITE_SETTINGS.promoClaimNote,
+}) => (
   <EmailShell
     preview={`Zpráva dorazila — ozvu se do ${REPLY_WITHIN_HOURS} hodin.`}
     label="Zpráva"
@@ -32,9 +43,9 @@ const ContactEmail: FC<ContactEmailProps> = ({ name, topic, message, promo, acce
     </Section>
     {promo && (
       <Section style={{ ...priceBox, borderColor: EMAIL_COLORS.blueStrong }}>
-        <Text style={eyebrow}>{PROMO_CLAIM_LABEL}</Text>
+        <Text style={eyebrow}>{promoClaimLabel}</Text>
         <Text style={{ ...paragraph, margin: "10px 0 0", color: EMAIL_COLORS.ink }}>
-          {PROMO_CLAIM_NOTE}
+          {promoClaimNote}
         </Text>
       </Section>
     )}
