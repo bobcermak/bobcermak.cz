@@ -6,7 +6,7 @@ const ProjectGroupHeader: FC<{ group: ProjectGroup }> = ({ group }) => {
   const tone = GROUP_ACCENT[group.accent];
   return (
     <header data-reveal className="mb-6 flex items-center gap-4">
-      <span aria-hidden="true" className={`size-3 flex-none rounded-full ${tone.bg} ${tone.halo}`}/>
+      <span aria-hidden="true" className={`size-3 flex-none rounded-full animate-pulse ${tone.bg} ${tone.halo}`}/>
       <h2 id={`group-${group.id}`} className="flex-none text-[clamp(1.5rem,3.2vw,2rem)]">
         {group.title}
       </h2>
