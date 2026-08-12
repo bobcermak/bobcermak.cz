@@ -84,40 +84,10 @@ export default function RootLayout({
 }>) {
   return (
     <SiteSettingsProvider>
-      <html lang="cs" className={`${montserrat.variable} ${orbitron.variable} ${outfit.variable}`}>
+      <html lang={SITE_LANG} className={`${montserrat.variable} ${orbitron.variable} ${outfit.variable}`}>
         <head>
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify({
-                "@context": "https://schema.org",
-                "@type": "Person",
-                name: "Bob Čermák",
-                url: SITE_URL,
-                email: CONTACT_EMAIL,
-                telephone: CONTACT_PHONE,
-                jobTitle: "Full stack developer",
-                description:
-                  "Full stack developer — weby s administrací, rezervační a vlastní systémy a mobilní aplikace v Next.js, React Native a Supabase.",
-                address: {
-                  "@type": "PostalAddress",
-                  addressLocality: "Praha",
-                  addressRegion: "Liberec",
-                  addressCountry: "CZ",
-                },
-                sameAs: [GITHUB_URL, LINKEDIN_URL],
-                knowsAbout: [
-                  "TypeScript",
-                  "React",
-                  "Next.js",
-                  "React Native",
-                  "Supabase",
-                  ".NET",
-                  "Figma",
-                ],
-              }),
-            }}
-          />
+          <JsonLd data={personSchema()}/>
+          <JsonLd data={websiteSchema()}/>
         </head>
         <body className="font-montserrat">
           <ReactiveBg/>
