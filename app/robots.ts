@@ -6,10 +6,9 @@ const robots = (): MetadataRoute.Robots => ({
     {
       userAgent: "*",
       allow: "/",
-      disallow: ["/*?sleva=", "/api/"],
+      disallow: ["/api/"],
     },
   ],
   sitemap: absoluteUrl("/sitemap.xml"),
-  host: absoluteUrl("/"),
 });
 export default robots;

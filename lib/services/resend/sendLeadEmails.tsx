@@ -25,28 +25,42 @@ export const sendLeadEmails = async (args: LeadEmailArgs): Promise<LeadEmailOutc
     return { customerSent: false };
   }
   const settings = await getSiteSettings();
+  const subject = `Potvrzení ceny${args.promo ? ` · ${settings.promoSubjectTag}` : ""} — ozvu se do ${REPLY_WITHIN_HOURS} hodin`;
+  const email = (
+    <LeadCustomerEmail
+      name={args.name}
+      result={args.result}
+      promo={args.promo}
+      typeLabel={args.type.label}
+      accent={ACCENT_HEX[args.type.accent]}
+      replyTo={owner}
+      promoClaimLabel={settings.promoClaimLabel}
+      promoClaimNote={settings.promoClaimNote}
+    />
+  );
   const customerSent = await sendEmail(
     resend,
     "potvrzení klientovi",
     {
       from: calculatorFrom(),
       to: args.email,
-      ...(args.email.toLowerCase() === owner.toLowerCase() ? {} : { bcc: owner }),
       replyTo: owner,
-      subject: `Potvrzení ceny${args.promo ? ` · ${settings.promoSubjectTag}` : ""} — ozvu se do ${REPLY_WITHIN_HOURS} hodin`,
+      subject,
     },
-    (
-      <LeadCustomerEmail
-        name={args.name}
-        result={args.result}
-        promo={args.promo}
-        typeLabel={args.type.label}
-        accent={ACCENT_HEX[args.type.accent]}
-        replyTo={owner}
-        promoClaimLabel={settings.promoClaimLabel}
-        promoClaimNote={settings.promoClaimNote}
-      />
-    )
+    email
   );
+  if (args.email.toLowerCase() !== owner.toLowerCase()) {
+    await sendEmail(
+      resend,
+      "kopie majiteli",
+      {
+        from: calculatorFrom(),
+        to: owner,
+        replyTo: args.email,
+        subject,
+      },
+      email
+    );
+  }
   return { customerSent };
 };

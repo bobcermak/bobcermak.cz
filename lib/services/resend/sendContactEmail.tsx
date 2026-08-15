@@ -20,16 +20,8 @@ export const sendContactEmail = async ({ name, email, topic, message, promo }: C
     return { confirmationSent: false };
   }
   const settings = await getSiteSettings();
-  const confirmationSent = await sendEmail(
-    resend,
-    "potvrzení zprávy",
-    {
-      from: contactFrom(),
-      to: email,
-      ...(email.toLowerCase() === owner.toLowerCase() ? {} : { bcc: owner }),
-      replyTo: owner,
-      subject: `Dotazy — ${topic}${promo ? ` · ${settings.promoSubjectTag}` : ""} · ozvu se do ${REPLY_WITHIN_HOURS} hodin`,
-    },
+  const subject = `Dotazy — ${topic}${promo ? ` · ${settings.promoSubjectTag}` : ""} · ozvu se do ${REPLY_WITHIN_HOURS} hodin`;
+  const element = (
     <ContactEmail
       name={name}
       topic={topic}
@@ -41,5 +33,29 @@ export const sendContactEmail = async ({ name, email, topic, message, promo }: C
       promoClaimNote={settings.promoClaimNote}
     />
   );
+  const confirmationSent = await sendEmail(
+    resend,
+    "potvrzení zprávy",
+    {
+      from: contactFrom(),
+      to: email,
+      replyTo: owner,
+      subject,
+    },
+    element
+  );
+  if (email.toLowerCase() !== owner.toLowerCase()) {
+    await sendEmail(
+      resend,
+      "kopie majiteli",
+      {
+        from: contactFrom(),
+        to: owner,
+        replyTo: email,
+        subject,
+      },
+      element
+    );
+  }
   return { confirmationSent };
 };
