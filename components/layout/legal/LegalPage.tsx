@@ -1,14 +1,18 @@
 import type { FC, ReactNode } from "react";
 import Link from "next/link";
 import { RevealSection } from "@/components";
+import JsonLd from "@/components/seo/JsonLd";
+import { breadcrumbSchema } from "@/lib/seo/structuredData";
 
 type LegalPageProps = {
   title: string;
   updated: string;
+  path: string;
   children: ReactNode;
 };
-const LegalPage: FC<LegalPageProps> = ({ title, updated, children }) => (
+const LegalPage: FC<LegalPageProps> = ({ title, updated, path, children }) => (
   <RevealSection aria-label={title} className="w-full pb-20 pt-36 tablet:pt-44">
+    <JsonLd data={breadcrumbSchema([{ label: title, path }])}/>
     <div className="mx-auto w-container max-w-[720px]">
       <Link
         href="/"

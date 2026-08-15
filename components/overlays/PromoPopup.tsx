@@ -4,6 +4,7 @@ import { useEffect, useState, type FC } from "react";
 import Link from "next/link";
 import { ArrowRightIcon, SealPercentIcon, XIcon } from "@phosphor-icons/react";
 import { useSiteSettings } from "@/contexts/SiteSettingsContext";
+import { useConsent } from "@/contexts/ConsentContext";
 import { CALCULATOR_SECTION_ID } from "@/lib/calculator";
 import { PROMO_STORAGE_KEY, promoHref } from "@/types/promo";
 
@@ -39,14 +40,15 @@ const PromoPopup: FC<PromoPopupProps> = ({ delay }) => {
     promoCta,
     promoDelayMs,
   } = useSiteSettings();
+  const { state: consent } = useConsent();
   const [phase, setPhase] = useState<Phase>("hidden");
   const wait = delay ?? promoDelayMs;
 
   useEffect(() => {
-    if (!promoEnabled || wasDismissed(updatedAt)) return;
+    if (!promoEnabled || !consent || wasDismissed(updatedAt)) return;
     const timer = window.setTimeout(() => setPhase("in"), wait);
     return () => window.clearTimeout(timer);
-  }, [promoEnabled, updatedAt, wait]);
+  }, [promoEnabled, consent, updatedAt, wait]);
   useEffect(() => {
     if (phase !== "out") return;
     const timer = window.setTimeout(() => setPhase("hidden"), LEAVE_MS);

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 const TermsPage = () => (
-  <LegalPage title="Obchodní podmínky" updated="5. 8. 2026">
+  <LegalPage title="Obchodní podmínky" updated="5. 8. 2026" path="/obchodni-podminky">
     <p>
       Tenhle text popisuje, jak u mě probíhá spolupráce. Nenahrazuje smlouvu — tu na každou
       zakázku uzavíráme zvlášť a má přednost před tím, co je tady.

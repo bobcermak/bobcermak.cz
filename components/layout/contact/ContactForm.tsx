@@ -1,24 +1,20 @@
 "use client";
 
-import { useActionState, useEffect, useRef, useState, type FC } from "react";
-import { useSearchParams } from "next/navigation";
-import { CheckIcon, SealPercentIcon, WarningIcon } from "@phosphor-icons/react";
+import { useActionState, useEffect, useRef, useState } from "react";
+import { CheckIcon, WarningIcon } from "@phosphor-icons/react";
 import Button from "@/components/buttons/Button";
 import FormSuccessModal from "@/components/overlays/FormSuccessModal";
 import FormErrorModal from "@/components/overlays/FormErrorModal";
+import PromoClaim from "@/components/layout/PromoClaim";
 import { submitContact } from "@/lib/actions/contact";
-import { useSiteSettings } from "@/contexts/SiteSettingsContext";
 import { CONTACT_TOPICS, DEFAULT_TOPIC, MESSAGE_MAX, type ContactTopic } from "@/types/contact";
 import { FORM_IDLE, type FormState } from "@/types/formState";
-import { PROMO_PARAM, PROMO_PARAM_VALUE } from "@/types/promo";
 
 const FIELD = "w-full rounded-[10px] border border-border-mid bg-white px-4 py-3 text-[15px] text-ink outline-none transition-colors duration-250 placeholder:text-placeholder focus:border-ink";
 const LABEL = "mb-1.5 block text-[13px] font-medium text-text-2";
 const ContactForm = () => {
   //Hooks
   const [state, formAction, sending] = useActionState(submitContact, FORM_IDLE);
-  const { promoClaimLabel, promoClaimNote } = useSiteSettings();
-  const promo = useSearchParams().get(PROMO_PARAM) === PROMO_PARAM_VALUE;
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [topic, setTopic] = useState<ContactTopic>(DEFAULT_TOPIC);
@@ -53,16 +49,7 @@ const ContactForm = () => {
           data-form-type="other"
           className="pointer-events-none absolute size-px opacity-0"
         />
-        {promo && (
-          <p className="flex items-start gap-2.5 rounded-[10px] border border-accent-blue-strong/40 bg-accent-blue/12 px-3.5 py-3 text-[13px] font-medium leading-[1.45] text-ink">
-            <SealPercentIcon size={17} weight="fill" aria-hidden="true" className="mt-px flex-none text-accent-blue-strong"/>
-            <span>
-              {promoClaimLabel}
-              <span className="mt-0.5 block font-normal text-text-2">{promoClaimNote}</span>
-            </span>
-          </p>
-        )}
-        {promo && <input type="hidden" name={PROMO_PARAM} value={PROMO_PARAM_VALUE}/>}
+        <PromoClaim/>
         <div className="grid grid-cols-1 gap-4 xphone:grid-cols-2">
           <div>
             <label htmlFor="contact-name" className={LABEL}>

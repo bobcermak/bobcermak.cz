@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import LegalPage from "@/components/layout/legal/LegalPage";
 import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_HREF } from "@/types/contact";
 
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 const PrivacyPage = () => (
-  <LegalPage title="Zásady ochrany osobních údajů" updated="5. 8. 2026">
+  <LegalPage title="Zásady ochrany osobních údajů" updated="13. 8. 2026" path="/zasady-ochrany-osobnich-udaju">
     <p>
       Tenhle web provozuju já, Bohuslav Čermák. Když mi přes formulář napíšete, zpracovávám vaše údaje
       jako správce. Níže je popsané přesně to, co se s nimi děje — žádné obecné fráze.
@@ -31,7 +32,10 @@ const PrivacyPage = () => (
       </li>
     </ul>
     <p>
-      Nic dalšího nesbírám. Web nemá analytiku, neměří návštěvnost ani neprofiluje návštěvníky.
+      Nad rámec formulářů se měří návštěvnost — ale <strong>jen pokud k tomu dáte souhlas</strong>{" "}
+      v liště, která vyskočí při první návštěvě. Měření je anonymní, neváže se na vaše jméno ani
+      e-mail a nepoužívá se k profilování ani k reklamě. Podrobnosti a přepínač souhlasu najdete
+      na stránce <Link href="/cookies">Cookies</Link>.
     </p>
     <h2>Proč je zpracovávám</h2>
     <p>
@@ -49,6 +53,13 @@ const PrivacyPage = () => (
       <li>
         <a href="https://resend.com" target="_blank" rel="noopener noreferrer">Resend</a> —
         odeslání potvrzovacího e-mailu. Server v Irsku (EU).
+      </li>
+      <li>
+        <a href="https://clarity.microsoft.com" target="_blank" rel="noopener noreferrer">
+          Microsoft Clarity
+        </a>{" "}
+        — anonymní měření návštěvnosti. Zapne se výhradně s vaším souhlasem, provozuje ho
+        Microsoft Ireland Operations Limited a data se mažou po 13 měsících.
       </li>
     </ul>
     <p>Nikomu jinému údaje nepředávám a neprodávám je.</p>

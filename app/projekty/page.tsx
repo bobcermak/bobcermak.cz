@@ -5,6 +5,8 @@ import CatalogCard from "@/components/layout/projects/browser/CatalogCard";
 import ProjectDetail from "@/components/layout/projects/browser/ProjectDetail";
 import ProjectGroupHeader from "@/components/layout/projects/browser/ProjectGroupHeader";
 import ProjectsBrowser from "@/components/layout/projects/browser/ProjectsBrowser";
+import JsonLd from "@/components/seo/JsonLd";
+import { breadcrumbSchema, projectsSchema } from "@/lib/seo/structuredData";
 import { getGithubActivity } from "@/lib/services/github/activity";
 import { buildIndex } from "@/lib/projects";
 import { PROJECT_GROUPS, PROJECTS_TITLE, PROJECTS_TOTAL } from "@/types/projectCatalog";
@@ -23,6 +25,8 @@ const ProjectsPage = async () => {
       className="mx-auto w-container mt-40 desktop:w-section"
       reveal={{ perTarget: true, y: 40, scale: 0.96, duration: 0.8, stagger: 0.09, ease: "back.out(1.3)", start: "top 90%" }}
     >
+      <JsonLd data={projectsSchema()}/>
+      <JsonLd data={breadcrumbSchema([{ label: "Projekty", path: "/projekty" }])}/>
       <header data-reveal className="mb-9 flex flex-wrap items-baseline gap-4.5">
         <h1 className="m-0">{PROJECTS_TITLE}</h1>
         <p className="text-sm font-regular tracking-[0.08em] text-text-3">

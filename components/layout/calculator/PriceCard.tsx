@@ -1,18 +1,16 @@
 "use client";
 
 import { useActionState, useEffect, useRef, useState, type FC } from "react";
-import { useSearchParams } from "next/navigation";
-import { ApproximateEqualsIcon, CheckIcon, LockIcon, SealPercentIcon, WarningIcon } from "@phosphor-icons/react";
+import { ApproximateEqualsIcon, CheckIcon, LockIcon, WarningIcon } from "@phosphor-icons/react";
 import Button from "@/components/buttons/Button";
 import FormSuccessModal from "@/components/overlays/FormSuccessModal";
 import FormErrorModal from "@/components/overlays/FormErrorModal";
 import { submitLead } from "@/lib/actions/lead";
-import { useSiteSettings } from "@/contexts/SiteSettingsContext";
+import PromoClaim from "@/components/layout/PromoClaim";
 import { ACCENT_STYLES, YEARLY_PRICE } from "@/types/calculator";
 import { formatCzk, type CalculatorResult } from "@/lib/calculator";
 import { type LeadSelection } from "@/types/lead";
 import { FORM_IDLE, type FormState } from "@/types/formState";
-import { PROMO_PARAM, PROMO_PARAM_VALUE } from "@/types/promo";
 
 const FIELD =
   "w-full rounded-[10px] border border-border-mid bg-white px-4 py-3 text-[15px] text-ink outline-none transition-colors duration-250 placeholder:text-placeholder focus:border-ink";
@@ -26,8 +24,6 @@ const PriceCard: FC<PriceCardProps> = ({ result, selection }) => {
     submitLead.bind(null, selection),
     FORM_IDLE
   );
-  const { promoClaimLabel, promoClaimNote } = useSiteSettings();
-  const promo = useSearchParams().get(PROMO_PARAM) === PROMO_PARAM_VALUE;
   const [email, setEmail] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [gdpr, setGdpr] = useState<boolean>(false);
@@ -120,17 +116,8 @@ const PriceCard: FC<PriceCardProps> = ({ result, selection }) => {
             <LockIcon size={16} weight="fill" aria-hidden="true" className="mt-0.5 flex-none text-text-3" />
             Detailní rozpad a shrnutí ti pošlu na e-mail.
           </p>
-          {promo && (
-            <p className="mb-3 flex items-start gap-2.5 rounded-[10px] border border-accent-blue-strong/40 bg-accent-blue/12 px-3.5 py-3 text-[13px] font-medium leading-[1.45] text-ink">
-              <SealPercentIcon size={17} weight="fill" aria-hidden="true" className="mt-px flex-none text-accent-blue-strong"/>
-              <span>
-                {promoClaimLabel}
-                <span className="mt-0.5 block font-normal text-text-2">{promoClaimNote}</span>
-              </span>
-            </p>
-          )}
           <form action={submit} className="flex flex-col gap-2.5" noValidate>
-            {promo && <input type="hidden" name={PROMO_PARAM} value={PROMO_PARAM_VALUE}/>}
+            <PromoClaim/>
             <input
               type="text"
               name="company"

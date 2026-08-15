@@ -2,7 +2,12 @@ import { PageWrapper, Navbar, ReactiveBg, Footer, PromoPopup } from "@/component
 import { Montserrat, Orbitron, Outfit } from "next/font/google";
 import type { Metadata, Viewport } from "next";
 import SiteSettingsProvider from "@/contexts/SiteSettingsProvider";
-import { CONTACT_EMAIL, CONTACT_PHONE, GITHUB_URL, LINKEDIN_URL } from "@/types/contact";
+import ConsentProvider from "@/contexts/ConsentContext";
+import CookieBanner from "@/components/overlays/CookieBanner";
+import Analytics from "@/components/analytics/Analytics";
+import JsonLd from "@/components/seo/JsonLd";
+import { personSchema, websiteSchema } from "@/lib/seo/structuredData";
+import { SITE_DESCRIPTION, SITE_LANG, SITE_LOCALE, SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/types/site";
 import "./globals.css";
 
 const montserrat = Montserrat({
@@ -24,15 +29,13 @@ const outfit = Outfit({
   display: "swap",
   variable: "--font-outfit-next",
 });
-const SITE_URL = "https://bobcermak.cz";
-const DESCRIPTION = "Bob Čermák — full stack developer z Prahy a Liberce. Stavím weby, rezervační systémy a mobilní appky v Next.js, React Native a Supabase. Od nápadu po nasazení.";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Bob Čermák | Full stack developer — weby, systémy & mobilní appky",
-    template: "%s | Bob Čermák",
+    default: `${SITE_NAME} | ${SITE_TAGLINE}`,
+    template: `%s | ${SITE_NAME}`,
   },
-  description: DESCRIPTION,
+  description: SITE_DESCRIPTION,
   referrer: "strict-origin-when-cross-origin",
   keywords: [
     "Bob Čermák",
@@ -46,23 +49,27 @@ export const metadata: Metadata = {
     "rezervační systém na míru",
     "mobilní aplikace na míru",
   ],
-  authors: [{ name: "Bob Čermák", url: SITE_URL }],
-  creator: "Bob Čermák",
-  publisher: "Bob Čermák",
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
   alternates: { canonical: "/" },
-  robots: { index: true, follow: true },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
+  },
   openGraph: {
     type: "website",
-    locale: "cs_CZ",
+    locale: SITE_LOCALE,
     url: SITE_URL,
-    siteName: "Bob Čermák",
-    title: "Bob Čermák | Full stack developer",
-    description: DESCRIPTION,
+    siteName: SITE_NAME,
+    title: `${SITE_NAME} | Full stack developer`,
+    description: SITE_DESCRIPTION,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Bob Čermák | Full stack developer",
-    description: DESCRIPTION,
+    title: `${SITE_NAME} | Full stack developer`,
+    description: SITE_DESCRIPTION,
   },
   icons: {
     icon: [
@@ -88,17 +95,22 @@ export default function RootLayout({
         <head>
           <JsonLd data={personSchema()}/>
           <JsonLd data={websiteSchema()}/>
+          <link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt"/>
         </head>
         <body className="font-montserrat">
-          <ReactiveBg/>
-          <header>
-            <Navbar/>
-          </header>
-          <PageWrapper>
-            <main>{children}</main>
-            <Footer/>
-          </PageWrapper>
-          <PromoPopup/>
+          <ConsentProvider>
+            <ReactiveBg/>
+            <header>
+              <Navbar/>
+            </header>
+            <PageWrapper>
+              <main>{children}</main>
+              <Footer/>
+            </PageWrapper>
+            <PromoPopup/>
+            <CookieBanner/>
+            <Analytics/>
+          </ConsentProvider>
         </body>
       </html>
     </SiteSettingsProvider>
