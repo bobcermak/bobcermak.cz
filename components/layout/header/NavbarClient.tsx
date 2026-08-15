@@ -15,7 +15,6 @@ const NavbarClient: FC<NavbarClientProps> = ({ logo, children }) => {
   const [scrolled, setScrolled] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const rootRef = useRef<HTMLDivElement>(null);
-  const listRef = useRef<HTMLUListElement>(null);
 
   const close = () => setIsOpen(false);
   useEffect(() => {
@@ -36,19 +35,19 @@ const NavbarClient: FC<NavbarClientProps> = ({ logo, children }) => {
     const onDesktop = () => {
       if (desktop.matches) close();
     };
-    const list = listRef.current;
+    const root = rootRef.current;
     const onLinkClick = (e: Event) => {
       if ((e.target as HTMLElement).closest("a")) close();
     };
     document.addEventListener("keydown", onKey);
     document.addEventListener("mousedown", onOutside);
     desktop.addEventListener("change", onDesktop);
-    list?.addEventListener("click", onLinkClick);
+    root?.addEventListener("click", onLinkClick);
     return () => {
       document.removeEventListener("keydown", onKey);
       document.removeEventListener("mousedown", onOutside);
       desktop.removeEventListener("change", onDesktop);
-      list?.removeEventListener("click", onLinkClick);
+      root?.removeEventListener("click", onLinkClick);
     };
   }, [isOpen]);
   return (
@@ -66,7 +65,6 @@ const NavbarClient: FC<NavbarClientProps> = ({ logo, children }) => {
           className={`pointer-events-auto relative flex items-center justify-between gap-5 rounded-full pl-5 pr-3 border border-white/70 backdrop-blur-xl backdrop-saturate-150 animate-[navDrop_0.7s_cubic-bezier(.2,.8,.25,1)_both] transition-[box-shadow,background-color,padding] duration-250 motion-reduce:animate-none py-2.75 bg-white/60 shadow-nav`}>
           {logo}
           <ul
-            ref={listRef}
             id={MENU_ID}
             className={`flex list-none flex-col gap-1 text-sm font-medium
               absolute inset-x-0 top-[calc(100%+8px)] rounded-[22px] border border-border bg-white p-3 shadow-[0_16px_40px_-12px_rgba(30,40,80,0.25)]
