@@ -19,9 +19,11 @@ type LanyardProps = {
   mirrorX?: boolean,
   offsetX?: number,
   bandWidth?: number | { mobile?: number; desktop?: number },
-  bandLength?: number
+  bandLength?: number,
+  active?: boolean
 };
-const Lanyard: FC<LanyardProps> = ({ position = [0, 0, 20], fov = 20, transparent = true, className, mirrorX = false, offsetX = 0, bandWidth, bandLength = 1 }) => {
+const DPR: [number, number] = [1, 1.5];
+const Lanyard: FC<LanyardProps> = ({ position = [0, 0, 20], fov = 20, transparent = true, className, mirrorX = false, offsetX = 0, bandWidth, bandLength = 1, active = true }) => {
   const [narrow, setNarrow] = useState(
     () => typeof window !== "undefined" && window.matchMedia("(max-width: 760px)").matches,
   );
@@ -43,12 +45,11 @@ const Lanyard: FC<LanyardProps> = ({ position = [0, 0, 20], fov = 20, transparen
       style={mirrorX ? { transform: "scaleX(-1)", transformOrigin: "center" } : undefined}
     >
       <Canvas
-        // Remount při změně jakékoli hodnoty ovlivňující fyziku/layout — jinak se
-        // kotva popruhu a délky lan (nastavené jen při mountu) nepřepočítají a
-        // popruh s kartou se rozejdou. Remount = čistá reinicializace jako refresh.
         key={`${offsetX}|${bandLength}|${resolvedBandWidth}|${cameraPosition.join(",")}`}
         camera={{ position: cameraPosition, fov }}
-        gl={{ alpha: transparent }}
+        dpr={DPR}
+        frameloop={active ? "always" : "never"}
+        gl={{ alpha: transparent, powerPreference: "high-performance" }}
         onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)}
       >
         <Physics gravity={[0, -40, 0]} timeStep={1 / 60}>

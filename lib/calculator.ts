@@ -16,6 +16,12 @@ export const formatCzk = (value: number) =>
 export const pagesFee = (pages: number) => (pages <= 3 ? 0 : pages <= 7 ? 5000 : 11000);
 export const pagesLabel = (pages: number) =>
   pages <= 3 ? "1–3 stránky" : pages <= 7 ? "4–7 stránek" : "8+ stránek";
+export const isOpenScope = (pages: number) => pages > 7;
+export const pagesFeeLabel = (pages: number) => {
+  const fee = pagesFee(pages);
+  if (!fee) return "×1";
+  return isOpenScope(pages) ? `od ${formatCzk(fee)} Kč` : `+${formatCzk(fee)} Kč`;
+};
 export const pagesCountLabel = (pages: number) =>
   pages >= PAGES_MAX ? `${PAGES_MAX}+ stránek` : `${pages} ${pages === 1 ? "stránka" : "stránek"}`;
 export const priceBeforeDiscount = (price: number, discount: number) =>

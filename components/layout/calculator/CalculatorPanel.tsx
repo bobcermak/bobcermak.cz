@@ -45,7 +45,7 @@ const CalculatorPanel: FC<CalculatorPanelProps> = ({ types, extras, rushContent 
     [type, pages, pickedExtras, rush]
   );
   return (
-    <div className="grid grid-cols-1 items-start gap-8 mlaptop:grid-cols-[minmax(0,1fr)_minmax(0,460px)] mlaptop:gap-10 desktop:grid-cols-[minmax(0,1fr)_minmax(0,560px)]">
+    <div className="grid grid-cols-1 items-start gap-8 mlaptop:grid-cols-[minmax(0,1fr)_minmax(0,clamp(360px,30vw,560px))] mlaptop:gap-10">
       <div className="flex min-w-0 flex-col">
         <CalculatorStep num="01" title="Typ projektu">
           <div

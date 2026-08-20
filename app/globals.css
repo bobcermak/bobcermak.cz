@@ -251,6 +251,17 @@ body {
   }
 }
 
+/*Rohová dekorace — stejná mřížka, ale točí se plynule dokola, ne po čtvrtinách*/
+
+@keyframes logoGridDrift {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @keyframes logoDotPulse {
   0%,
   100% {
@@ -306,7 +317,7 @@ body {
   }
 
   h1 {
-    @apply text-title laptop:text-heading desktop:text-display font-semibold leading-tight tracking-tight text-ink text-left;
+    @apply text-title mlaptop:text-heading laptop:text-display font-semibold leading-tight tracking-tight text-ink text-left;
   }
 
   h2 {
@@ -337,5 +348,63 @@ body {
 
   figure {
     @apply m-0 p-0;
+  }
+
+  /*
+    Mřížka teček z loga jako dekorace v rozích sekce — vlevo nahoře a vpravo dole.
+    Kreslí se čtyřmi radiálními gradienty do ::before/::after, takže nepřidává
+    žádný element navíc. Rozměr i odsazení jdou z clamp(), aby seděly k obrazovce.
+
+    Celé je to zavřené v media query od laptopu: níž má kontejner 90 % šířky a
+    v okraji pro mřížku není místo — a hlavně tam sekce nesmí dostat position,
+    protože by se tím přerovnalo, co komu leze přes okraj (hero a jeho plátno).
+  */
+  @media (min-width: 1281px) {
+    .logo-grid-edges {
+      --logo-grid-size: clamp(64px, 6.5vw, 132px);
+      --logo-grid-x: clamp(16px, 2.6vw, 64px);
+      --logo-grid-y: clamp(20px, 4vw, 88px);
+      position: relative;
+      isolation: isolate;
+    }
+
+    .logo-grid-edges::before,
+    .logo-grid-edges::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      width: var(--logo-grid-size);
+      height: var(--logo-grid-size);
+      background-image:
+        radial-gradient(circle closest-side, var(--color-accent-blue) 98%, transparent 100%),
+        radial-gradient(circle closest-side, var(--color-accent-peach) 98%, transparent 100%),
+        radial-gradient(circle closest-side, var(--color-accent-purple) 98%, transparent 100%),
+        radial-gradient(circle closest-side, var(--color-ink) 98%, transparent 100%);
+      /*Poměr tečka : mezera : tečka = 35.7 / 28.6 / 35.7, stejně jako v logu*/
+      background-size: 35.7% 35.7%;
+      background-position: 0 0, 100% 0, 0 100%, 100% 100%;
+      background-repeat: no-repeat;
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .logo-grid-edges::before {
+      top: var(--logo-grid-y);
+      left: var(--logo-grid-x);
+      animation: logoGridDrift 34s linear infinite;
+    }
+
+    .logo-grid-edges::after {
+      bottom: var(--logo-grid-y);
+      right: var(--logo-grid-x);
+      animation: logoGridDrift 46s linear infinite reverse;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .logo-grid-edges::before,
+      .logo-grid-edges::after {
+        animation: none;
+      }
+    }
   }
 }

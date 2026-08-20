@@ -12,7 +12,7 @@ const FeaturedProjects = () => {
       className="w-full pt-15 pb-20"
       reveal={{ perTarget: true, y: 44, scale: 0.94, duration: 0.85, stagger: 0.1, ease: "back.out(1.4)", start: "top 88%" }}
     >
-      <div className="mx-auto w-container desktop:w-xsection">
+      <div className="mx-auto w-container laptop:w-xsection">
         <header data-reveal className="mb-5 min-[663px]:mb-10 flex flex-wrap items-baseline justify-between gap-10">
           <h2>Vybrané projekty</h2>
           <Link href="/projekty" className="text-sm font-medium text-ink transition-colors duration-250 hover:text-text-2 active:text-text-2">

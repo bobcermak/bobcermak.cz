@@ -45,7 +45,7 @@ const PriceCard: FC<PriceCardProps> = ({ result, selection }) => {
   return (
     <div
       data-reveal
-      className="relative min-w-0 overflow-hidden rounded-[20px] border border-border bg-white p-6 shadow-card xphone:p-7 mlaptop:sticky mlaptop:top-32 desktop:p-8"
+      className="relative min-w-0 overflow-hidden rounded-[20px] border border-border bg-white p-6 shadow-card xphone:p-7 mlaptop:sticky mlaptop:top-32 laptop:p-8"
     >
       <span aria-hidden="true" className={`absolute inset-x-0 top-0 h-1 transition-colors duration-250 ${accent.bg}`}/>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2.5">

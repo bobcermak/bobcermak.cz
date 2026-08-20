@@ -11,6 +11,7 @@ import { enterRoute } from "@/lib/visitedRoutes";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
+  ScrollTrigger.config({ limitCallbacks: true, ignoreMobileResize: true });
 }
 export const PageWrapper = ({ children }: { children: React.ReactNode }) => {
   //Hooks
@@ -19,7 +20,7 @@ export const PageWrapper = ({ children }: { children: React.ReactNode }) => {
 
   useGSAP(() => {
     const lenis = new Lenis({
-      duration: 2,
+      duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     });
     setLenis(lenis);

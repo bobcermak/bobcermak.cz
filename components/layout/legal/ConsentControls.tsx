@@ -43,8 +43,9 @@ const ConsentControls: FC = () => {
         </button>
       </div>
       <p className="mt-3.5 text-[12.5px] leading-[1.5] text-text-3">
-        Odmítnutí zabere okamžitě — měřicí skript se do stránky vůbec nenačte. Pokud už nějaká
-        data vznikla, smažou se podle lhůty níž.
+        Odmítnutí zabere okamžitě — dokud souhlas nedáte, měřicí skript se do stránky vůbec
+        nenačte. Když souhlas odvoláte, dostane Clarity pokyn přestat měřit a smazat svoje
+        cookies. Pokud už nějaká data vznikla, smažou se podle lhůty níž.
       </p>
     </div>
   );

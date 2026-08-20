@@ -22,7 +22,7 @@ const ProjectsPage = async () => {
   return (
     <RevealSection
       aria-label="Projekty"
-      className="mx-auto w-container mt-40 desktop:w-section"
+      className="mx-auto w-container mt-40 laptop:w-section"
       reveal={{ perTarget: true, y: 40, scale: 0.96, duration: 0.8, stagger: 0.09, ease: "back.out(1.3)", start: "top 90%" }}
     >
       <JsonLd data={projectsSchema()}/>

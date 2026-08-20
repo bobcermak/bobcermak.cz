@@ -10,10 +10,10 @@ const AboutSection = () => {
     <RevealSection
       id={ABOUT_SECTION_ID}
       aria-label="O mně"
-      className="w-full py-15"
+      className="logo-grid-edges w-full py-15"
       drift={{ distance: 160, rotate: 3.5, direction: "left" }}
     >
-      <div className="mx-auto grid w-container grid-cols-1 items-center gap-8 stablet:grid-cols-[200px_minmax(0,1fr)] stablet:gap-11 laptop:grid-cols-[240px_minmax(0,1fr)] desktop:w-section">
+      <div className="mx-auto grid w-container grid-cols-1 items-center gap-8 stablet:grid-cols-[200px_minmax(0,1fr)] stablet:gap-11 mlaptop:grid-cols-[240px_minmax(0,1fr)] laptop:w-section">
         <header
           data-drift
           className="relative aspect-square w-full max-w-55 overflow-hidden rounded-2xl border border-border bg-bg-tint stablet:max-w-none"

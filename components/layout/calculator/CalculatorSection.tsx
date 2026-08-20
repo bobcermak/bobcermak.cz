@@ -13,7 +13,7 @@ const CalculatorSection = () => {
       className="w-full border-y border-border bg-bg-soft py-15"
       reveal={{ perTarget: true, y: 40, scale: 0.96, duration: 0.8, stagger: 0.09, ease: "back.out(1.3)", start: "top 88%" }}
     >
-      <div className="mx-auto w-container desktop:w-xsection">
+      <div className="mx-auto w-container laptop:w-xsection">
         <header data-reveal className="mb-10">
           <p className="mb-4 text-eyebrow font-semibold uppercase tracking-[0.14em] text-text-3">
             Kalkulačka

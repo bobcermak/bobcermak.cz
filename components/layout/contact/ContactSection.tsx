@@ -13,9 +13,9 @@ const ContactSection = () => {
     >
       <div
         data-drift
-        className="mx-auto grid w-container grid-cols-1 overflow-hidden rounded-[20px] border border-border bg-white shadow-card mlaptop:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] desktop:w-section"
+        className="mx-auto grid w-container grid-cols-1 overflow-hidden rounded-[20px] border border-border bg-white shadow-card mlaptop:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] laptop:w-section"
       >
-        <div className="flex flex-col gap-10 p-7 xphone:p-9 mlaptop:justify-between desktop:p-11">
+        <div className="flex flex-col gap-10 p-7 xphone:p-9 mlaptop:justify-between laptop:p-10 desktop:p-11">
           <header>
             <p className="mb-4 text-eyebrow font-semibold uppercase tracking-[0.14em] text-text-3">
               {CONTACT_EYEBROW}
@@ -25,7 +25,7 @@ const ContactSection = () => {
           </header>
           <ContactInfo/>
         </div>
-        <div className="border-t border-border p-7 xphone:p-9 mlaptop:border-l mlaptop:border-t-0 desktop:p-11">
+        <div className="border-t border-border p-7 xphone:p-9 mlaptop:border-l mlaptop:border-t-0 laptop:p-10 desktop:p-11">
           <ContactForm/>
         </div>
       </div>

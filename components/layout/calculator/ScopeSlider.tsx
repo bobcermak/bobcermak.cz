@@ -1,7 +1,7 @@
 "use client";
 
 import type { FC } from "react";
-import { formatCzk, pagesCountLabel, pagesFee, pagesLabel } from "@/lib/calculator";
+import { pagesCountLabel, pagesFeeLabel, pagesLabel } from "@/lib/calculator";
 import { PAGES_MAX, PAGES_MIN } from "@/types/calculator";
 
 type ScopeSliderProps = {
@@ -9,12 +9,11 @@ type ScopeSliderProps = {
   onChange: (pages: number) => void;
 };
 const ScopeSlider: FC<ScopeSliderProps> = ({ pages, onChange }) => {
-  const scope = pagesFee(pages);
   return (
     <div className="rounded-[14px] border-[1.5px] border-border bg-white px-4 pb-4 pt-5 xphone:px-5.5 xphone:pb-4.5 xphone:pt-5.5">
       <div className="mb-4 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
         <span className="text-[1.05rem] font-semibold text-ink">{pagesLabel(pages)}</span>
-        <span className="text-[13px] font-semibold text-ink">{scope ? `+${formatCzk(scope)} Kč` : "×1"}</span>
+        <span className="text-[13px] font-semibold text-ink">{pagesFeeLabel(pages)}</span>
       </div>
       <input
         type="range"

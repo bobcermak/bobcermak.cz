@@ -12,13 +12,13 @@ type HeroSectionProps = {
 const HeroSection: FC<HeroSectionProps> = ({ eyebrow, title = "Stavím weby a appky, které si na nic nehrajou.", subtitle = "Full stack developer — Next.js, React Native, Supabase. Od statického webu po rezervační systém s vlastním CMS." }) => {
   return (
     <RevealSection scrollTrigger={false} id="hero" aria-label="Úvod" className="relative w-full overflow-hidden">
-      <div className="pointer-events-none relative mx-auto flex min-h-[150dvh] w-container flex-col justify-start pt-44 stablet:pt-48 tablet:min-h-dvh tablet:justify-center tablet:pt-0 desktop:w-section">
+      <div className="pointer-events-none relative mx-auto flex min-h-[150dvh] w-container flex-col justify-start pt-44 stablet:pt-48 tablet:min-h-dvh tablet:justify-center tablet:pt-0 laptop:w-section">
         <div className="pointer-events-none tablet:pointer-events-auto backdrop-blur-md tablet:backdrop-blur-none bg-white/10 tablet:bg-transparent z-10 tablet:z-auto w-fit py-10 px-5 tablet:p-0 rounded-[20px] tablet:rounded-none">
           <header className="pointer-events-none tablet:pointer-events-auto">
             <HeroEyebrow text={eyebrow}/>
             <h1
               data-reveal
-              className="pointer-events-none relative max-w-[15ch] text-[clamp(2.5rem,6vw,5rem)] font-bold leading-[1.02] tracking-[-0.03em] text-ink"
+              className="pointer-events-none relative max-w-[15ch] text-[clamp(2.5rem,6vw,4rem)] font-bold leading-[1.02] tracking-[-0.03em] text-ink"
             >
               <span className="pointer-events-none">{title}</span>
             </h1>
@@ -40,7 +40,7 @@ const HeroSection: FC<HeroSectionProps> = ({ eyebrow, title = "Stavím weby a ap
             </Button>
           </div>
         </div>
-        <span className="pointer-events-none absolute bottom-36 laptop:right-40 min-[1400px]:right-50 min-[1500px]:right-60 desktop:-right-25 min-[1700px]:right-10 xldesktop:right-25 z-0 hidden text-eyebrow font-medium uppercase tracking-[0.14em] text-text-3 laptop:block motion-safe:animate-[floatUp_1.2s_cubic-bezier(.2,.8,.25,1)_1s_both]">
+        <span className="pointer-events-none absolute bottom-36 laptop:right-5 min-[1400px]:-right-4 min-[1500px]:right-20 desktop:-right-25 min-[1700px]:right-10 xldesktop:right-25 z-0 hidden text-eyebrow font-medium uppercase tracking-[0.14em] text-text-3 laptop:block motion-safe:animate-[floatUp_1.2s_cubic-bezier(.2,.8,.25,1)_1s_both]">
           <span className="mr-1 inline-block motion-safe:animate-bounce">↑</span>Chyť kartu a zatahej
         </span>
       </div>

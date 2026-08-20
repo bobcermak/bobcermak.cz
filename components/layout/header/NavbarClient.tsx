@@ -12,17 +12,10 @@ const NavbarClient: FC<NavbarClientProps> = ({ logo, children }) => {
   const DESKTOP_MQ = "(min-width: 641px)";
   const MENU_ID = "hlavni-menu";
   //Hooks
-  const [scrolled, setScrolled] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const rootRef = useRef<HTMLDivElement>(null);
 
   const close = () => setIsOpen(false);
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
   useEffect(() => {
     if (!isOpen) return;
     const onKey = (e: KeyboardEvent) => {
@@ -55,14 +48,14 @@ const NavbarClient: FC<NavbarClientProps> = ({ logo, children }) => {
       <div
         aria-hidden
         onClick={close}
-        className={`fixed inset-0 z-40 bg-white/10 backdrop-blur-md transition-opacity duration-300 laptop:hidden
-          ${isOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"}`}
+        className={`fixed inset-0 z-40 bg-white/10 backdrop-blur-md transition-[opacity,visibility] duration-300 laptop:hidden
+          ${isOpen ? "pointer-events-auto visible opacity-100" : "pointer-events-none invisible opacity-0"}`}
       />
-      <div className="pointer-events-none fixed inset-x-0 top-6 z-50 flex justify-center w-container desktop:w-section mx-auto">
+      <div className="pointer-events-none fixed inset-x-0 top-6 z-50 flex justify-center w-container laptop:w-section mx-auto">
       <div ref={rootRef} className="pointer-events-none relative w-full">
         <nav
           aria-label="Hlavní navigace"
-          className={`pointer-events-auto relative flex items-center justify-between gap-5 rounded-full pl-5 pr-3 border border-white/70 backdrop-blur-xl backdrop-saturate-150 animate-[navDrop_0.7s_cubic-bezier(.2,.8,.25,1)_both] transition-[box-shadow,background-color,padding] duration-250 motion-reduce:animate-none py-2.75 bg-white/60 shadow-nav`}>
+          className={`pointer-events-auto relative flex items-center justify-between gap-5 rounded-full pl-5 pr-3 border border-white/70 backdrop-blur-md backdrop-saturate-150 animate-[navDrop_0.7s_cubic-bezier(.2,.8,.25,1)_both] transition-[box-shadow,background-color,padding] duration-250 motion-reduce:animate-none py-2.75 bg-white/60 shadow-nav`}>
           {logo}
           <ul
             id={MENU_ID}
