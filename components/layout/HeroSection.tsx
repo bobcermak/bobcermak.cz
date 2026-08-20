@@ -18,7 +18,7 @@ const HeroSection: FC<HeroSectionProps> = ({ eyebrow, title = "Stavím weby a ap
             <HeroEyebrow text={eyebrow}/>
             <h1
               data-reveal
-              className="pointer-events-none relative max-w-[15ch] text-[clamp(2.5rem,6vw,4rem)] font-bold leading-[1.02] tracking-[-0.03em] text-ink"
+              className="pointer-events-none relative max-w-[15ch] text-[clamp(2.5rem,6vw,4rem)] min-[1700px]:text-[5rem] font-bold leading-[1.02] tracking-[-0.03em] text-ink"
             >
               <span className="pointer-events-none">{title}</span>
             </h1>

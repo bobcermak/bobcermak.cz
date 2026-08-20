@@ -2,9 +2,12 @@ import { LEGAL_LINKS } from "./legal";
 
 export const SITE_URL = "https://bobcermak.cz";
 export const SITE_NAME = "Bob Čermák";
+export const SITE_NAME_LEGAL = "Bohuslav Čermák";
+export const SITE_GIVEN_NAME = "Bohuslav";
+export const SITE_FAMILY_NAME = "Čermák";
+export const SITE_NAME_ALTS = [SITE_NAME_LEGAL, "Bohuslav Cermak", "Bob Cermak"];
 export const SITE_TAGLINE = "Full stack developer — weby, systémy & mobilní appky";
-export const SITE_DESCRIPTION =
-  "Bob Čermák — full stack developer z Prahy a Liberce. Stavím weby, rezervační systémy a mobilní appky v Next.js, React Native a Supabase. Od nápadu po nasazení.";
+export const SITE_DESCRIPTION = "Bob Čermák — full stack developer z Prahy a Liberce. Stavím weby, rezervační systémy a mobilní appky v Next.js, React Native a Supabase. Od nápadu po nasazení.";
 export const SITE_LOCALE = "cs_CZ";
 export const SITE_LANG = "cs";
 export const absoluteUrl = (path: string) => new URL(path, SITE_URL).toString();

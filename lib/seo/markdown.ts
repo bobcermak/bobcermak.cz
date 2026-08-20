@@ -6,7 +6,7 @@ import { calculatorExtras, projectTypes, RUSH_LABEL, RUSH_SUB, YEARLY_LABEL, YEA
 import { CONTACT_EMAIL, CONTACT_PHONE, GITHUB_URL, LINKEDIN_URL } from "@/types/contact";
 import { PROJECT_GROUPS } from "@/types/projectCatalog";
 import { services } from "@/types/services";
-import { absoluteUrl, SITE_DESCRIPTION, SITE_NAME, SITE_ROUTES, SITE_TAGLINE } from "@/types/site";
+import { absoluteUrl, SITE_DESCRIPTION, SITE_NAME, SITE_NAME_LEGAL, SITE_ROUTES, SITE_TAGLINE } from "@/types/site";
 
 const contactBlock = () => [
   `- E-mail: ${CONTACT_EMAIL}`,
@@ -22,7 +22,7 @@ export const buildLlmsIndex = (): string =>
     "",
     `> ${SITE_DESCRIPTION}`,
     "",
-    `${SITE_NAME} je ${yearsSince(ABOUT_BIRTH)}letý full stack developer. ${SITE_TAGLINE}.`,
+    `${SITE_NAME} (plným jménem ${SITE_NAME_LEGAL}) je ${yearsSince(ABOUT_BIRTH)}letý full stack developer. ${SITE_TAGLINE}.`,
     "Web je v češtině a slouží jako portfolio a poptávkový kanál.",
     "",
     "## Stránky",
@@ -115,6 +115,8 @@ const apisSection = () => [
 export const buildLlmsFull = (): string =>
   [
     `# ${SITE_NAME} — kompletní obsah`,
+    "",
+    `Plné jméno: ${SITE_NAME_LEGAL}.`,
     "",
     `> ${SITE_DESCRIPTION}`,
     "",

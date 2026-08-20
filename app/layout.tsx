@@ -7,7 +7,7 @@ import CookieBanner from "@/components/overlays/CookieBanner";
 import Analytics from "@/components/analytics/Analytics";
 import JsonLd from "@/components/seo/JsonLd";
 import { personSchema, websiteSchema } from "@/lib/seo/structuredData";
-import { SITE_DESCRIPTION, SITE_LANG, SITE_LOCALE, SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/types/site";
+import { SITE_DESCRIPTION, SITE_LANG, SITE_LOCALE, SITE_NAME, SITE_NAME_LEGAL, SITE_TAGLINE, SITE_URL } from "@/types/site";
 import "./globals.css";
 
 const montserrat = Montserrat({
@@ -39,6 +39,8 @@ export const metadata: Metadata = {
   referrer: "strict-origin-when-cross-origin",
   keywords: [
     "Bob Čermák",
+    "Bohuslav Čermák",
+    "Bohuslav Cermak",
     "full stack developer",
     "freelance vývojář",
     "Next.js vývojář",
@@ -49,7 +51,7 @@ export const metadata: Metadata = {
     "rezervační systém na míru",
     "mobilní aplikace na míru",
   ],
-  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  authors: [{ name: SITE_NAME_LEGAL, url: SITE_URL }, { name: SITE_NAME, url: SITE_URL }],
   creator: SITE_NAME,
   publisher: SITE_NAME,
   alternates: { canonical: "/" },

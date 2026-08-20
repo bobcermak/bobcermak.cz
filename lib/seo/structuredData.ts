@@ -4,7 +4,7 @@ import { projectTypes } from "@/types/calculator";
 import { CONTACT_EMAIL, CONTACT_PHONE, GITHUB_URL, LINKEDIN_URL } from "@/types/contact";
 import { PROJECT_GROUPS } from "@/types/projectCatalog";
 import { services } from "@/types/services";
-import { absoluteUrl, SITE_DESCRIPTION, SITE_NAME, SITE_URL, SITE_LANG } from "@/types/site";
+import { absoluteUrl, SITE_DESCRIPTION, SITE_FAMILY_NAME, SITE_GIVEN_NAME, SITE_NAME, SITE_NAME_ALTS, SITE_URL, SITE_LANG } from "@/types/site";
 
 const PERSON_ID = `${SITE_URL}/#person`;
 const SITE_ID = `${SITE_URL}/#website`;
@@ -13,6 +13,9 @@ export const personSchema = () => ({
   "@type": "Person",
   "@id": PERSON_ID,
   name: SITE_NAME,
+  alternateName: SITE_NAME_ALTS,
+  givenName: SITE_GIVEN_NAME,
+  familyName: SITE_FAMILY_NAME,
   url: SITE_URL,
   email: CONTACT_EMAIL,
   telephone: CONTACT_PHONE,
@@ -113,6 +116,7 @@ export const profileSchema = () => ({
     "@id": PERSON_ID,
     "@type": "Person",
     name: SITE_NAME,
+    alternateName: SITE_NAME_ALTS,
     description: `Full stack developer, ${yearsSince(ABOUT_BIRTH)} let, Praha a Liberec.`,
   },
 });

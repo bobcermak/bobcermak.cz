@@ -12,7 +12,7 @@ const SOCIALS = [
 const MUTED_LINK = "text-text-3 transition-colors duration-250 hover:text-ink active:text-ink";
 const Footer = () => (
   <footer id="kontakt" className="mt-15 tablet:mt-20 border-t border-border bg-bg-soft">
-    <div className="mx-auto w-container max-w-[1400px]">
+    <div className="mx-auto w-container max-w-[1200px]">
       <div className="flex flex-col gap-10 py-14 slaptop:flex-row slaptop:items-start slaptop:justify-between slaptop:py-16">
         <div className="min-w-0">
           <p className="text-[clamp(2.4rem,6.4vw,4.25rem)] font-semibold leading-[1.02] tracking-[-0.03em] text-ink">
