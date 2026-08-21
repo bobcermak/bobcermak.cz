@@ -21,14 +21,14 @@ const ContactInfo: FC = () => (
       return (
         <li key={item.label}>
           {item.href ? (
-            <a href={item.href} className="group flex w-fit items-center gap-3">
+            <a href={item.href} className="group flex w-fit max-w-full items-center gap-3">
               <span
                 aria-hidden="true"
                 className={`${TILE} transition-transform duration-250 ease-[cubic-bezier(.2,.8,.25,1)] group-hover:-rotate-6 group-active:-rotate-6`}
               >
                 <Icon size={16}/>
               </span>
-              <span className="min-w-0 text-sm text-text-2 transition-colors duration-250 group-hover:text-ink group-active:text-ink">
+              <span className="min-w-0 wrap-break-word text-sm text-text-2 transition-colors duration-250 group-hover:text-ink group-active:text-ink">
                 {item.label}
               </span>
             </a>

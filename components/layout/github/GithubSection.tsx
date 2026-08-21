@@ -13,12 +13,12 @@ const GithubSection: FC<{ activity: GithubActivity | null }> = ({ activity }) =>
       aria-labelledby={`${GITHUB_SECTION_ID}-title`}
       className="mt-16 scroll-mt-28"
     >
-      <header data-reveal className="mb-6 flex items-center gap-4">
+      <header data-reveal className="mb-6 flex flex-wrap items-center gap-x-4 gap-y-2">
         <span
           aria-hidden="true"
           className="size-3 flex-none rounded-full animate-pulse bg-accent-purple shadow-[0_0_0_4px_rgba(206,190,236,0.3)]"
         />
-        <h2 id={`${GITHUB_SECTION_ID}-title`} className="flex-none text-[clamp(1.5rem,3.2vw,2rem)]">
+        <h2 id={`${GITHUB_SECTION_ID}-title`} className="min-w-0 text-[clamp(1.5rem,3.2vw,2rem)]">
           {GITHUB_TITLE}
         </h2>
         <span aria-hidden="true" className="hidden h-px flex-1 bg-border stablet:block"/>

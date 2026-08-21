@@ -82,6 +82,14 @@ html {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overscroll-behavior: none;
+  /*
+    Pojistka proti vodorovnemu pretekani na mobilu. Zamerne `clip`, ne `hidden`:
+    `clip` neudela z <html> scroll kontejner, takze `position: sticky` uvnitr
+    (PriceCard v kalkulacce) dal drzi. Safari < 16 `clip` nezna, pravidlo
+    zahodi a uplatni se fallback `overflow-x: hidden` z <body> nize, ktery se
+    propaguje na viewport - tedy presne dnesni chovani.
+  */
+  overflow-x: clip;
 }
 
 body {
@@ -90,7 +98,9 @@ body {
   min-height: 100svh;
   display: flex;
   flex-direction: column;
+  /*Fallback pro Safari < 16; moderni prohlizece prepise `clip` na radku nize.*/
   overflow-x: hidden;
+  overflow-x: clip;
   overscroll-behavior: none;
 }
 
@@ -320,12 +330,17 @@ body {
     @apply text-title mlaptop:text-heading laptop:text-display font-semibold leading-tight tracking-tight text-ink text-left;
   }
 
+  /*
+    Na mobilu o stupen dolu. 3.1rem (49.64px) se do 90vw uzke obrazovky vejde
+    jen taktak - nadpisy tam sedely presne na hranici kontejneru a jakekoli
+    delsi slovo uz lezlo ven. Od tabletu vys zustavaji velikosti nezmenene.
+  */
   h2 {
-    @apply text-sub-heading font-semibold leading-tight tracking-tight text-ink text-left;
+    @apply text-title tablet:text-sub-heading font-semibold leading-tight tracking-tight text-ink text-left;
   }
 
   h3 {
-    @apply text-title font-semibold leading-snug tracking-tight text-ink text-left;
+    @apply text-sub tablet:text-title font-semibold leading-snug tracking-tight text-ink text-left;
   }
 
   h4,
@@ -348,6 +363,24 @@ body {
 
   figure {
     @apply m-0 p-0;
+  }
+
+  /*
+    Posledni zachrana proti vodorovnemu presahu: kdyz se souvisly retezec
+    (email, URL, dlouhy nazev) nevejde na radek, zalomi se misto toho, aby
+    roztahl rodice. Na bezny text nema vliv - uplatni se az kdyz slovo
+    opravdu neprojde.
+  */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  li,
+  a {
+    overflow-wrap: break-word;
   }
 
   /*

@@ -37,10 +37,10 @@ const ApiRow: FC<ApiRowProps> = ({ api }) => {
       </span>
       <div className="col-start-3 row-start-1 min-w-0">
         <div className="flex flex-wrap items-center gap-x-2.5 gap-y-2">
-          <h3 className="text-[clamp(1.1rem,2vw,1.45rem)] font-semibold tracking-[-0.015em] text-ink">
+          <h3 className="min-w-0 text-[clamp(1.1rem,2vw,1.45rem)] font-semibold tracking-[-0.015em] text-ink">
             {name}
           </h3>
-          <p className="whitespace-nowrap rounded-full bg-ink px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.06em] leading-none text-white">
+          <p className="max-w-full rounded-full bg-ink px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.06em] leading-[1.2] text-white">
             {free}
           </p>
         </div>
