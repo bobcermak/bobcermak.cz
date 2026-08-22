@@ -14,7 +14,7 @@ const Navbar = () => {
         </li>
       ))}
       <li className="pt-2 laptop:pt-0 laptop:ml-1">
-        <Button href={`#${CONTACT_SECTION_ID}`} wFull ariaLabel="Kontakt" className="laptop:w-fit">
+        <Button href={`/#${CONTACT_SECTION_ID}`} wFull ariaLabel="Kontakt" className="laptop:w-fit">
           Kontakt
         </Button>
       </li>

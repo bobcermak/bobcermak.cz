@@ -69,7 +69,7 @@ const Footer = () => (
         </Link>
       </div>
       <div className="flex justify-center border-t border-border py-5">
-        <PoweredBy powered="powered" firstName="Bob" lastName="Čermák" link="#hero"/>
+        <PoweredBy powered="powered" firstName="Bob" lastName="Čermák" link="/#hero"/>
       </div>
     </div>
   </footer>

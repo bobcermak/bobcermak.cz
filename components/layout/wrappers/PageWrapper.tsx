@@ -33,30 +33,53 @@ export const PageWrapper = ({ children }: { children: React.ReactNode }) => {
     const settle = window.setTimeout(refresh, 500);
     const late = window.setTimeout(refresh, 2000);
     window.addEventListener("load", refresh);
-    const handleLinkClick = (e: MouseEvent) => {
+    const samePageUrl = (e: MouseEvent): URL | null => {
       const target = e.target as HTMLElement;
       const link = target.closest("a");
-      if (!link) return;
+      if (!link) return null;
       const href = link.getAttribute("href");
-      if (!href || !href.includes("#")) return;
-      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-      if (link.target && link.target !== "_self") return;
+      if (!href || link.hasAttribute("download")) return null;
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return null;
+      if (link.target && link.target !== "_self") return null;
       let url: URL;
       try {
         url = new URL(href, window.location.href);
       } catch {
-        return;
+        return null;
       }
-      if (url.origin !== window.location.origin || url.pathname !== window.location.pathname) return;
-      const targetElem = url.hash ? document.getElementById(url.hash.slice(1)) : null;
+      if (url.origin !== window.location.origin || url.pathname !== window.location.pathname) return null;
+      return url;
+    };
+    /*
+      Odkaz na stejnou stranku bez kotvy (napr. logo na "/", kdyz uz jsem na "/#calculator").
+      Next.js segment neprerenderuje, takze scroll nikdo neresetuje a kotva zustane viset v URL --
+      router si ji navic z canonicalUrl pushne zpatky. Bereme si klik uz v capture fazi, aby ho
+      next/link preskocil, a dodelame to sami, jako by to udelal prohlizec pri klasicke navigaci.
+    */
+    const handleTopClick = (e: MouseEvent) => {
+      const url = samePageUrl(e);
+      if (!url || url.hash || url.search !== window.location.search) return;
+      e.preventDefault();
+      if (window.location.hash) {
+        window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}`);
+      }
+      // force prebije jeste bezici zamceny scroll na kotvu, ale ne zavreny scroll pod modalem
+      lenis.scrollTo(0, { duration: 1.2, lock: true, force: !lenis.isStopped });
+    };
+    const handleLinkClick = (e: MouseEvent) => {
+      const url = samePageUrl(e);
+      if (!url || !url.hash) return;
+      const targetElem = document.getElementById(url.hash.slice(1));
       if (!targetElem) return;
       if (url.search === window.location.search) e.preventDefault();
       lenis.scrollTo(targetElem, {
         offset: -80,
         duration: 1.5,
-        lock: true
+        lock: true,
+        force: !lenis.isStopped
       });
     };
+    document.addEventListener("click", handleTopClick, true);
     document.addEventListener("click", handleLinkClick);
     const hash = window.location.hash.slice(1);
     const anchor = window.setTimeout(() => {
@@ -74,6 +97,7 @@ export const PageWrapper = ({ children }: { children: React.ReactNode }) => {
       );
     }
     return () => {
+      document.removeEventListener("click", handleTopClick, true);
       document.removeEventListener("click", handleLinkClick);
       window.removeEventListener("load", refresh);
       window.clearTimeout(settle);
@@ -83,7 +107,7 @@ export const PageWrapper = ({ children }: { children: React.ReactNode }) => {
       lenis.destroy();
       gsap.ticker.remove(raf);
     };
-  }, { scope: wrapperRef, dependencies: [pathname] });
+  }, { scope: wrapperRef, dependencies: [pathname], revertOnUpdate: true });
   return (
     <div ref={wrapperRef}>
       {children}
