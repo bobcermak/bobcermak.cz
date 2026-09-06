@@ -1,4 +1,4 @@
-import { PageWrapper, Navbar, ReactiveBg, Footer, PromoPopup } from "@/components";
+import { PageWrapper, Navbar, ReactiveBg, ScrollProgress, Footer, PromoPopup } from "@/components";
 import { Montserrat, Orbitron, Outfit } from "next/font/google";
 import type { Metadata, Viewport } from "next";
 import SiteSettingsProvider from "@/contexts/SiteSettingsProvider";
@@ -102,6 +102,7 @@ export default function RootLayout({
         <body className="font-montserrat">
           <ConsentProvider>
             <ReactiveBg/>
+            <ScrollProgress/>
             <header>
               <Navbar/>
             </header>

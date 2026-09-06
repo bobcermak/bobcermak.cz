@@ -1,19 +1,18 @@
 "use client";
 
 import { useActionState, useEffect, useRef, useState, type FC } from "react";
-import { ApproximateEqualsIcon, CheckIcon, LockIcon, WarningIcon } from "@phosphor-icons/react";
-import Button from "@/components/buttons/Button";
+import { CheckIcon, WarningIcon } from "@phosphor-icons/react";
 import FormSuccessModal from "@/components/overlays/FormSuccessModal";
 import FormErrorModal from "@/components/overlays/FormErrorModal";
+import PriceDonut from "./PriceDonut";
 import { submitLead } from "@/lib/actions/lead";
 import PromoClaim from "@/components/layout/PromoClaim";
-import { ACCENT_STYLES, YEARLY_PRICE } from "@/types/calculator";
+import { YEARLY_PRICE } from "@/types/calculator";
 import { formatCzk, type CalculatorResult } from "@/lib/calculator";
 import { type LeadSelection } from "@/types/lead";
 import { FORM_IDLE, type FormState } from "@/types/formState";
 
-const FIELD =
-  "w-full rounded-[10px] border border-border-mid bg-white px-4 py-3 text-[15px] text-ink outline-none transition-colors duration-250 placeholder:text-placeholder focus:border-ink";
+const FIELD = "w-full rounded-xl border border-white/25 bg-white/15 px-4 py-3 text-[15px] text-white outline-none transition-colors duration-250 placeholder:text-white/65 focus:border-white focus:bg-white/25";
 type PriceCardProps = {
   result: CalculatorResult;
   selection: LeadSelection;
@@ -29,7 +28,6 @@ const PriceCard: FC<PriceCardProps> = ({ result, selection }) => {
   const [gdpr, setGdpr] = useState<boolean>(false);
   const [dismissedState, setDismissedState] = useState<FormState | null>(null);
   const openedAt = useRef<number>(0);
-  const accent = ACCENT_STYLES[result.accent];
 
   useEffect(() => {
     openedAt.current = Date.now();
@@ -42,81 +40,77 @@ const PriceCard: FC<PriceCardProps> = ({ result, selection }) => {
   const shown = state !== dismissedState;
   const submitted = state.status === "sent";
   const failure = state.status === "failed" && shown ? state : null;
+  const paidShare = result.showCompare ? (100 - result.discount) / 100 : 1;
+  const paidPct = Math.round(paidShare * 100);
   return (
-    <div
-      data-reveal
-      className="relative min-w-0 overflow-hidden rounded-[20px] border border-border bg-white p-6 shadow-card xphone:p-7 mlaptop:sticky mlaptop:top-32 laptop:p-8"
-    >
-      <span aria-hidden="true" className={`absolute inset-x-0 top-0 h-1 transition-colors duration-250 ${accent.bg}`}/>
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-2.5">
-        <span className="text-eyebrow font-semibold uppercase tracking-[0.12em] text-text-3">
-          Orientační cena
-        </span>
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-ink px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-white">
-          <ApproximateEqualsIcon size={12} weight="bold" aria-hidden="true"/>
-          odhad
-        </span>
-      </div>
-      {result.showCompare && (
-        <div className="mb-2 flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
-          <span className="text-[10.5px] font-semibold uppercase tracking-[0.12em] text-placeholder">
-            Jinde by tě to stálo
-          </span>
-          <span
-            className={`text-[1.15rem] font-semibold tabular-nums text-text-3 line-through decoration-2 ${accent.line}`}
-          >
-            {result.beforeLabel}
-          </span>
-          <span
-            className={`ml-auto inline-flex -rotate-[4deg] items-center rounded-full px-2.5 py-1 text-xs font-bold text-white shadow-primary ${accent.bg}`}
-          >
-            -{result.discount} %
-          </span>
-        </div>
-      )}
-      <p className="text-[clamp(1.9rem,5.2vw,3rem)] font-bold leading-[1.02] tracking-[-0.03em] tabular-nums text-ink">
-        {result.rangeLabel}
-      </p>
-      <p className="mt-2.5 text-xs text-text-3">
-        jednorázově · + {formatCzk(YEARLY_PRICE)} Kč / rok za správu
-      </p>
-      {result.showCompare && (
-        <p className="mt-2 flex items-center gap-1.5 text-[12.5px] font-semibold text-text-2">
-          <span aria-hidden="true" className={`size-1.5 flex-none rounded-full ${accent.bg}`} />
-          ušetříš zhruba {result.savedLabel}
-        </p>
-      )}
-      <div className="my-6 h-px bg-border" />
-      {submitted ? (
-        <div>
-          <p className="mb-3.5 text-eyebrow font-semibold uppercase tracking-[0.12em] text-text-3">
-            Rozpad ceny
-          </p>
-          <dl className="mb-5 flex flex-col gap-2.5">
-            {result.rows.map((row) => (
-              <div key={row.label} className="flex items-baseline gap-2 text-sm">
-                <dt className="min-w-0 text-text-2">{row.label}</dt>
-                <span aria-hidden="true" className="-translate-y-[3px] flex-1 border-b border-dotted border-border-mid" />
-                <dd className="m-0 whitespace-nowrap font-semibold tabular-nums text-ink">{row.value}</dd>
-              </div>
-            ))}
-          </dl>
-          <div className="rounded-xl border border-ink p-4 xphone:p-[18px]">
-            <p className="mb-1.5 text-[1.05rem] font-semibold text-ink">
-              Díky, {name.trim() || "kámo"} 👋
+    <div className="flex min-w-0 flex-col overflow-hidden rounded-[26px] shadow-card">
+      <div className="flex flex-1 flex-col justify-center bg-ink p-6 text-white xphone:p-7 laptop:p-8">
+        {submitted ? (
+          <div>
+            <p className="mb-4 text-eyebrow font-semibold uppercase tracking-[0.12em] text-white/50">
+              Rozpad ceny
             </p>
-            <p className="text-sm leading-[1.55] text-text-2">
+            <dl className="flex flex-col gap-2.5">
+              {result.rows.map((row) => (
+                <div key={row.label} className="flex items-baseline gap-2 text-[13px]">
+                  <dt className="min-w-0 text-white/65">{row.label}</dt>
+                  <span aria-hidden="true" className="-translate-y-[3px] flex-1 border-b border-dotted border-white/25"/>
+                  <dd className="m-0 whitespace-nowrap font-semibold tabular-nums">{row.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        ) : (
+          <div className="flex items-center justify-between gap-6">
+            <div className="min-w-0 flex-1">
+              <div>
+                <p className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-white/50">
+                  <span aria-hidden="true" className="size-2 flex-none rounded-full bg-accent-blue"/>
+                  Tvoje cena
+                </p>
+                <p className="mt-1.5 text-[1.45rem] font-semibold leading-none tabular-nums text-white">
+                  {result.oneTimeLabel}
+                  {result.showCompare && (
+                    <span className="ml-1.5 text-[13px] font-medium text-white/50">({paidPct} %)</span>
+                  )}
+                </p>
+              </div>
+              <div className="mt-5">
+                <p className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-white/50">
+                  <span aria-hidden="true" className="size-2 flex-none rounded-full bg-white/25"/>
+                  Ušetříš
+                </p>
+                <p className="mt-1.5 text-[1.45rem] font-semibold leading-none tabular-nums text-white">
+                  {result.showCompare ? result.savedLabel : "—"}
+                  {result.showCompare && (
+                    <span className="ml-1.5 text-[13px] font-medium text-white/50">({100 - paidPct} %)</span>
+                  )}
+                </p>
+              </div>
+            </div>
+            <PriceDonut share={paidShare}/>
+          </div>
+        )}
+      </div>
+      <div className="flex flex-col bg-accent-blue-strong p-6 text-white xphone:p-7 laptop:p-8">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white/70">
+          Orientační cena projektu
+        </p>
+        <p className="mt-1.5 text-[clamp(1.5rem,2.8vw,2.05rem)] font-bold leading-[1.1] tracking-[-0.03em] tabular-nums text-white">
+          {result.rangeLabel}
+        </p>
+        <p className="mt-1.5 text-xs text-white/70">
+          jednorázově · + {formatCzk(YEARLY_PRICE)} Kč / rok za správu
+        </p>
+        {submitted ? (
+          <div className="mt-6">
+            <p className="mb-1.5 text-[1.05rem] font-semibold text-white">Díky, {name.trim() || "kámo"} 👋</p>
+            <p className="text-sm leading-[1.55] text-white/80">
               Shrnutí ti posílám na {email}. Ozvu se osobně do 24 hodin.
             </p>
           </div>
-        </div>
-      ) : (
-        <div>
-          <p className="mb-4 flex items-start gap-2 text-sm leading-[1.5] text-text-2">
-            <LockIcon size={16} weight="fill" aria-hidden="true" className="mt-0.5 flex-none text-text-3" />
-            Detailní rozpad a shrnutí ti pošlu na e-mail.
-          </p>
-          <form action={submit} className="flex flex-col gap-2.5" noValidate>
+        ) : (
+          <form action={submit} className="mt-5 flex flex-col gap-2" noValidate>
             <PromoClaim/>
             <input
               type="text"
@@ -155,7 +149,7 @@ const PriceCard: FC<PriceCardProps> = ({ result, selection }) => {
               }}
               className={FIELD}
             />
-            <label className="group flex cursor-pointer items-start gap-2.5 text-[12.5px] leading-[1.45] text-text-3">
+            <label className="group flex cursor-pointer items-start gap-2.5 text-[12.5px] leading-[1.45] text-white/75">
               <input
                 type="checkbox"
                 name="gdpr"
@@ -168,57 +162,39 @@ const PriceCard: FC<PriceCardProps> = ({ result, selection }) => {
               />
               <span
                 aria-hidden="true"
-                className={`mt-px grid size-[18px] flex-none place-items-center rounded-md border-2 transition-[background-color,border-color,box-shadow] duration-250 ease-[cubic-bezier(.2,.8,.25,1)] peer-focus-visible:ring-2 peer-focus-visible:ring-ink/25 ${
-                  gdpr
-                    ? "border-ink bg-ink text-white"
-                    : "border-muted-num bg-white group-hover:border-border-mid group-active:border-border-mid"
+                className={`mt-px grid size-[18px] flex-none place-items-center rounded-md border-[1.5px] transition-colors duration-250 peer-focus-visible:ring-2 peer-focus-visible:ring-white/50 ${
+                  gdpr ? "border-white bg-white text-accent-blue-strong" : "border-white/50 bg-transparent"
                 }`}
               >
                 {gdpr && <CheckIcon size={11} weight="bold"/>}
               </span>
-              <span className="transition-colors duration-250 group-hover:text-text-2 group-active:text-text-2">
-                Souhlasím se zpracováním e-mailu za účelem zaslání kalkulace a kontaktu.
+              <span className="transition-colors duration-250 group-hover:text-white group-active:text-white">
+                Souhlasím se zpracováním e-mailu pro zaslání kalkulace a kontaktu.
               </span>
             </label>
             {failure && (
               <p
                 role="alert"
-                className="flex items-start gap-2 rounded-[10px] border border-accent-peach-strong/50 bg-accent-peach-strong/12 px-3 py-2.5 text-[13px] font-medium leading-[1.45] text-ink"
+                className="flex items-start gap-2 rounded-xl bg-white/20 px-3.5 py-2.5 text-[13px] font-medium leading-[1.45] text-white"
               >
-                <WarningIcon
-                  size={15}
-                  weight="fill"
-                  aria-hidden="true"
-                  className="mt-px flex-none text-accent-peach-strong"
-                />
+                <WarningIcon size={15} weight="fill" aria-hidden="true" className="mt-px flex-none"/>
                 {failure.message}
               </p>
             )}
-            <Button
+            <button
               type="submit"
-              variant="dark"
-              wFull
               disabled={sending}
-              ariaLabel="Odeslat poptávku a zobrazit rozpad ceny"
-              className="mt-1 min-[376px]:hidden"
+              aria-label="Odeslat poptávku a zobrazit rozpad ceny"
+              className="mt-1.5 w-full cursor-pointer rounded-full bg-white px-6 py-3.5 text-[15px] font-semibold text-ink transition-[background-color,opacity] duration-250 hover:bg-bg-tint active:bg-bg-tint disabled:cursor-default disabled:opacity-60"
             >
               {sending ? "Odesílám…" : "Zobrazit rozpad ceny"}
-            </Button>
-            <Button
-              type="submit"
-              wFull
-              disabled={sending}
-              ariaLabel="Odeslat poptávku a zobrazit rozpad ceny"
-              className="mt-1 hidden min-[376px]:inline-flex"
-            >
-              {sending ? "Odesílám…" : "Zobrazit rozpad ceny"}
-            </Button>
-            <p className="text-center text-[11.5px] text-placeholder">
+            </button>
+            <p className="text-center text-[11.5px] text-white/60">
               Žádný spam. Pošlu ti shrnutí a ozvu se osobně.
             </p>
           </form>
-        </div>
-      )}
+        )}
+      </div>
       <FormSuccessModal
         open={submitted && shown}
         onClose={clearResult}

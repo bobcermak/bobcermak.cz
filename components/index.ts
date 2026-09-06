@@ -1,5 +1,6 @@
 export { default as PageWrapper } from "./layout/wrappers/PageWrapper";
 export { default as RevealSection } from "./layout/wrappers/RevealSection";
+export { default as ScrollStage } from "./layout/wrappers/ScrollStage";
 export { default as Button } from "./buttons/Button";
 export { default as Navbar } from "./layout/header/Navbar";
 export { default as NavbarClient } from "./layout/header/NavbarClient";
@@ -11,6 +12,7 @@ export { default as AboutSection } from "./layout/about/AboutSection";
 export { default as ContactSection } from "./layout/contact/ContactSection";
 export { default as SharedApis } from "./layout/apis/SharedApis";
 export { default as ReactiveBg } from "./layout/ReactiveBg";
+export { default as ScrollProgress } from "./layout/ScrollProgress";
 export { default as Footer } from "./layout/Footer";
 export { default as PoweredBy } from "./layout/PoweredBy";
 export { default as PromoPopup } from "./overlays/PromoPopup";

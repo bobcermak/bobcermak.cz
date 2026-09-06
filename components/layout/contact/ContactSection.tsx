@@ -8,12 +8,11 @@ const ContactSection = () => {
     <RevealSection
       id={CONTACT_SECTION_ID}
       aria-label="Spolupráce a dotazy"
-      className="w-full pt-5"
-      drift={{ distance: 120, rotate: 1.5, scale: 0.96, direction: "right" }}
+      className="flex w-full items-center pt-14"
     >
       <div
-        data-drift
-        className="mx-auto grid w-container grid-cols-1 overflow-hidden rounded-[20px] border border-border bg-white shadow-card mlaptop:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] laptop:w-section"
+        data-stage-depth
+        className="mx-auto grid w-container grid-cols-1 overflow-hidden rounded-[28px] bg-white shadow-card mlaptop:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] laptop:w-section"
       >
         <div className="flex flex-col gap-10 p-7 xphone:p-9 mlaptop:justify-between laptop:p-10 desktop:p-11">
           <header>

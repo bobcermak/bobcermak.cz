@@ -1,4 +1,4 @@
-import { HeroSection, ServicesSection, FeaturedProjects, SharedApis, CalculatorSection, AboutSection, ContactSection } from "@/components";
+import { HeroSection, ServicesSection, FeaturedProjects, CalculatorSection, AboutSection, ContactSection, ScrollStage } from "@/components";
 import JsonLd from "@/components/seo/JsonLd";
 import { profileSchema, servicesSchema } from "@/lib/seo/structuredData";
 
@@ -11,12 +11,16 @@ const HomePage = () => {
         <JsonLd data={servicesSchema()}/>
       </section>
       <HeroSection/>
-      <ServicesSection/>
+      <ScrollStage>
+        <AboutSection/>
+        <ServicesSection/>
+      </ScrollStage>
       <FeaturedProjects/>
-      <SharedApis/>
-      <CalculatorSection/>
-      <AboutSection/>
-      <ContactSection/>
+      {/* <SharedApis/> */}
+      <ScrollStage direction="vertical">
+        <CalculatorSection/>
+        <ContactSection/>
+      </ScrollStage>
     </>
   );
 };

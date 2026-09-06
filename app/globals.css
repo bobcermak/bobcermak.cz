@@ -36,6 +36,7 @@
   --color-accent-peach: #f3ccb2;
   --color-accent-peach-strong: #e0a373;
   --color-accent-purple: #cebeec;
+  --color-accent-purple-strong: #a98ede;
   --color-accent-green: #8ab98f;
   /*Shadows*/
   --shadow-primary: 0px 2px 12px 0px rgba(30, 40, 80, 0.10);
@@ -82,13 +83,6 @@ html {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overscroll-behavior: none;
-  /*
-    Pojistka proti vodorovnemu pretekani na mobilu. Zamerne `clip`, ne `hidden`:
-    `clip` neudela z <html> scroll kontejner, takze `position: sticky` uvnitr
-    (PriceCard v kalkulacce) dal drzi. Safari < 16 `clip` nezna, pravidlo
-    zahodi a uplatni se fallback `overflow-x: hidden` z <body> nize, ktery se
-    propaguje na viewport - tedy presne dnesni chovani.
-  */
   overflow-x: clip;
 }
 
@@ -98,7 +92,6 @@ body {
   min-height: 100svh;
   display: flex;
   flex-direction: column;
-  /*Fallback pro Safari < 16; moderni prohlizece prepise `clip` na radku nize.*/
   overflow-x: hidden;
   overflow-x: clip;
   overscroll-behavior: none;
@@ -169,8 +162,6 @@ body {
   }
 }
 
-/*Odchod modalu — zrcadlí floatUp, jen svižněji a s lehkým ucouvnutím*/
-
 @keyframes floatDown {
   from {
     opacity: 1;
@@ -229,8 +220,6 @@ body {
   }
 }
 
-/*Loading — mřížka teček z loga se otáčí po čtvrtinách, mezi kroky se zastaví*/
-
 @keyframes logoGridSpin {
   0% {
     transform: rotate(0deg);
@@ -260,8 +249,6 @@ body {
     transform: rotate(360deg);
   }
 }
-
-/*Rohová dekorace — stejná mřížka, ale točí se plynule dokola, ne po čtvrtinách*/
 
 @keyframes logoGridDrift {
   from {
@@ -303,6 +290,15 @@ body {
   }
 }
 
+@keyframes heroLinesDrift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1.05);
+  }
+  to {
+    transform: translate3d(-2.5%, -2%, 0) scale(1.14);
+  }
+}
+
 @keyframes scrollDot {
   0% {
     opacity: 0;
@@ -330,11 +326,6 @@ body {
     @apply text-title mlaptop:text-heading laptop:text-display font-semibold leading-tight tracking-tight text-ink text-left;
   }
 
-  /*
-    Na mobilu o stupen dolu. 3.1rem (49.64px) se do 90vw uzke obrazovky vejde
-    jen taktak - nadpisy tam sedely presne na hranici kontejneru a jakekoli
-    delsi slovo uz lezlo ven. Od tabletu vys zustavaji velikosti nezmenene.
-  */
   h2 {
     @apply text-title tablet:text-sub-heading font-semibold leading-tight tracking-tight text-ink text-left;
   }
@@ -365,12 +356,6 @@ body {
     @apply m-0 p-0;
   }
 
-  /*
-    Posledni zachrana proti vodorovnemu presahu: kdyz se souvisly retezec
-    (email, URL, dlouhy nazev) nevejde na radek, zalomi se misto toho, aby
-    roztahl rodice. Na bezny text nema vliv - uplatni se az kdyz slovo
-    opravdu neprojde.
-  */
   h1,
   h2,
   h3,
@@ -383,15 +368,6 @@ body {
     overflow-wrap: break-word;
   }
 
-  /*
-    Mřížka teček z loga jako dekorace v rozích sekce — vlevo nahoře a vpravo dole.
-    Kreslí se čtyřmi radiálními gradienty do ::before/::after, takže nepřidává
-    žádný element navíc. Rozměr i odsazení jdou z clamp(), aby seděly k obrazovce.
-
-    Celé je to zavřené v media query od laptopu: níž má kontejner 90 % šířky a
-    v okraji pro mřížku není místo — a hlavně tam sekce nesmí dostat position,
-    protože by se tím přerovnalo, co komu leze přes okraj (hero a jeho plátno).
-  */
   @media (min-width: 1281px) {
     .logo-grid-edges {
       --logo-grid-size: clamp(64px, 6.5vw, 132px);
@@ -438,6 +414,100 @@ body {
       .logo-grid-edges::after {
         animation: none;
       }
+    }
+  }
+}
+
+@layer components {
+  .scroll-progress__bar {
+    background-color: var(--color-accent-blue-strong);
+    box-shadow: 0 0 14px rgba(111, 134, 214, 0.55);
+    width: 0;
+    border-radius: 999px;
+    opacity: 0;
+    transition: opacity 250ms ease;
+  }
+
+  .hero-lines-anim {
+    width: 100%;
+    height: 100%;
+    animation: heroLinesDrift 30s ease-in-out infinite alternate;
+    animation-play-state: paused;
+  }
+
+  .hero-lines-anim.is-live {
+    animation-play-state: running;
+  }
+
+  .hero-lines-anim path {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-lines-anim {
+      animation: none;
+    }
+
+    .hero-lines-anim path {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  [data-fill] {
+    opacity: 0.15;
+  }
+
+  [data-stage-chip] {
+    opacity: 0.25;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-fill],
+    [data-stage-chip] {
+      opacity: 1;
+    }
+  }
+
+  .scroll-stage__cue {
+    display: none;
+  }
+
+  .scroll-stage__panel {
+    display: flex;
+    min-height: 100svh;
+    align-items: center;
+  }
+
+  @media (min-height: 780px) and (prefers-reduced-motion: no-preference) {
+    .scroll-stage:not(.scroll-stage--flow) {
+      height: var(--stage-runway, 280svh);
+    }
+
+    .scroll-stage:not(.scroll-stage--flow) .scroll-stage__viewport {
+      position: sticky;
+      top: 0;
+      height: 100svh;
+      overflow: hidden;
+    }
+
+    .scroll-stage:not(.scroll-stage--flow) .scroll-stage__track {
+      display: flex;
+      height: 100%;
+      width: 200%;
+      will-change: transform;
+    }
+
+    .scroll-stage:not(.scroll-stage--flow) .scroll-stage__panel {
+      height: 100%;
+      min-height: 0;
+      width: 50%;
+      flex: 0 0 50%;
+      overflow: hidden;
+    }
+
+    .scroll-stage:not(.scroll-stage--flow) .scroll-stage__cue {
+      display: inline-flex;
     }
   }
 }

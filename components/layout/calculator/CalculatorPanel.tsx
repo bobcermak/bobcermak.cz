@@ -1,20 +1,18 @@
 "use client";
 
-import { useEffect, useMemo, useState, type FC, type ReactNode } from "react";
-import CalculatorStep from "./CalculatorStep";
-import TypeOption from "./TypeOption";
-import OptionTile from "./OptionTile";
+import { useEffect, useMemo, useState, type FC } from "react";
+import CalculatorField from "./CalculatorField";
+import TypeRow from "./TypeRow";
+import ExtraChip from "./ExtraChip";
 import ScopeSlider from "./ScopeSlider";
 import PriceCard from "./PriceCard";
-import { CALCULATOR_SELECT_EVENT, calculatePrice, type CalculatorSelectDetail, type CalculatorType } from "@/lib/calculator";
-import { calculatorExtras, DEFAULT_TYPE, PAGES_DEFAULT, projectTypes, type CalculatorSlot } from "@/types/calculator";
+import { CALCULATOR_SELECT_EVENT, calculatePrice, formatCzk, type CalculatorSelectDetail, type CalculatorType } from "@/lib/calculator";
+import { calculatorExtras, DEFAULT_TYPE, PAGES_DEFAULT, projectTypes, RUSH_LABEL } from "@/types/calculator";
 
 type CalculatorPanelProps = {
-  types: CalculatorSlot<CalculatorType>[];
-  extras: CalculatorSlot[];
-  rushContent: ReactNode;
+  note?: string;
 };
-const CalculatorPanel: FC<CalculatorPanelProps> = ({ types, extras, rushContent }) => {
+const CalculatorPanel: FC<CalculatorPanelProps> = ({ note }) => {
   //Hooks
   const [type, setType] = useState<CalculatorType>(DEFAULT_TYPE);
   const [pages, setPages] = useState<number>(PAGES_DEFAULT);
@@ -45,42 +43,47 @@ const CalculatorPanel: FC<CalculatorPanelProps> = ({ types, extras, rushContent 
     [type, pages, pickedExtras, rush]
   );
   return (
-    <div className="grid grid-cols-1 items-start gap-8 mlaptop:grid-cols-[minmax(0,1fr)_minmax(0,clamp(360px,30vw,560px))] mlaptop:gap-10">
-      <div className="flex min-w-0 flex-col">
-        <CalculatorStep num="01" title="Typ projektu">
-          <div
-            role="radiogroup"
-            aria-label="Typ projektu"
-            className="grid grid-cols-[repeat(auto-fit,minmax(min(220px,100%),1fr))] gap-3"
-          >
-            {types.map((slot) => (
-              <TypeOption key={slot.id} selected={slot.id === type} onSelect={() => setType(slot.id)}>
-                {slot.content}
-              </TypeOption>
+    <div className="grid items-center gap-4 mlaptop:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)] mlaptop:gap-5">
+      <div className="min-w-0 rounded-[26px] bg-white p-6 shadow-card xphone:p-7 laptop:p-8">
+        <CalculatorField num="01" label="Typ projektu">
+          <div role="radiogroup" aria-label="Typ projektu" className="divide-y divide-border">
+            {projectTypes.map((item) => (
+              <TypeRow
+                key={item.id}
+                type={item}
+                selected={item.id === type}
+                onSelect={() => setType(item.id)}
+              />
             ))}
           </div>
-        </CalculatorStep>
-        <CalculatorStep num="02" title="Rozsah">
+        </CalculatorField>
+        <CalculatorField num="02" label="Rozsah">
           <ScopeSlider pages={pages} onChange={setPages}/>
-        </CalculatorStep>
-        <CalculatorStep num="03" title="Extras" last>
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(240px,100%),1fr))] gap-3">
-            {extras.map((slot) => (
-              <OptionTile
-                key={slot.id}
-                on={!!picked[slot.id]}
-                onToggle={() => setPicked((state) => ({ ...state, [slot.id]: !state[slot.id] }))}
-              >
-                {slot.content}
-              </OptionTile>
+        </CalculatorField>
+        <CalculatorField num="03" label="Co k tomu">
+          <div className="flex flex-wrap gap-2">
+            {calculatorExtras.map((extra) => (
+              <ExtraChip
+                key={extra.id}
+                label={extra.label}
+                price={`+${formatCzk(extra.price)}`}
+                on={!!picked[extra.id]}
+                onToggle={() => setPicked((state) => ({ ...state, [extra.id]: !state[extra.id] }))}
+              />
             ))}
+            <ExtraChip
+              label={RUSH_LABEL}
+              price="+20 %"
+              on={rush}
+              onToggle={() => setRush((value) => !value)}
+            />
           </div>
-          <div className="mt-3">
-            <OptionTile on={rush} onToggle={() => setRush((value) => !value)}>
-              {rushContent}
-            </OptionTile>
-          </div>
-        </CalculatorStep>
+        </CalculatorField>
+        {note && (
+          <p className="mt-6 border-t border-border pt-5 text-[11.5px] leading-[1.55] text-text-3">
+            {note}
+          </p>
+        )}
       </div>
       <PriceCard result={result} selection={{ type, pages, extras: pickedIds, rush }}/>
     </div>
