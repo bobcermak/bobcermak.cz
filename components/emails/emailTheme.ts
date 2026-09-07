@@ -134,25 +134,30 @@ export const footer = {
   lineHeight: "1.6",
   textAlign: "center",
   color: EMAIL_COLORS.placeholder,
-} as const;export const stepNumCell = { width: "38px", padding: "9px 0", verticalAlign: "top" } as const;
-export const stepCell = { padding: "9px 0", verticalAlign: "top" } as const;
+} as const;
+export const stepBox = {
+  margin: "0 0 4px",
+  padding: "16px 20px",
+  backgroundColor: EMAIL_COLORS.bgTint,
+  borderRadius: "16px",
+} as const;
+export const stepNumCell = { width: "30px", padding: "5px 0", verticalAlign: "top" } as const;
+export const stepCell = { padding: "5px 0", verticalAlign: "top" } as const;
 export const stepNum = {
   margin: 0,
-  fontSize: "13px",
-  lineHeight: "1.45",
+  fontSize: "12px",
+  lineHeight: "1.5",
   fontWeight: 700,
   letterSpacing: "0.02em",
 } as const;
 export const stepTitle = {
   margin: 0,
-  fontSize: "14px",
-  lineHeight: "1.45",
+  fontSize: "13px",
+  lineHeight: "1.5",
   fontWeight: 600,
   color: EMAIL_COLORS.ink,
 } as const;
 export const stepDesc = {
-  margin: "3px 0 0",
-  fontSize: "13px",
-  lineHeight: "1.55",
+  fontWeight: 400,
   color: EMAIL_COLORS.text2,
 } as const;

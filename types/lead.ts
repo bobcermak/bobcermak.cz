@@ -15,23 +15,23 @@ export type ProcessStep = {
 };
 export const PROCESS_STEPS: ProcessStep[] = [
   {
-    title: "Proberem zadání",
-    desc: `Ozvu se ti do ${REPLY_WITHIN_HOURS} hodin, zeptám se na detaily a ujasníme si rozsah.`,
+    title: "Zadání",
+    desc: `ozvu se do ${REPLY_WITHIN_HOURS} h a ujasníme si rozsah`,
   },
   {
     title: "Návrh",
-    desc: "Připravím první návrh a doladíme ho spolu, dokud nebude sedět.",
+    desc: "připravím první návrh a doladíme ho spolu",
   },
   {
     title: "Vývoj",
-    desc: "Odsouhlasený návrh naprogramuju od začátku do konce.",
+    desc: "odsouhlasený návrh naprogramuju od A do Z",
   },
   {
-    title: "Konzultace a úpravy",
-    desc: "Průběžně ti ukazuju, jak to roste, a zapracuju připomínky.",
+    title: "Úpravy",
+    desc: "průběžně ukazuju postup a zapracuju připomínky",
   },
   {
     title: "Spuštění",
-    desc: "Nasadím projekt naživo, předám přístupy a ukážu, jak s ním pracovat.",
+    desc: "nasadím projekt naživo a předám přístupy",
   },
 ];
