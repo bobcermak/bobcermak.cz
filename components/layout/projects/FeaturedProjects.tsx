@@ -9,7 +9,7 @@ const FeaturedProjects = () => {
     <RevealSection
       id="projekty"
       aria-label="Vybrané projekty"
-      className="w-full pt-30 pb-60"
+      className="w-full pt-30 pb-30 desktop:pb-60"
       reveal={{ perTarget: true, y: 44, scale: 0.94, duration: 0.85, stagger: 0.1, ease: "back.out(1.4)", start: "top 88%" }}
     >
       <div className="mx-auto w-container laptop:w-xsection">

@@ -1,15 +1,17 @@
 "use client";
 
-import { Children, useRef, type CSSProperties, type ReactNode } from "react";
+import { Children, useRef, type ReactNode } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { measureStageHeight, onStagePinChange, readStagePin, syncStagePin } from "@/lib/stagePin";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
-const PINNED_MQ = "(min-height: 780px) and (prefers-reduced-motion: no-preference)";
-const FLOW_MQ = ["(max-height: 779.98px) and (prefers-reduced-motion: no-preference)"];
+const REDUCED_MQ = "(prefers-reduced-motion: reduce)";
+const STAGE_PAD = 24;
+type StageMode = "pinned" | "flow" | "still";
 const DIM = 0.15;
 const CHIP_DIM = 0.25;
 type ScrollStageProps = {
@@ -38,8 +40,8 @@ const ScrollStage = ({ children, runway = 2.8, fill = 0.58, hold = 0.07, directi
       const follow = stages[1]?.querySelector<HTMLElement>("[data-stage-depth]") ?? null;
       const cue = root.querySelector<HTMLElement>("[data-stage-cue]");
       const chipFrom = { opacity: CHIP_DIM, scale: 0.86, y: 10, transformOrigin: "left center" };
-      const mm = gsap.matchMedia();
-      if (!flowOnly) mm.add(PINNED_MQ, () => {
+      const stageHeight = () => track.parentElement?.offsetHeight || window.innerHeight;
+      const pinned = () => {
         const slide = Math.max(0.1, 1 - fill - hold);
         const turn = fill + hold;
         const timeline = gsap.timeline({
@@ -47,7 +49,10 @@ const ScrollStage = ({ children, runway = 2.8, fill = 0.58, hold = 0.07, directi
           scrollTrigger: {
             trigger: root,
             start: "top top",
-            end: "bottom bottom",
+            end: () => "+=" + Math.round((runway - 1) * stageHeight()),
+            pin: root,
+            pinSpacing: true,
+            anticipatePin: 1,
             scrub: 0.6,
             invalidateOnRefresh: true,
           },
@@ -91,7 +96,7 @@ const ScrollStage = ({ children, runway = 2.8, fill = 0.58, hold = 0.07, directi
         timeline.to(track, { xPercent: -50, duration: slide }, turn);
         if (lead) timeline.to(lead, { xPercent: -10, opacity: 0.35, duration: slide }, turn);
         if (follow) timeline.fromTo(follow, { xPercent: 10 }, { xPercent: 0, duration: slide }, turn);
-      });
+      };
       const flow = () => {
         if (!stages[0]) return;
         if (words.length) {
@@ -168,21 +173,52 @@ const ScrollStage = ({ children, runway = 2.8, fill = 0.58, hold = 0.07, directi
           );
         }
       };
-      const flowQueries = flowOnly ? ["(prefers-reduced-motion: no-preference)"] : FLOW_MQ;
-      flowQueries.forEach((query) => mm.add(query, flow));
-      mm.add("(prefers-reduced-motion: reduce)", () => {
+      const still = () => {
         gsap.set(words, { opacity: 1 });
         gsap.set(chips, { opacity: 1, scale: 1, y: 0 });
+      };
+      const panelsFit = () => {
+        const available = measureStageHeight() - STAGE_PAD;
+        return stages.every((panel) => {
+          const depth = panel.querySelector<HTMLElement>("[data-stage-depth]");
+          return !depth || depth.offsetHeight <= available;
+        });
+      };
+      const decide = (): StageMode => {
+        if (window.matchMedia(REDUCED_MQ).matches) return "still";
+        if (flowOnly || !readStagePin()) return "flow";
+        return panelsFit() ? "pinned" : "flow";
+      };
+      const apply = () => {
+        syncStagePin();
+        const next = decide();
+        root.dataset.stageFit = next === "pinned" ? "on" : "off";
+        return next;
+      };
+      let mode = apply();
+      const build = () => {
+        if (mode === "still") return still();
+        if (mode === "pinned") return pinned();
+        flow();
+      };
+      let ctx = gsap.context(build, root);
+      const stop = onStagePinChange(() => {
+        const next = apply();
+        if (next === mode) return;
+        mode = next;
+        ctx.revert();
+        ctx = gsap.context(build, root);
+        ScrollTrigger.refresh();
       });
+      return () => {
+        stop();
+        ctx.revert();
+      };
     },
     { scope: rootRef, dependencies: [runway, fill, hold, flowOnly] }
   );
   return (
-    <div
-      ref={rootRef}
-      className={`scroll-stage relative w-full${flowOnly ? " scroll-stage--flow" : ""}`}
-      style={{ "--stage-runway": `${runway * 100}svh` } as CSSProperties}
-    >
+    <div ref={rootRef} className={`scroll-stage relative w-full${flowOnly ? " scroll-stage--flow" : ""}`}>
       <div className="scroll-stage__viewport">
         <div ref={trackRef} className="scroll-stage__track">
           {panels.map((panel, i) => (

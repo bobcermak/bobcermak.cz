@@ -2,6 +2,7 @@ import type { FC } from "react";
 import { Hr, Link, Section, Text } from "@react-email/components";
 import EmailShell from "./EmailShell";
 import PriceBreakdown from "./PriceBreakdown";
+import ProcessSteps from "./ProcessSteps";
 import { button, divider, EMAIL_COLORS, eyebrow, heading, link, paragraph, price, priceBox, small } from "./emailTheme";
 import type { CalculatorResult } from "@/lib/calculator";
 import { REPLY_WITHIN_HOURS } from "@/types/lead";
@@ -54,6 +55,9 @@ const LeadCustomerEmail: FC<LeadCustomerEmailProps> = ({
     )}
     <Text style={{ ...eyebrow, margin: "0 0 6px" }}>Co se do ceny počítá</Text>
     <PriceBreakdown rows={result.rows} />
+    <Hr style={divider} />
+    <Text style={{ ...eyebrow, margin: "0 0 12px" }}>Jak to spolu poběží</Text>
+    <ProcessSteps accent={accent} />
     <Hr style={divider} />
     <Section>
       <Link href="https://bobcermak.cz/projekty" style={button}>

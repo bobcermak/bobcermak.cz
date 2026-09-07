@@ -12,7 +12,7 @@ const AboutSection = () => {
     <section
       id={ABOUT_SECTION_ID}
       aria-label="O mně"
-      className="relative flex min-h-svh w-full items-center py-28 mlaptop:py-0"
+      className="relative flex min-h-svh w-full items-center mt-40"
     >
       <Image
         src={ABOUT_SIGNATURE}
@@ -21,9 +21,9 @@ const AboutSection = () => {
         width={500}
         height={315}
         priority={false}
-        className="pointer-events-none absolute bottom-10 right-[5svw] w-56 select-none opacity-80 stablet:w-72 mlaptop:bottom-16 mlaptop:w-96"
+        className="pointer-events-none absolute bottom-20 right-[5svw] w-56 select-none opacity-80 stablet:w-72 mlaptop:bottom-10 mlaptop:w-96"
       />
-      <div data-stage-depth className="mx-auto w-container">
+      <div data-stage-depth className="mx-auto w-container mt-18">
         <p className="mb-7 flex items-center gap-2.5 text-eyebrow font-semibold uppercase tracking-[0.14em] text-text-3">
           <span
             aria-hidden="true"
@@ -48,7 +48,7 @@ const AboutSection = () => {
         <p
           data-stage-cue
           aria-hidden="true"
-          className="scroll-stage__cue mt-12 items-center gap-2.5 text-eyebrow font-semibold uppercase tracking-[0.14em] text-text-3"
+          className="scroll-stage__cue mt-4 items-center gap-2.5 text-eyebrow font-semibold uppercase tracking-[0.14em] text-text-3"
         >
           <span className="block h-px w-10 bg-accent-purple-strong"/>
           Co dělám

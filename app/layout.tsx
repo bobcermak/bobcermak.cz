@@ -6,6 +6,7 @@ import ConsentProvider from "@/contexts/ConsentContext";
 import CookieBanner from "@/components/overlays/CookieBanner";
 import Analytics from "@/components/analytics/Analytics";
 import JsonLd from "@/components/seo/JsonLd";
+import { STAGE_PIN_SCRIPT } from "@/lib/stagePin";
 import { personSchema, websiteSchema } from "@/lib/seo/structuredData";
 import { SITE_DESCRIPTION, SITE_LANG, SITE_LOCALE, SITE_NAME, SITE_NAME_LEGAL, SITE_TAGLINE, SITE_URL } from "@/types/site";
 import "./globals.css";
@@ -93,8 +94,9 @@ export default function RootLayout({
 }>) {
   return (
     <SiteSettingsProvider>
-      <html lang={SITE_LANG} className={`${montserrat.variable} ${orbitron.variable} ${outfit.variable}`}>
+      <html lang={SITE_LANG} suppressHydrationWarning className={`${montserrat.variable} ${orbitron.variable} ${outfit.variable}`}>
         <head>
+          <script dangerouslySetInnerHTML={{ __html: STAGE_PIN_SCRIPT }}/>
           <JsonLd data={personSchema()}/>
           <JsonLd data={websiteSchema()}/>
           <link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt"/>

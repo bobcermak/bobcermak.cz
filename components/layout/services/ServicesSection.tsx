@@ -7,10 +7,10 @@ const ServicesSection = () => {
     <RevealSection
       id="co-delam"
       aria-label="Co dělám"
-      className="flex min-h-svh w-full items-center py-4 mt-30 mlaptop:py-0"
+      className="flex w-full min-h-svh items-center"
       reveal={{ y: 48, duration: 1.25, stagger: 0.16 }}
     >
-      <div data-stage-depth className="mx-auto w-container laptop:w-section">
+      <div data-stage-depth className="mx-auto w-container laptop:w-section mt-40">
         <header data-reveal className="mb-5 flex flex-wrap items-baseline justify-between gap-3 tablet:mb-10">
           <h2>
             Co dělám

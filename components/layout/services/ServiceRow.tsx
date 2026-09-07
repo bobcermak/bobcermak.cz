@@ -19,7 +19,7 @@ const ServiceRow: FC<ServiceRowProps> = ({ service }) => {
         openCalculator(calc);
       }}
       aria-label={`${title} — spočítat cenu v kalkulačce`}
-      className="group grid cursor-pointer grid-cols-[auto_minmax(0,1fr)_auto] items-center tablet:items-start gap-4 border-b border-border px-6 py-[clamp(15px,3.2vw,40px)] transition-[padding,background-color] duration-250 ease-[cubic-bezier(.2,.8,.25,1)] hover:bg-bg-tint hover:pl-6 active:bg-bg-tint active:pl-6 laptop:items-center laptop:gap-8"
+      className="group grid cursor-pointer grid-cols-[auto_minmax(0,1fr)_auto] items-center tablet:items-start gap-4 border-b border-border px-6 transition-[padding,background-color] duration-250 ease-[cubic-bezier(.2,.8,.25,1)] hover:bg-bg-tint hover:pl-6 active:bg-bg-tint active:pl-6 laptop:items-center laptop:gap-8 py-6"
     >
       <header>
         <p className="w-[clamp(56px,9vw,120px)] text-[clamp(2.4rem,5vw,4rem)] font-light leading-[0.9] tracking-[-0.03em] text-muted-num transition-colors duration-250 group-hover:text-ink group-active:text-ink">
@@ -35,7 +35,7 @@ const ServiceRow: FC<ServiceRowProps> = ({ service }) => {
             {tag}
           </p>
         </div>
-        <p className="text-sm tablet:text-base leading-[1.55] text-text-2 transition-colors duration-250 group-hover:text-ink group-active:text-ink laptop:flex-[1.1]">
+        <p className="line-clamp-2 min-h-[3.1em] text-sm tablet:text-base leading-[1.55] text-text-2 transition-colors duration-250 group-hover:text-ink group-active:text-ink laptop:flex-[1.1]">
           {desc}
         </p>
       </div>
