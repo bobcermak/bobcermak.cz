@@ -56,7 +56,7 @@ const LeadCustomerEmail: FC<LeadCustomerEmailProps> = ({
     <Text style={{ ...eyebrow, margin: "0 0 6px" }}>Co se do ceny počítá</Text>
     <PriceBreakdown rows={result.rows} />
     <Hr style={divider} />
-    <Text style={{ ...eyebrow, margin: "0 0 12px" }}>Jak to spolu poběží</Text>
+    <Text style={{ ...eyebrow, margin: "0 0 12px" }}>Jak probíhá spolupráce</Text>
     <ProcessSteps accent={accent} />
     <Hr style={divider} />
     <Section>

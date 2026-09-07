@@ -5,7 +5,7 @@ import type { FC, MouseEvent, ReactNode } from "react";
 import { ArrowUpRightIcon } from "@phosphor-icons/react";
 import { twMerge } from "tailwind-merge";
 
-type ButtonVariant = "primary" | "secondary" | "tertiary" | "dark" | "light";
+type ButtonVariant = "primary" | "primary-light" | "secondary" | "tertiary" | "dark" | "light";
 type ButtonSize = "sm" | "md" | "lg";
 
 type ButtonSharedProps = {
@@ -35,6 +35,7 @@ type ButtonProps = LinkButtonProps | NativeButtonProps;
 const EXTERNAL_HREF = /^https?:\/\//i;
 const VARIANT_STYLES: Record<ButtonVariant, string> = {
   primary: "bg-ink text-white hover:bg-ink-hover active:bg-ink-hover",
+  "primary-light": "bg-white text-ink hover:bg-ink active:bg-ink hover:text-white active:text-white",
   secondary: "text-ink border border-border-mid hover:bg-ink/2 active:bg-ink/2",
   tertiary: "bg-white text-ink hover:bg-ink hover:text-white active:bg-ink active:text-white",
   dark: "text-ink border border-ink hover:bg-ink hover:text-white active:bg-ink active:text-white",
@@ -42,6 +43,7 @@ const VARIANT_STYLES: Record<ButtonVariant, string> = {
 };
 const DROP_SHADOW_STYLES: Record<ButtonVariant, string> = {
   primary: "drop-shadow-button--ink",
+  "primary-light": "drop-shadow-button--soft",
   secondary: "drop-shadow-button--soft",
   tertiary: "drop-shadow-button--ink",
   dark: "drop-shadow-button--soft",
@@ -67,7 +69,7 @@ const Button: FC<ButtonProps> = (props) => {
     children,
   } = props;
   const dims = SIZE_STYLES[size];
-  const showArrow = variant === "primary" && isArrow && !noStyle;
+  const showArrow = variant === "primary" || variant === "primary-light" ? isArrow && !noStyle : false;
   const joinArrow = showArrow && !disabled;
   const wrapperClass = twMerge(
     noStyle ? "cursor-pointer" : "group inline-flex items-center cursor-pointer",
@@ -88,8 +90,9 @@ const Button: FC<ButtonProps> = (props) => {
     joinArrow ? "group-hover:rounded-r-none group-active:rounded-r-none" : ""
   );
   const circleClass = twMerge(
-    "flex shrink-0 items-center justify-center rounded-full bg-ink transform-gpu",
-    "transition-[translate,border-radius] duration-250 ease-in-out",
+    "flex shrink-0 items-center justify-center rounded-full transform-gpu",
+    variant === "primary-light" ? "bg-white group-hover:bg-ink group-active:bg-ink" : "bg-ink",
+    "transition-[translate,border-radius,background-color] duration-250 ease-in-out",
     dims.circle,
     "group-hover:-translate-x-2 group-active:-translate-x-2 group-hover:rounded-l-none group-active:rounded-l-none"
   );
@@ -103,7 +106,10 @@ const Button: FC<ButtonProps> = (props) => {
           <ArrowUpRightIcon
             size={dims.icon}
             weight="bold"
-            className="text-white transition-[rotate] duration-250 ease-in-out group-hover:rotate-90 group-active:rotate-90"
+            className={twMerge(
+              variant === "primary-light" ? "text-ink group-hover:text-white group-active:text-white" : "text-white",
+              "transition-[rotate,color] duration-250 ease-in-out group-hover:rotate-90 group-active:rotate-90"
+            )}
           />
         </span>
       )}

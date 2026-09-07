@@ -11,6 +11,7 @@ import { YEARLY_PRICE } from "@/types/calculator";
 import { formatCzk, type CalculatorResult } from "@/lib/calculator";
 import { type LeadSelection } from "@/types/lead";
 import { FORM_IDLE, type FormState } from "@/types/formState";
+import { Button } from "@/components";
 
 const FIELD = "w-full rounded-xl border border-white/25 bg-white/15 px-4 py-3 text-[15px] text-white outline-none transition-colors duration-250 placeholder:text-white/65 focus:border-white focus:bg-white/25";
 type PriceCardProps = {
@@ -181,14 +182,9 @@ const PriceCard: FC<PriceCardProps> = ({ result, selection }) => {
                 {failure.message}
               </p>
             )}
-            <button
-              type="submit"
-              disabled={sending}
-              aria-label="Odeslat poptávku a zobrazit rozpad ceny"
-              className="mt-1.5 w-full cursor-pointer rounded-full bg-white px-6 py-3.5 text-[15px] font-semibold text-ink transition-[background-color,opacity] duration-250 hover:bg-bg-tint active:bg-bg-tint disabled:cursor-default disabled:opacity-60"
-            >
+            <Button type="submit" variant="primary-light" wFull disabled={sending} ariaLabel="Odeslat poptávku a zobrazit rozpad ceny" className="mt-1.5">
               {sending ? "Odesílám…" : "Zobrazit rozpad ceny"}
-            </button>
+            </Button>
             <p className="text-center text-[11.5px] text-white/60">
               Žádný spam. Pošlu ti shrnutí a ozvu se osobně.
             </p>
