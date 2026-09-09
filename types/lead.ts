@@ -32,6 +32,6 @@ export const PROCESS_STEPS: ProcessStep[] = [
   },
   {
     title: "Spuštění",
-    desc: "nasadím projekt naživo a předám přístupy",
+    desc: "nasadím projekt naživo, zaškolím vás v ovládání a předám kompletní přístupy",
   },
 ];

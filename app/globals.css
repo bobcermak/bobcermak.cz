@@ -469,18 +469,56 @@ body {
     }
   }
 
-  [data-fill] {
+  /*
+    Ztlumeni si scena zapina sama (data-stage-anim nasadi ScrollStage.tsx pri startu animaci).
+    Kdyz se JS na pomalem pripojeni nebo pod sporicem baterie nestihne / vubec nedojede,
+    zustane text citelny misto toho, aby navzdy visel na opacity 0.15.
+  */
+  .scroll-stage[data-stage-anim="on"] [data-fill] {
     opacity: 0.15;
   }
 
-  [data-stage-chip] {
+  .scroll-stage[data-stage-anim="on"] [data-stage-chip] {
     opacity: 0.25;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    [data-fill],
-    [data-stage-chip] {
+    .scroll-stage[data-stage-anim="on"] [data-fill],
+    .scroll-stage[data-stage-anim="on"] [data-stage-chip] {
       opacity: 1;
+    }
+  }
+
+  /*
+    Kolecko s podilem ceny. Bezne prekresleni (tah slideru, prepnuti typu) je kratke,
+    prvni otevreni pri najeti do viewportu je pomalejsi, at je videt, jak se kruh
+    "otevira". Zavreni samo se nesmi animovat -- jinak by kruh pri startu bliknul.
+  */
+  .price-donut__arc {
+    transition: stroke-dasharray 500ms cubic-bezier(0.2, 0.8, 0.25, 1);
+  }
+
+  .price-donut[data-donut="closed"] .price-donut__arc {
+    transition: none;
+  }
+
+  .price-donut[data-donut="opening"] .price-donut__arc {
+    transition-duration: 900ms;
+  }
+
+  .price-donut__track {
+    transition: opacity 500ms cubic-bezier(0.2, 0.8, 0.25, 1);
+  }
+
+  .price-donut[data-donut="closed"] .price-donut__track {
+    opacity: 0;
+    transition: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .price-donut__arc,
+    .price-donut__track {
+      transition: none;
     }
   }
 
@@ -540,6 +578,17 @@ body {
     min-height: 0;
     margin-block: 0;
     padding-block: 0.75rem;
+  }
+
+  /*
+    Margin se musel nulovat i o patro niz. Pravidlo vyse sedi jen na sekci (primy potomek
+    panelu), jenze odsazeni nesou az vnitrni bloky -- ServicesSection ma na [data-stage-depth]
+    mt-40 (160 px), AboutSection mt-18. Panel je flex s align-items: center, takze ten margin
+    obsah odsune dolu a spodek se pod overflow: hidden orizne (na iPhonu utnute posledni
+    sluzby). Ve flow rezimu odsazeni zustava, tam drzi rytmus mezi sekcemi.
+  */
+  :root[data-stage-pin="on"] .scroll-stage:not(.scroll-stage--flow):not([data-stage-fit="off"]) [data-stage-depth] {
+    margin-block: 0;
   }
 
   :root[data-stage-pin="on"] .scroll-stage:not(.scroll-stage--flow):not([data-stage-fit="off"]) .scroll-stage__cue {

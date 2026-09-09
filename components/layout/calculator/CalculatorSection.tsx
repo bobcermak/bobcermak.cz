@@ -33,11 +33,9 @@ const CalculatorSection = () => {
             Poskládej si projekt a uvidíš orientační rozpočet. Přesnou nabídku pak proberem osobně.
           </p>
         </header>
-        <div data-reveal>
-          <CalculatorPanel
-            note={`* Statický web zdarma a cena mobilní aplikace se odvíjí od rozsahu — ozvi se a probereme to. ${YEARLY_LABEL} ${formatCzk(YEARLY_PRICE)} Kč/rok (${YEARLY_NOTE}) běží ke každé zakázce a je v ceně už započítaná.`}
-          />
-        </div>
+        <CalculatorPanel
+          note={`* Statický web zdarma a cena mobilní aplikace se odvíjí od rozsahu — ozvi se a probereme to. ${YEARLY_LABEL} ${formatCzk(YEARLY_PRICE)} Kč/rok (${YEARLY_NOTE}) běží ke každé zakázce a je v ceně už započítaná.`}
+        />
       </div>
     </RevealSection>
   );

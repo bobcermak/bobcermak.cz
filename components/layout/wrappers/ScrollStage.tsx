@@ -11,6 +11,7 @@ if (typeof window !== "undefined") {
 }
 const REDUCED_MQ = "(prefers-reduced-motion: reduce)";
 const STAGE_PAD = 24;
+const SETTLE_MS = 150;
 type StageMode = "pinned" | "flow" | "still";
 const DIM = 0.15;
 const CHIP_DIM = 0.25;
@@ -38,6 +39,9 @@ const ScrollStage = ({ children, runway = 2.8, fill = 0.58, hold = 0.07, directi
       const stages = gsap.utils.toArray<HTMLElement>(root.querySelectorAll("[data-stage-panel]"));
       const lead = stages[0]?.querySelector<HTMLElement>("[data-stage-depth]") ?? null;
       const follow = stages[1]?.querySelector<HTMLElement>("[data-stage-depth]") ?? null;
+      const depths = stages
+        .map((panel) => panel.querySelector<HTMLElement>("[data-stage-depth]"))
+        .filter((depth): depth is HTMLElement => !!depth);
       const cue = root.querySelector<HTMLElement>("[data-stage-cue]");
       const chipFrom = { opacity: CHIP_DIM, scale: 0.86, y: 10, transformOrigin: "left center" };
       const stageHeight = () => track.parentElement?.offsetHeight || window.innerHeight;
@@ -99,6 +103,7 @@ const ScrollStage = ({ children, runway = 2.8, fill = 0.58, hold = 0.07, directi
       };
       const flow = () => {
         if (!stages[0]) return;
+        const fillTrigger = lead ?? stages[0];
         if (words.length) {
           gsap.set(words, { opacity: DIM });
           gsap.fromTo(
@@ -111,9 +116,9 @@ const ScrollStage = ({ children, runway = 2.8, fill = 0.58, hold = 0.07, directi
               stagger: { amount: 0.7 },
               immediateRender: true,
               scrollTrigger: {
-                trigger: stages[0],
-                start: "top 85%",
-                end: "bottom 60%",
+                trigger: fillTrigger,
+                start: "top 90%",
+                end: "bottom 70%",
                 scrub: 0.6,
                 invalidateOnRefresh: true,
               },
@@ -131,9 +136,9 @@ const ScrollStage = ({ children, runway = 2.8, fill = 0.58, hold = 0.07, directi
             stagger: 0.12,
             immediateRender: true,
             scrollTrigger: {
-              trigger: stages[0],
-              start: "bottom 60%",
-              end: "bottom 40%",
+              trigger: fillTrigger,
+              start: "bottom 75%",
+              end: "bottom 55%",
               scrub: 0.5,
               invalidateOnRefresh: true,
             },
@@ -179,10 +184,7 @@ const ScrollStage = ({ children, runway = 2.8, fill = 0.58, hold = 0.07, directi
       };
       const panelsFit = () => {
         const available = measureStageHeight() - STAGE_PAD;
-        return stages.every((panel) => {
-          const depth = panel.querySelector<HTMLElement>("[data-stage-depth]");
-          return !depth || depth.offsetHeight <= available;
-        });
+        return depths.every((depth) => depth.offsetHeight <= available);
       };
       const decide = (): StageMode => {
         if (window.matchMedia(REDUCED_MQ).matches) return "still";
@@ -193,6 +195,7 @@ const ScrollStage = ({ children, runway = 2.8, fill = 0.58, hold = 0.07, directi
         syncStagePin();
         const next = decide();
         root.dataset.stageFit = next === "pinned" ? "on" : "off";
+        root.dataset.stageAnim = next === "still" ? "off" : "on";
         return next;
       };
       let mode = apply();
@@ -202,15 +205,33 @@ const ScrollStage = ({ children, runway = 2.8, fill = 0.58, hold = 0.07, directi
         flow();
       };
       let ctx = gsap.context(build, root);
-      const stop = onStagePinChange(() => {
+      let dead = false;
+      let timer = 0;
+      const resettle = () => {
+        timer = 0;
+        if (dead) return;
         const next = apply();
         if (next === mode) return;
         mode = next;
         ctx.revert();
         ctx = gsap.context(build, root);
         ScrollTrigger.refresh();
-      });
+      };
+      const settle = () => {
+        if (dead) return;
+        if (timer) window.clearTimeout(timer);
+        timer = window.setTimeout(resettle, SETTLE_MS);
+      };
+      const observer = flowOnly ? null : new ResizeObserver(settle);
+      if (observer) depths.forEach((depth) => observer.observe(depth, { box: "border-box" }));
+      window.addEventListener("load", settle);
+      document.fonts?.ready?.then(settle).catch(() => {});
+      const stop = onStagePinChange(settle);
       return () => {
+        dead = true;
+        if (timer) window.clearTimeout(timer);
+        observer?.disconnect();
+        window.removeEventListener("load", settle);
         stop();
         ctx.revert();
       };

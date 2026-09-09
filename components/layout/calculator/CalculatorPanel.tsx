@@ -1,6 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useState, type FC } from "react";
+import { useEffect, useMemo, useRef, useState, type FC } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { routeKey, wasVisited } from "@/lib/visitedRoutes";
 import CalculatorField from "./CalculatorField";
 import TypeRow from "./TypeRow";
 import ExtraChip from "./ExtraChip";
@@ -9,11 +13,16 @@ import PriceCard from "./PriceCard";
 import { CALCULATOR_SELECT_EVENT, calculatePrice, formatCzk, type CalculatorSelectDetail, type CalculatorType } from "@/lib/calculator";
 import { calculatorExtras, DEFAULT_TYPE, PAGES_DEFAULT, projectTypes, RUSH_LABEL } from "@/types/calculator";
 
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
+const REDUCED_MQ = "(prefers-reduced-motion: reduce)";
 type CalculatorPanelProps = {
   note?: string;
 };
 const CalculatorPanel: FC<CalculatorPanelProps> = ({ note }) => {
   //Hooks
+  const rootRef = useRef<HTMLDivElement>(null);
   const [type, setType] = useState<CalculatorType>(DEFAULT_TYPE);
   const [pages, setPages] = useState<number>(PAGES_DEFAULT);
   const [picked, setPicked] = useState<Record<string, boolean>>({});
@@ -42,9 +51,45 @@ const CalculatorPanel: FC<CalculatorPanelProps> = ({ note }) => {
       }),
     [type, pages, pickedExtras, rush]
   );
+  useGSAP(
+    () => {
+      const root = rootRef.current;
+      if (!root) return;
+      const boxes = gsap.utils.toArray<HTMLElement>(root.querySelectorAll("[data-calc-box], [data-calc-card]"));
+      const steps = gsap.utils.toArray<HTMLElement>(root.querySelectorAll("[data-calc-step]"));
+      if (!boxes.length) return;
+      if (window.matchMedia(REDUCED_MQ).matches || wasVisited(routeKey())) return;
+      const timeline = gsap.timeline({
+        scrollTrigger: { trigger: root, start: "top 85%", once: true },
+      });
+      timeline.from(boxes, {
+        opacity: 0,
+        y: 34,
+        duration: 0.75,
+        ease: "power3.out",
+        stagger: 0.12,
+        clearProps: "transform,opacity",
+      });
+      if (steps.length) {
+        timeline.from(
+          steps,
+          {
+            opacity: 0,
+            y: 16,
+            duration: 0.5,
+            ease: "power2.out",
+            stagger: 0.09,
+            clearProps: "transform,opacity",
+          },
+          0.28
+        );
+      }
+    },
+    { scope: rootRef }
+  );
   return (
-    <div className="grid items-center gap-4 mlaptop:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)] mlaptop:gap-5">
-      <div className="min-w-0 rounded-[26px] bg-white p-6 shadow-card xphone:p-7 laptop:p-8">
+    <div ref={rootRef} className="grid items-center gap-4 mlaptop:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)] mlaptop:gap-5">
+      <div data-calc-box className="min-w-0 rounded-[26px] bg-white p-6 shadow-card xphone:p-7 laptop:p-8">
         <CalculatorField num="01" label="Typ projektu">
           <div role="radiogroup" aria-label="Typ projektu" className="divide-y divide-border">
             {projectTypes.map((item) => (

@@ -44,7 +44,7 @@ const PriceCard: FC<PriceCardProps> = ({ result, selection }) => {
   const paidShare = result.showCompare ? (100 - result.discount) / 100 : 1;
   const paidPct = Math.round(paidShare * 100);
   return (
-    <div className="flex min-w-0 flex-col overflow-hidden rounded-[26px] shadow-card">
+    <div data-calc-card className="flex min-w-0 flex-col overflow-hidden rounded-[26px] shadow-card">
       <div className="flex flex-1 flex-col justify-center bg-ink p-6 text-white xphone:p-7 laptop:p-8">
         {submitted ? (
           <div>

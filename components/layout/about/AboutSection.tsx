@@ -21,9 +21,9 @@ const AboutSection = () => {
         width={500}
         height={315}
         priority={false}
-        className="pointer-events-none absolute bottom-20 right-[5svw] w-56 select-none opacity-80 stablet:w-72 mlaptop:bottom-10 mlaptop:w-96"
+        className="pointer-events-none absolute bottom-20 right-[5svw] z-0 w-56 select-none opacity-80 stablet:w-72 mlaptop:bottom-10 mlaptop:w-96"
       />
-      <div data-stage-depth className="mx-auto w-container mt-18">
+      <div data-stage-depth className="relative z-10 mx-auto w-container mt-18">
         <p className="mb-7 flex items-center gap-2.5 text-eyebrow font-semibold uppercase tracking-[0.14em] text-text-3">
           <span
             aria-hidden="true"
