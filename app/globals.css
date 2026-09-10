@@ -396,7 +396,6 @@ body {
         radial-gradient(circle closest-side, var(--color-accent-peach) 98%, transparent 100%),
         radial-gradient(circle closest-side, var(--color-accent-purple) 98%, transparent 100%),
         radial-gradient(circle closest-side, var(--color-ink) 98%, transparent 100%);
-      /*Poměr tečka : mezera : tečka = 35.7 / 28.6 / 35.7, stejně jako v logu*/
       background-size: 35.7% 35.7%;
       background-position: 0 0, 100% 0, 0 100%, 100% 100%;
       background-repeat: no-repeat;
@@ -451,7 +450,6 @@ body {
     stroke-dashoffset: 5000;
   }
 
-  /* .is-drawn nasadi BackdropLines.tsx, az sekce najede do viewportu */
   .hero-lines-anim.is-drawn path {
     animation: drawLines 2.5s ease-in-out forwards;
     animation-delay: var(--line-delay, 0s);
@@ -469,11 +467,6 @@ body {
     }
   }
 
-  /*
-    Ztlumeni si scena zapina sama (data-stage-anim nasadi ScrollStage.tsx pri startu animaci).
-    Kdyz se JS na pomalem pripojeni nebo pod sporicem baterie nestihne / vubec nedojede,
-    zustane text citelny misto toho, aby navzdy visel na opacity 0.15.
-  */
   .scroll-stage[data-stage-anim="on"] [data-fill] {
     opacity: 0.15;
   }
@@ -489,21 +482,34 @@ body {
     }
   }
 
-  /*
-    Kolecko s podilem ceny. Bezne prekresleni (tah slideru, prepnuti typu) je kratke,
-    prvni otevreni pri najeti do viewportu je pomalejsi, at je videt, jak se kruh
-    "otevira". Zavreni samo se nesmi animovat -- jinak by kruh pri startu bliknul.
-  */
+  .price-donut {
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+  }
+
   .price-donut__arc {
     transition: stroke-dasharray 500ms cubic-bezier(0.2, 0.8, 0.25, 1);
+    transform-box: view-box;
+    transform-origin: 50% 50%;
+  }
+
+  .price-donut[data-donut="opening"] .price-donut__arc {
+    animation: price-donut-spin 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    transition-duration: 900ms;
+  }
+
+  @keyframes price-donut-spin {
+    from {
+      transform: rotate(-360deg);
+    }
+
+    to {
+      transform: rotate(0deg);
+    }
   }
 
   .price-donut[data-donut="closed"] .price-donut__arc {
     transition: none;
-  }
-
-  .price-donut[data-donut="opening"] .price-donut__arc {
-    transition-duration: 900ms;
   }
 
   .price-donut__track {
@@ -520,6 +526,10 @@ body {
     .price-donut__track {
       transition: none;
     }
+
+    .price-donut[data-donut="opening"] .price-donut__arc {
+      animation: none;
+    }
   }
 
   .scroll-stage__cue {
@@ -533,16 +543,7 @@ body {
   }
 }
 
-/*
-  Pinned scena musi prebit tridy primo na sekcich (mt-30, py-4, w-full...). Tailwind je dava
-  do vrstvy utilities, ktera je v kaskade az za components, takze by v components layeru
-  prohravala i pri vyssi specificite -- odsud pak zustaval margin, sekce se posunula dolu
-  a spodek se orezal. Ve vrstve utilities uz rozhoduje specificita a ta je tady vyssi.
-*/
 @layer utilities {
-  /* Prepina lib/stagePin.ts -- media query s min-height na iOS Safari nesedela na
-     skutecnou vysku stage (detaily v komentari tam). Samotne pripnuti resi
-     ScrollTrigger v ScrollStage.tsx, tady jen rozmery sceny. */
   :root[data-stage-pin="on"] .scroll-stage:not(.scroll-stage--flow):not([data-stage-fit="off"]) {
     height: 100svh;
   }
@@ -567,12 +568,6 @@ body {
     overflow: hidden;
   }
 
-  /*
-    V pinned rezimu urcuje vysku panel, ne sekce v nem. Vlastni margin (ServicesSection
-    ma mt-30) nebo velky py- se pricitaji k 100svh a obsah by pretekl pres overflow: hidden.
-    Sekce proto dostane presne vysku panelu a pevne, male odsazeni -- hodnota se musi shodovat
-    s STAGE_PAD v ScrollStage.tsx, ktery podle ni pocita, jestli se obsah do sceny vejde.
-  */
   :root[data-stage-pin="on"] .scroll-stage:not(.scroll-stage--flow):not([data-stage-fit="off"]) .scroll-stage__panel > * {
     height: 100%;
     min-height: 0;
@@ -580,13 +575,6 @@ body {
     padding-block: 0.75rem;
   }
 
-  /*
-    Margin se musel nulovat i o patro niz. Pravidlo vyse sedi jen na sekci (primy potomek
-    panelu), jenze odsazeni nesou az vnitrni bloky -- ServicesSection ma na [data-stage-depth]
-    mt-40 (160 px), AboutSection mt-18. Panel je flex s align-items: center, takze ten margin
-    obsah odsune dolu a spodek se pod overflow: hidden orizne (na iPhonu utnute posledni
-    sluzby). Ve flow rezimu odsazeni zustava, tam drzi rytmus mezi sekcemi.
-  */
   :root[data-stage-pin="on"] .scroll-stage:not(.scroll-stage--flow):not([data-stage-fit="off"]) [data-stage-depth] {
     margin-block: 0;
   }

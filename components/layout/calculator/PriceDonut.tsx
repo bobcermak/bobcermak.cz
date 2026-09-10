@@ -25,14 +25,13 @@ const PriceDonut: FC<PriceDonutProps> = ({ share }) => {
   useGSAP(
     () => {
       const svg = svgRef.current;
-      const section = svg?.closest("section");
-      if (!svg || !section) return;
+      if (!svg) return;
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       setPhase("closed");
       let done = 0;
       const trigger = ScrollTrigger.create({
-        trigger: section,
-        start: "top 75%",
+        trigger: svg,
+        start: "top 85%",
         once: true,
         onEnter: () => {
           setPhase("opening");
@@ -56,7 +55,7 @@ const PriceDonut: FC<PriceDonutProps> = ({ share }) => {
       viewBox={`0 0 ${SIZE} ${SIZE}`}
       aria-hidden="true"
       data-donut={phase}
-      className="price-donut flex-none -rotate-90"
+      className="price-donut flex-none"
     >
       <circle
         cx={SIZE / 2}
