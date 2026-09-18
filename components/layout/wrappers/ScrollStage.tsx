@@ -182,7 +182,16 @@ const ScrollStage = ({ children, runway = 2.8, fill = 0.58, hold = 0.07, directi
         gsap.set(words, { opacity: 1 });
         gsap.set(chips, { opacity: 1, scale: 1, y: 0 });
       };
+      const contentHeight = (depth: HTMLElement) => {
+        const cs = getComputedStyle(depth);
+        return depth.offsetHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+      };
       const panelsFit = () => {
+        const available = measureStageHeight() - STAGE_PAD;
+        return depths.every((depth) => contentHeight(depth) <= available);
+      };
+      const paddingFits = () => {
+        root.dataset.stagePad = "on";
         const available = measureStageHeight() - STAGE_PAD;
         return depths.every((depth) => depth.offsetHeight <= available);
       };
@@ -196,6 +205,7 @@ const ScrollStage = ({ children, runway = 2.8, fill = 0.58, hold = 0.07, directi
         const next = decide();
         root.dataset.stageFit = next === "pinned" ? "on" : "off";
         root.dataset.stageAnim = next === "still" ? "off" : "on";
+        root.dataset.stagePad = next !== "pinned" || paddingFits() ? "on" : "off";
         return next;
       };
       let mode = apply();
