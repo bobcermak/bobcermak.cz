@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 const TermsPage = () => (
-  <LegalPage title="Obchodní podmínky" updated="5. 8. 2026" path="/obchodni-podminky">
+  <LegalPage title="Obchodní podmínky" updated="22. 9. 2026" path="/obchodni-podminky">
     <p>
       Tenhle text popisuje, jak u mě probíhá spolupráce. Nenahrazuje smlouvu — tu na každou
       zakázku uzavíráme zvlášť a má přednost před tím, co je tady.
@@ -55,22 +55,9 @@ const TermsPage = () => (
     </p>
     <h2>Práva ke kódu</h2>
     <p>
-      Autorská práva ke zdrojovému kódu zůstávají mně. Vy dostáváte právo výsledek používat pro
-      vlastní provoz — bez omezení na čas a i po skončení spolupráce. Kód není váš k dalšímu
-      prodeji ani k šíření dál.
-    </p>
-    <p>
-      Úpravy, rozšíření a zásahy do kódu dělám já. Není to schválnost — je to jediný způsob, jak
-      vám můžu ručit za to, že věci fungují, a opravovat chyby zdarma. Zásah někoho jiného do
-      kódu tuhle záruku ruší.
-    </p>
-    <p>
-      Části řešení, které nejsou šité na míru přímo vám (moje komponenty, pomocné knihovny,
-      obecné postupy), používám dál i na jiných projektech.
-    </p>
-    <p>
-      Potřebujete-li kód vlastnit celý — třeba kvůli internímu týmu nebo prodeji firmy — jde to
-      domluvit jako samostatný převod práv za příplatek. Napište mi a probereme to.
+      Rozsah práv ke kódu se liší projekt od projektu, takže ho tady natvrdo nestanovuju.
+      Domlouváme se na něm vždycky u konkrétní zakázky a to, na čem se domluvíme, je součástí
+      nabídky a smlouvy. Než cokoliv odsouhlasíte, budete přesně vědět, co dostáváte.
     </p>
     <h2>Provoz a údržba</h2>
     <p>
