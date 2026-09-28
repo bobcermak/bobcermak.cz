@@ -81,7 +81,7 @@ export const PROJECT_GROUPS: ProjectGroup[] = [
       {
         slug: "alexandra-abertamy",
         title: "Chata Alexandra",
-        year: "2025-26",
+        year: "2024-25",
         desc: "První verze webu horské chaty pro 15 hostů v Hřebečné — vybavení, fotky objektu a poptávka pobytu. Běží naostro, teď ji nahrazuje redesign.",
         types: ["Web"],
         context: "Klientské",
@@ -89,7 +89,6 @@ export const PROJECT_GROUPS: ProjectGroup[] = [
         img: "/images/content/alexandra-abertamy-mockup.png",
         fit: "cover",
         href: "https://alexandra-abertamy.cz",
-        github: "https://github.com/bobcermak/alexandra-abertamy.cz",
       },
       {
         slug: "3kprods",
@@ -115,7 +114,6 @@ export const PROJECT_GROUPS: ProjectGroup[] = [
         img: "/images/content/vladimirwunsch-mockup.png",
         fit: "cover",
         href: "https://vladimirwunsch.cz",
-        github: "https://github.com/bobcermak/vladimirwunsch.cz",
       },
       {
         slug: "balancgate",
@@ -129,7 +127,6 @@ export const PROJECT_GROUPS: ProjectGroup[] = [
         fit: "contain",
         imgBg: "white",
         href: "https://balancgate.cz",
-        github: "https://github.com/bobcermak/balancgate.cz",
       },
       {
         slug: "blessed-barbershop",
