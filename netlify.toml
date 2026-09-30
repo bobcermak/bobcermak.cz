@@ -1,0 +1,4 @@
+# E-mailové adresy nejsou tajemství – jsou veřejně na webu a v odchozích e-mailech,
+# takže je vyjímám ze secrets scanu. Skutečné klíče (RESEND_API_KEY, GITHUB_TOKEN) se skenují dál.
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "CALCULATOR_FROM_EMAIL,CONTACT_FROM_EMAIL,LEAD_TO_EMAIL"
