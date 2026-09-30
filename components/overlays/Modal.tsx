@@ -54,38 +54,41 @@ const Modal: FC<ModalProps> = ({ open, onClose, labelledBy, accentClass, wide = 
   const leaving = phase === "leaving";
   return createPortal(
     <div
-      className={`fixed inset-0 z-100 grid place-items-center overflow-y-auto bg-ink/45 p-4 backdrop-blur-sm ${
+      data-lenis-prevent
+      className={`fixed inset-0 z-100 overflow-y-auto overscroll-contain bg-ink/45 backdrop-blur-sm ${
         leaving
           ? "pointer-events-none motion-safe:animate-[fadeOut_0.26s_ease-in_both]"
           : "motion-safe:animate-[fadeIn_0.2s_ease-out_both]"
       }`}
       onClick={onClose}
     >
-      <div
-        ref={dialogRef}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby={labelledBy}
-        tabIndex={-1}
-        onClick={(event) => event.stopPropagation()}
-        className={`relative w-full overflow-hidden rounded-[26px] border border-white/70 bg-white p-7 text-center shadow-nav outline-none xphone:p-9 ${
-          wide ? "my-8 max-w-3xl" : "max-w-105"
-        } ${
-          leaving
-            ? "motion-safe:animate-[floatDown_0.26s_cubic-bezier(.4,0,.9,.3)_both]"
-            : "motion-safe:animate-[floatUp_0.4s_cubic-bezier(.2,.8,.25,1)_both]"
-        }`}
-      >
-        <span aria-hidden="true" className={`absolute inset-x-0 top-0 z-20 h-1 ${accentClass}`}/>
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label="Zavřít"
-          className="absolute right-4 top-4 z-20 grid size-9 cursor-pointer place-items-center rounded-full border border-border bg-white/85 text-text-2 shadow-card backdrop-blur-md transition-colors duration-250 hover:border-ink hover:bg-white hover:text-ink active:border-ink active:bg-white active:text-ink"
+      <div className="flex min-h-full items-center justify-center px-4 py-3">
+        <div
+          ref={dialogRef}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={labelledBy}
+          tabIndex={-1}
+          onClick={(event) => event.stopPropagation()}
+          className={`relative w-full overflow-hidden rounded-[26px] border border-white/70 bg-white p-7 text-center shadow-nav outline-none xphone:p-9 ${
+            wide ? "max-w-3xl" : "max-w-105"
+          } ${
+            leaving
+              ? "motion-safe:animate-[floatDown_0.26s_cubic-bezier(.4,0,.9,.3)_both]"
+              : "motion-safe:animate-[floatUp_0.4s_cubic-bezier(.2,.8,.25,1)_both]"
+          }`}
         >
-          <XIcon size={18} weight="bold"/>
-        </button>
-        {children}
+          <span aria-hidden="true" className={`absolute inset-x-0 top-0 z-20 h-1 ${accentClass}`}/>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Zavřít"
+            className="absolute right-4 top-4 z-20 grid size-9 cursor-pointer place-items-center rounded-full border border-border bg-white/85 text-text-2 shadow-card backdrop-blur-md transition-colors duration-250 hover:border-ink hover:bg-white hover:text-ink active:border-ink active:bg-white active:text-ink"
+          >
+            <XIcon size={18} weight="bold"/>
+          </button>
+          {children}
+        </div>
       </div>
     </div>,
     document.body
