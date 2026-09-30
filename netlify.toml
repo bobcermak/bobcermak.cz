@@ -1,4 +1,7 @@
 # E-mailové adresy nejsou tajemství – jsou veřejně na webu a v odchozích e-mailech,
 # takže je vyjímám ze secrets scanu. Skutečné klíče (RESEND_API_KEY, GITHUB_TOKEN) se skenují dál.
+# Turbopack si do build cache (.next/cache) ukládá hodnoty env proměnných kvůli invalidaci.
+# Cache se nenasazuje, slouží jen dalším buildům, proto ji ze scanu vyjímám.
 [build.environment]
   SECRETS_SCAN_OMIT_KEYS = "CALCULATOR_FROM_EMAIL,CONTACT_FROM_EMAIL,LEAD_TO_EMAIL"
+  SECRETS_SCAN_OMIT_PATHS = ".next/cache/**,.netlify/.next/cache/**"
