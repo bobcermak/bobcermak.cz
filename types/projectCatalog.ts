@@ -260,7 +260,7 @@ export const PROJECT_GROUPS: ProjectGroup[] = [
         types: ["Web", "Nástroj"],
         context: "Škola",
         stack: ["React 19", "TypeScript", "styled-components", "Recharts", "Vite", "npm"],
-        img: "/images/content/cybergrid-laptop-mockup.png",
+        img: "/images/content/cybergrid-mockup.png",
         fit: "cover",
         imgBg: "#FBE382",
         href: "https://bobcermak.github.io/CyberGrid/",
