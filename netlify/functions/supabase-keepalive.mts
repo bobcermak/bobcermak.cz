@@ -16,6 +16,4 @@ export default async () => {
   console.log("Supabase ping:", res.status, await res.text());
   return new Response(null, { status: res.status });
 };
-
-// pondeli + ctvrtek 8:00 UTC
 export const config: Config = { schedule: "0 8 * * 1,4" };
