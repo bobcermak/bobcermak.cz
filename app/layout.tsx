@@ -14,7 +14,6 @@ import "./globals.css";
 const montserrat = Montserrat({
   subsets: ["latin", "latin-ext"],
   weight: ["300", "400", "500", "600", "700"],
-  style: ["normal", "italic"],
   display: "swap",
   variable: "--font-montserrat-next",
 });
@@ -22,12 +21,14 @@ const orbitron = Orbitron({
   subsets: ["latin"],
   weight: ["400", "500"],
   display: "swap",
+  preload: false,
   variable: "--font-orbitron-next",
 });
 const outfit = Outfit({
   subsets: ["latin", "latin-ext"],
   weight: ["700"],
   display: "swap",
+  preload: false,
   variable: "--font-outfit-next",
 });
 export const metadata: Metadata = {

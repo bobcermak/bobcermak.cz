@@ -1,8 +1,9 @@
 "use client";
 
 import Script from "next/script";
-import { useEffect, type FC } from "react";
+import { useEffect, useState, type FC } from "react";
 import { useConsent } from "@/contexts/ConsentContext";
+import { onFirstInteraction } from "@/lib/firstInteraction";
 
 const CONSENT = `window.clarity("consentv2",{ad_Storage:"denied",analytics_Storage:"granted"});`;
 const Analytics: FC = () => {
@@ -10,7 +11,9 @@ const Analytics: FC = () => {
   const { state } = useConsent();
   const id = process.env.NEXT_PUBLIC_CLARITY_ID;
   const granted = state?.analytics === "granted";
+  const [engaged, setEngaged] = useState<boolean>(false);
 
+  useEffect(() => onFirstInteraction(() => setEngaged(true)), []);
   useEffect(() => {
     const clarity = window.clarity;
     if (typeof clarity !== "function") return;
@@ -20,9 +23,9 @@ const Analytics: FC = () => {
   if (process.env.NODE_ENV !== "production" && !id && granted) {
     console.warn("[analytics] NEXT_PUBLIC_CLARITY_ID chybí — Clarity tag se nevloží.");
   }
-  if (!id || !granted) return null;
+  if (!id || !granted || !engaged) return null;
   return (
-    <Script id="ms-clarity" strategy="afterInteractive">
+    <Script id="ms-clarity" strategy="lazyOnload">
       {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","${id}");${CONSENT}`}
     </Script>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type FC } from "react";
+import { onFirstInteraction } from "@/lib/firstInteraction";
 
 type Blob = {
   className: string;
@@ -95,16 +96,10 @@ const ReactiveBg: FC = () => {
       window.addEventListener("scroll", onScroll, { passive: true });
     }
     window.addEventListener("resize", measure, { passive: true });
-    const start = performance.now();
+    let start = 0;
     let frame = 0;
     let last = 0;
-    const loop = (now: number) => {
-      frame = requestAnimationFrame(loop);
-      if (now - last < FRAME_STEP) return;
-      last = now;
-      currentX += (targetX - currentX) * EASING;
-      currentY += (targetY - currentY) * EASING;
-      const elapsed = (now - start) / 1000;
+    const draw = (elapsed: number) => {
       const vw = window.innerWidth / 100;
       BLOBS.forEach((blob, i) => {
         const el = blobs[i];
@@ -118,8 +113,21 @@ const ReactiveBg: FC = () => {
         el.style.opacity = breath.toFixed(3);
       });
     };
-    frame = requestAnimationFrame(loop);
+    const loop = (now: number) => {
+      frame = requestAnimationFrame(loop);
+      if (now - last < FRAME_STEP) return;
+      last = now;
+      currentX += (targetX - currentX) * EASING;
+      currentY += (targetY - currentY) * EASING;
+      draw((now - start) / 1000);
+    };
+    draw(0);
+    const stop = onFirstInteraction(() => {
+      start = performance.now();
+      frame = requestAnimationFrame(loop);
+    });
     return () => {
+      stop();
       cancelAnimationFrame(frame);
       window.removeEventListener("mousemove", onMouse);
       window.removeEventListener("touchmove", onTouch);

@@ -17,7 +17,7 @@ const Footer = () => (
         <div className="min-w-0">
           <p className="text-[clamp(2.4rem,6.4vw,4.25rem)] font-semibold leading-[1.02] tracking-[-0.03em] text-ink">
             Máš projekt?
-            <span className="text-placeholder block">Napiš mi.</span>
+            <span className="text-text-3 block">Napiš mi.</span>
           </p>
           <div className="mt-8 flex flex-col gap-3">
             {[

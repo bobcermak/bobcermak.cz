@@ -156,32 +156,39 @@ export const useLanyardBand = ({ maxSpeed = 50, minSpeed = 0, segmentLength = 1 
       dir.copy(vec).sub(state.camera.position).normalize();
       vec.add(dir.multiplyScalar(state.camera.position.length()));
       [card, j1, j2, j3, fixed].forEach((ref) => ref.current?.wakeUp());
+      state.invalidate();
       card.current?.setNextKinematicTranslation({
         x: vec.x - dragged.x,
         y: vec.y - dragged.y,
         z: vec.z - dragged.z,
       });
     }
-    if (fixed.current && band.current && j1.current && j2.current && j3.current && card.current) {
-      [j1, j2].forEach((ref) => {
-        const r = ref.current as any;
-        if (!r.lerped) r.lerped = new THREE.Vector3().copy(r.translation());
-        const clampedDistance = Math.max(0.1, Math.min(1, r.lerped.distanceTo(r.translation())));
-        r.lerped.lerp(r.translation(), delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed)));
-      });
-      curve.points[0].copy(j3.current!.translation() as any);
-      curve.points[1].copy((j2.current as any).lerped);
-      curve.points[2].copy((j1.current as any).lerped);
-      curve.points[3].copy(fixed.current.translation() as any);
-      band.current.geometry.setPoints(curve.getPoints(32));
-      if (framesDrawn.current < 2) {
-        framesDrawn.current += 1;
-        if (framesDrawn.current === 2) setBandReady(true);
-      }
-      ang.copy(card.current!.angvel() as any);
-      rot.copy(card.current!.rotation() as any);
-      card.current!.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z }, false);
+    if (!(fixed.current && band.current && j1.current && j2.current && j3.current && card.current)) {
+      state.invalidate();
+      return;
     }
+    let settling = framesDrawn.current < 2;
+    [j1, j2].forEach((ref) => {
+      const r = ref.current as any;
+      if (!r.lerped) r.lerped = new THREE.Vector3().copy(r.translation());
+      const distance = r.lerped.distanceTo(r.translation());
+      const clampedDistance = Math.max(0.1, Math.min(1, distance));
+      r.lerped.lerp(r.translation(), Math.min(1, delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed))));
+      if (distance > 0.001) settling = true;
+    });
+    if (settling) state.invalidate();
+    curve.points[0].copy(j3.current!.translation() as any);
+    curve.points[1].copy((j2.current as any).lerped);
+    curve.points[2].copy((j1.current as any).lerped);
+    curve.points[3].copy(fixed.current.translation() as any);
+    band.current.geometry.setPoints(curve.getPoints(32));
+    if (framesDrawn.current < 2) {
+      framesDrawn.current += 1;
+      if (framesDrawn.current === 2) setBandReady(true);
+    }
+    ang.copy(card.current!.angvel() as any);
+    rot.copy(card.current!.rotation() as any);
+    card.current!.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z }, false);
   });
   return {
     band,

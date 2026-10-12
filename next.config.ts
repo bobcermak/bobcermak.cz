@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     turbopackFileSystemCacheForBuild: false,
+    inlineCss: true,
   },
 };
 export default nextConfig;

@@ -15,7 +15,6 @@ const ProjectImage = ({ src, title, sizes, fit = "cover" }: ProjectImageProps) =
         alt={title}
         fill
         sizes={sizes}
-        quality={100}
         className={fit === "contain" ? "object-contain" : "object-cover"}
       />
     );

@@ -48,7 +48,7 @@ const Lanyard: FC<LanyardProps> = ({ position = [0, 0, 20], fov = 20, transparen
         key={`${offsetX}|${bandLength}|${resolvedBandWidth}|${cameraPosition.join(",")}`}
         camera={{ position: cameraPosition, fov }}
         dpr={DPR}
-        frameloop={active ? "always" : "never"}
+        frameloop={active ? "demand" : "never"}
         gl={{ alpha: transparent, powerPreference: "high-performance" }}
         onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)}
       >

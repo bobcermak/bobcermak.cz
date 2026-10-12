@@ -1,6 +1,7 @@
 "use client";
 
 import LanyardScene from "@/components/three/LanyardScene";
+import { onFirstInteraction } from "@/lib/firstInteraction";
 import { useEffect, useRef, useState } from "react";
 
 const QUERIES = {
@@ -20,8 +21,10 @@ const HeroLanyard = () => {
   //Hooks
   const [size, setSize] = useState<Breakpoints | null>(null);
   const [active, setActive] = useState<boolean>(true);
+  const [engaged, setEngaged] = useState<boolean>(false);
   const hostRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => onFirstInteraction(() => setEngaged(true)), []);
   useEffect(() => {
     const lists = Object.values(QUERIES).map((query) => window.matchMedia(query));
     const update = () => setSize(measure());
@@ -50,9 +53,9 @@ const HeroLanyard = () => {
   }, []);
   return (
     <div ref={hostRef} className="absolute -top-50 bottom-0 z-0 tablet:z-20 w-full touch-pan-y" aria-hidden="true">
-      {size && (
+      {size && engaged && (
         <LanyardScene
-          className="h-full w-full"
+          className="h-full w-full motion-safe:animate-[fadeIn_0.6s_ease-out_both]"
           active={active}
           position={size.md ? [0, 0, 16] : [0, 0, 20]}
           offsetX={size.narrow ? 0.3 : size.xl ? 1.8 : size.lg ? 2.5 : size.md ? 1.8 : 1.5}

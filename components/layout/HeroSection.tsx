@@ -2,7 +2,7 @@ import { Button, RevealSection } from "@/components";
 import HeroEyebrow from "./HeroEyebrow";
 import HeroLanyard from "./HeroLanyard";
 import ScrollHint from "./ScrollHint";
-import { type FC } from "react";
+import { type CSSProperties, type FC } from "react";
 
 type HeroSectionProps = {
   eyebrow?: string,
@@ -17,18 +17,18 @@ const HeroSection: FC<HeroSectionProps> = ({ eyebrow, title = "Stavím weby a ap
           <header className="pointer-events-none tablet:pointer-events-auto">
             <HeroEyebrow text={eyebrow}/>
             <h1
-              data-reveal
-              className="pointer-events-none relative max-w-[15ch] text-[clamp(2.5rem,6vw,4rem)] min-[1700px]:text-[5rem] font-bold leading-[1.02] tracking-[-0.03em] text-ink"
+              style={{ "--reveal-delay": "0.12s" } as CSSProperties}
+              className="hero-reveal hero-reveal--text pointer-events-none relative max-w-[15ch] text-[clamp(2.5rem,6vw,4rem)] min-[1700px]:text-[5rem] font-bold leading-[1.02] tracking-[-0.03em] text-ink"
             >
               <span className="pointer-events-none">{title}</span>
             </h1>
-            <p data-reveal className="pointer-events-none relative mt-4 max-w-[52ch] text-sub leading-relaxed text-text-2 tablet:max-w-88 laptop:max-w-120">
+            <p style={{ "--reveal-delay": "0.24s" } as CSSProperties} className="hero-reveal hero-reveal--text pointer-events-none relative mt-4 max-w-[52ch] text-sub leading-relaxed text-text-2 tablet:max-w-88 laptop:max-w-120">
               <span className="pointer-events-none">{subtitle}</span>
             </p>
           </header>
           <div
-            data-reveal
-            className="pointer-events-auto relative z-30 mt-8 flex flex-col items-stretch gap-2 tablet:flex-row tablet:items-center"
+            style={{ "--reveal-delay": "0.36s" } as CSSProperties}
+            className="hero-reveal pointer-events-auto relative z-30 mt-8 flex flex-col items-stretch gap-2 tablet:flex-row tablet:items-center"
           >
             <Button className="flex" href="#calculator" ariaLabel="Spočítat cenu projektu">
               <span className="whitespace-nowrap">

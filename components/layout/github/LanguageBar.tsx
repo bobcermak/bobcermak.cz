@@ -23,7 +23,7 @@ const LanguageBar: FC<{ languages: GithubLanguage[] }> = ({ languages }) => {
               className="size-2.5 flex-none rounded-full"
             />
             {language.name}
-            <span className="tabular-nums text-placeholder">{language.percent} %</span>
+            <span className="tabular-nums text-text-3">{language.percent} %</span>
           </li>
         ))}
       </ul>

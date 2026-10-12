@@ -50,12 +50,6 @@ export const PageWrapper = ({ children }: { children: React.ReactNode }) => {
       if (url.origin !== window.location.origin || url.pathname !== window.location.pathname) return null;
       return url;
     };
-    /*
-      Odkaz na stejnou stranku bez kotvy (napr. logo na "/", kdyz uz jsem na "/#calculator").
-      Next.js segment neprerenderuje, takze scroll nikdo neresetuje a kotva zustane viset v URL --
-      router si ji navic z canonicalUrl pushne zpatky. Bereme si klik uz v capture fazi, aby ho
-      next/link preskocil, a dodelame to sami, jako by to udelal prohlizec pri klasicke navigaci.
-    */
     const handleTopClick = (e: MouseEvent) => {
       const url = samePageUrl(e);
       if (!url || url.hash || url.search !== window.location.search) return;
@@ -63,7 +57,6 @@ export const PageWrapper = ({ children }: { children: React.ReactNode }) => {
       if (window.location.hash) {
         window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}`);
       }
-      // force prebije jeste bezici zamceny scroll na kotvu, ale ne zavreny scroll pod modalem
       lenis.scrollTo(0, { duration: 1.2, lock: true, force: !lenis.isStopped });
     };
     const handleLinkClick = (e: MouseEvent) => {
@@ -89,6 +82,7 @@ export const PageWrapper = ({ children }: { children: React.ReactNode }) => {
     const page = wrapperRef.current;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const returning = enterRoute(pathname);
+    document.documentElement.toggleAttribute("data-route-return", returning);
     if (page && !reduced && returning) {
       gsap.fromTo(
         page,

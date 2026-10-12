@@ -12,7 +12,7 @@ const Logo: FC<LogoProps> = ({ onClick }: LogoProps) => {
     <Link
       href="/"
       onClick={onClick}
-      aria-label="bobcermak.cz — domů"
+      aria-label="bc — bobcermak.cz, domů"
       className="flex items-center text-ink"
     >
       <span className="inline-flex items-center gap-1.5">

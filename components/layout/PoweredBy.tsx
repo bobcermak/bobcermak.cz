@@ -12,7 +12,7 @@ const PoweredBy: FC<PoweredByProps> = ({ powered = "powered", firstName, lastNam
     <Button
       href={link}
       noStyle
-      ariaLabel={`${powered} by ${firstName ?? ""} ${lastName ?? ""}`.trim()}
+      ariaLabel={`${powered} by #${firstName ?? ""}${lastName ?? ""}`}
       hover="hover:text-accent-blue active:text-accent-blue transition-colors duration-250"
       className="font-orbitron text-text-3"
     >

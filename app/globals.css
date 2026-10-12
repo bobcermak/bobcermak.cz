@@ -17,8 +17,8 @@
   /*Colors — neutrály (nesou ~95 % plochy)*/
   --color-ink: #111111;
   --color-ink-hover: #000000;
-  --color-text-2: #6b6b6b;
-  --color-text-3: #9a9a9a;
+  --color-text-2: #5c5c5c;
+  --color-text-3: #707070;
   --color-placeholder: #b0aeac;
   --color-muted-num: #cfcdcb;
   --color-white: #ffffff;
@@ -138,6 +138,15 @@ body {
   }
   to {
     opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes riseUp {
+  from {
+    transform: translateY(20px);
+  }
+  to {
     transform: translateY(0);
   }
 }
@@ -464,6 +473,24 @@ body {
     .hero-lines-anim.is-drawn path {
       animation: none;
       stroke-dashoffset: 0;
+    }
+  }
+
+  .hero-reveal {
+    animation: floatUp 0.8s cubic-bezier(0.215, 0.61, 0.355, 1) var(--reveal-delay, 0s) both;
+  }
+
+  .hero-reveal--text {
+    animation-name: riseUp;
+  }
+
+  :root[data-route-return] .hero-reveal {
+    animation: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-reveal {
+      animation: none;
     }
   }
 

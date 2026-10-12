@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import { CookieIcon } from "@phosphor-icons/react";
 import { useConsent } from "@/contexts/ConsentContext";
+import { onFirstInteraction } from "@/lib/firstInteraction";
 import { CONSENT_DELAY_MS, CONSENT_TEXTS } from "@/types/consent";
 import Button from "../buttons/Button";
 
@@ -18,8 +19,14 @@ const CookieBanner: FC = () => {
 
   useEffect(() => {
     if (state) return;
-    const timer = window.setTimeout(() => setPhase("in"), CONSENT_DELAY_MS);
-    return () => window.clearTimeout(timer);
+    let timer = 0;
+    const stop = onFirstInteraction(() => {
+      timer = window.setTimeout(() => setPhase("in"), CONSENT_DELAY_MS);
+    });
+    return () => {
+      stop();
+      window.clearTimeout(timer);
+    };
   }, [state]);
   useEffect(() => {
     if (phase !== "out") return;
@@ -35,16 +42,14 @@ const CookieBanner: FC = () => {
   return createPortal(
     <div
       role="dialog"
-      aria-modal="true"
+      aria-modal="false"
       aria-labelledby="cookie-title"
-      className={`fixed inset-0 z-90 grid place-items-center overflow-y-auto bg-ink/40 p-4 backdrop-blur-md ${
-        leaving
-          ? "pointer-events-none motion-safe:animate-[fadeOut_0.26s_ease-in_both]"
-          : "motion-safe:animate-[fadeIn_0.25s_ease-out_both]"
+      className={`fixed inset-x-3 bottom-3 z-90 xphone:inset-x-auto xphone:bottom-5 xphone:left-5 xphone:w-full xphone:max-w-100 ${
+        leaving ? "pointer-events-none" : ""
       }`}
     >
       <div
-        className={`relative w-full max-w-107 overflow-hidden rounded-[26px] border border-white/70 bg-white shadow-nav ${
+        className={`relative w-full overflow-hidden rounded-[22px] border border-white/70 bg-white shadow-nav-scrolled ${
           leaving
             ? "motion-safe:animate-[floatDown_0.26s_cubic-bezier(.4,0,.9,.3)_both]"
             : "motion-safe:animate-[floatUp_0.45s_cubic-bezier(.2,.8,.25,1)_both]"
@@ -55,24 +60,28 @@ const CookieBanner: FC = () => {
             <span key={color} className={`flex-1 ${color}`}/>
           ))}
         </span>
-        <div className="p-7 pt-8 xphone:p-9 xphone:pt-10">
-          <span
-            aria-hidden="true"
-            className="mb-5 grid size-13 place-items-center rounded-2xl bg-accent-peach/35 text-accent-peach-strong"
-          >
-            <CookieIcon size={26} weight="fill"/>
-          </span>
-          <h2
-            id="cookie-title"
-            className="mb-2.5 text-[1.45rem] font-semibold leading-tight tracking-[-0.02em] text-ink"
-          >
-            {CONSENT_TEXTS.title}
-          </h2>
-          <p className="mb-2.5 text-[14.5px] leading-[1.55] text-text-2">{CONSENT_TEXTS.lead}</p>
-          <p className="mb-7 text-[13px] leading-[1.5] text-text-3">{CONSENT_TEXTS.detail}</p>
-          <div className="flex flex-col gap-2.5">
+        <div className="p-5 pt-6 xphone:p-6 xphone:pt-7">
+          <div className="mb-2 flex items-center gap-3">
+            <span
+              aria-hidden="true"
+              className="grid size-9 shrink-0 place-items-center rounded-xl bg-accent-peach/35 text-accent-peach-strong"
+            >
+              <CookieIcon size={20} weight="fill"/>
+            </span>
+            <h2
+              id="cookie-title"
+              className="text-[1.2rem] font-semibold leading-tight tracking-[-0.02em] text-ink"
+            >
+              {CONSENT_TEXTS.title}
+            </h2>
+          </div>
+          <p className="mb-1.5 text-[13.5px] leading-[1.5] text-text-2">{CONSENT_TEXTS.lead}</p>
+          <p className="mb-5 text-[12.5px] leading-[1.5] text-text-3">{CONSENT_TEXTS.detail}</p>
+          <div className="grid grid-cols-2 gap-2">
             <Button
               type="button"
+              size="sm"
+              isArrow={false}
               onClick={close(accept)}
               wFull
               ariaLabel={CONSENT_TEXTS.accept}
@@ -81,6 +90,7 @@ const CookieBanner: FC = () => {
             </Button>
             <Button
               type="button"
+              size="sm"
               variant="dark"
               onClick={close(reject)}
               wFull
@@ -89,7 +99,7 @@ const CookieBanner: FC = () => {
               {CONSENT_TEXTS.reject}
             </Button>
           </div>
-          <p className="mt-5 text-center text-[12.5px] text-text-3">
+          <p className="mt-4 text-center text-[12.5px] text-text-3">
             <Link
               href="/cookies"
               className="font-medium underline underline-offset-[3px] transition-colors duration-250 hover:text-ink active:text-ink"

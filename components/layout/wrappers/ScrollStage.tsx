@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { measureStageHeight, onStagePinChange, readStagePin, syncStagePin } from "@/lib/stagePin";
+import { onFirstInteraction } from "@/lib/firstInteraction";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -204,29 +205,40 @@ const ScrollStage = ({ children, runway = 2.8, fill = 0.58, hold = 0.07, directi
         syncStagePin();
         const next = decide();
         root.dataset.stageFit = next === "pinned" ? "on" : "off";
-        root.dataset.stageAnim = next === "still" ? "off" : "on";
         root.dataset.stagePad = next !== "pinned" || paddingFits() ? "on" : "off";
         return next;
       };
       let mode = apply();
       const build = () => {
+        root.dataset.stageAnim = mode === "still" ? "off" : "on";
         if (mode === "still") return still();
         if (mode === "pinned") return pinned();
         flow();
       };
-      let ctx = gsap.context(build, root);
+      /*
+        Ztlumene vychozi stavy (slova na 15 %, druha sekce na 20 %) stavime az po prvni interakci.
+        Do te doby je stage pod foldem v plnem kontrastu a nacteni stranky nic nestoji.
+      */
+      let ctx: gsap.Context | null = null;
       let dead = false;
       let timer = 0;
+      const start = () => {
+        if (dead || ctx) return;
+        ctx = gsap.context(build, root);
+        ScrollTrigger.refresh();
+      };
       const resettle = () => {
         timer = 0;
         if (dead) return;
         const next = apply();
         if (next === mode) return;
         mode = next;
+        if (!ctx) return;
         ctx.revert();
         ctx = gsap.context(build, root);
         ScrollTrigger.refresh();
       };
+      const stopEngage = onFirstInteraction(start);
       const settle = () => {
         if (dead) return;
         if (timer) window.clearTimeout(timer);
@@ -243,7 +255,8 @@ const ScrollStage = ({ children, runway = 2.8, fill = 0.58, hold = 0.07, directi
         observer?.disconnect();
         window.removeEventListener("load", settle);
         stop();
-        ctx.revert();
+        stopEngage();
+        ctx?.revert();
       };
     },
     { scope: rootRef, dependencies: [runway, fill, hold, flowOnly] }

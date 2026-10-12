@@ -13,8 +13,7 @@ const HeroEyebrow: FC<HeroEyebrowProps> = ({ text }) => {
   if (!label) return null;
   return (
     <p
-      data-reveal
-      className="pointer-events-none relative mb-8 inline-flex w-fit max-w-full items-center gap-3 text-eyebrow font-semibold uppercase tracking-[0.18em] text-text-3"
+      className="hero-reveal pointer-events-none relative mb-8 inline-flex w-fit max-w-full items-center gap-3 text-eyebrow font-semibold uppercase tracking-[0.18em] text-text-3"
     >
       <span
         aria-hidden="true"
