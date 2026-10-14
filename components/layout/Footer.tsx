@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { EnvelopeSimpleIcon, GithubLogoIcon, LinkedinLogoIcon } from "@phosphor-icons/react/ssr";
 import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_HREF, GITHUB_URL, LINKEDIN_URL } from "@/types/contact";
-import { LEGAL_LINKS, SOURCE_REPO } from "@/types/legal";
+import { ARES_URL, BUSINESS_ICO, BUSINESS_NAME, LEGAL_LINKS, SOURCE_REPO } from "@/types/legal";
 import PoweredBy from "./PoweredBy";
 
 const SOCIALS = [
@@ -56,7 +56,15 @@ const Footer = () => (
         </nav>
       </div>
       <div className="flex flex-col gap-4 border-t border-border py-6 text-sm laptop:flex-row laptop:items-center laptop:justify-between">
-        <p className="text-text-3">© {new Date().getFullYear()} Bob Čermák - Všechna práva vyhrazena</p>
+        <div className="flex flex-col gap-1 text-text-3">
+          <p>© {new Date().getFullYear()} Bob Čermák - Všechna práva vyhrazena</p>
+          <p className="text-xs">
+            {BUSINESS_NAME} · IČO{" "}
+            <Link href={ARES_URL} target="_blank" rel="noopener noreferrer" className={MUTED_LINK}>
+              {BUSINESS_ICO}
+            </Link>
+          </p>
+        </div>
         <nav aria-label="Právní informace" className="flex flex-wrap items-center gap-x-8 gap-y-1.5">
           {LEGAL_LINKS.map((item) => (
             <Link key={item.href} href={item.href} className={MUTED_LINK}>

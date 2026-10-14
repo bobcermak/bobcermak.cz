@@ -3,6 +3,7 @@
 import type { FC } from "react";
 import { useConsent } from "@/contexts/ConsentContext";
 import { CONSENT_TEXTS } from "@/types/consent";
+import Button from "@/components/buttons/Button";
 
 const LABELS = {
   granted: "Souhlas s analytikou máte udělený.",
@@ -25,22 +26,23 @@ const ConsentControls: FC = () => {
         )}
       </p>
       <div className="flex flex-wrap gap-2.5">
-        <button
+        <Button
           type="button"
           onClick={accept}
           disabled={state?.analytics === "granted"}
-          className="cursor-pointer rounded-full bg-ink px-5 py-2.5 text-[13px] font-semibold text-white transition-colors duration-250 hover:bg-ink-hover active:bg-ink-hover disabled:pointer-events-none disabled:opacity-40"
+          ariaLabel={CONSENT_TEXTS.accept}
         >
           {CONSENT_TEXTS.accept}
-        </button>
-        <button
+        </Button>
+        <Button
           type="button"
+          variant="dark"
           onClick={reject}
           disabled={state?.analytics === "denied"}
-          className="cursor-pointer rounded-full border border-border-mid px-5 py-2.5 text-[13px] font-medium text-ink transition-colors duration-250 hover:border-ink hover:bg-ink/3 active:border-ink active:bg-ink/3 disabled:pointer-events-none disabled:opacity-40"
+          ariaLabel={CONSENT_TEXTS.reject}
         >
           {CONSENT_TEXTS.reject}
-        </button>
+        </Button>
       </div>
       <p className="mt-3.5 text-[12.5px] leading-[1.5] text-text-3">
         Odmítnutí zabere okamžitě — dokud souhlas nedáte, měřicí skript se do stránky vůbec

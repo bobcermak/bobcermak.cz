@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import LegalPage from "@/components/layout/legal/LegalPage";
 import { formatCzk } from "@/lib/calculator";
-import { CONTACT_EMAIL } from "@/types/contact";
+import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_HREF } from "@/types/contact";
+import { BUSINESS_ADDRESS, BUSINESS_ICO, BUSINESS_NAME, BUSINESS_REGISTRY } from "@/types/legal";
 import { YEARLY_PRICE } from "@/types/calculator";
 
 export const metadata: Metadata = {
@@ -11,16 +12,20 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 const TermsPage = () => (
-  <LegalPage title="Obchodní podmínky" updated="22. 9. 2026" path="/obchodni-podminky">
+  <LegalPage title="Obchodní podmínky" updated="14. 10. 2026" path="/obchodni-podminky">
     <p>
       Tenhle text popisuje, jak u mě probíhá spolupráce. Nenahrazuje smlouvu — tu na každou
       zakázku uzavíráme zvlášť a má přednost před tím, co je tady.
     </p>
     <h2>Kdo je dodavatel</h2>
     <p>
-      Bohuslav Čermák, kontakt <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. Fakturační
-      údaje najdete na každé faktuře. <strong>Nejsem plátce DPH</strong> — všechny ceny, které
-      ode mě dostanete, jsou konečné a DPH se k nim nepřipočítává.
+      {BUSINESS_NAME}, IČO {BUSINESS_ICO}, se sídlem {BUSINESS_ADDRESS}. {BUSINESS_REGISTRY}.
+      Kontakt <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>, telefon{" "}
+      <a href={CONTACT_PHONE_HREF}>{CONTACT_PHONE}</a>.
+    </p>
+    <p>
+      <strong>Nejsem plátce DPH</strong> — všechny ceny, které ode mě dostanete, jsou konečné a
+      DPH se k nim nepřipočítává.
     </p>
     <h2>Cena z kalkulačky je orientační</h2>
     <p>
@@ -83,6 +88,20 @@ const TermsPage = () => (
     <p>
       Když po předání narazíte na chybu proti odsouhlasenému zadání, opravím ji zdarma. Napište
       na <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> a ozvu se do 24 hodin.
+    </p>
+    <h2>Spory a dozor</h2>
+    <p>
+      Kdyby se něco nepovedlo vyřešit domluvou a jste spotřebitel, můžete se obrátit na
+      mimosoudní řešení sporů u{" "}
+      <a href="https://adr.coi.cz" target="_blank" rel="noopener noreferrer">
+        České obchodní inspekce
+      </a>
+      , Gorazdova 1969/24, 120 00 Praha 2.
+    </p>
+    <p>
+      Dozor nad mým podnikáním vykonává živnostenský úřad Magistrátu města Liberce, nad
+      dodržováním práv spotřebitelů Česká obchodní inspekce a nad ochranou osobních údajů Úřad
+      pro ochranu osobních údajů.
     </p>
   </LegalPage>
 );

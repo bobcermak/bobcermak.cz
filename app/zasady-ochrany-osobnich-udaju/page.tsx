@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import LegalPage from "@/components/layout/legal/LegalPage";
 import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_HREF } from "@/types/contact";
+import { BUSINESS_ADDRESS, BUSINESS_ICO, BUSINESS_NAME } from "@/types/legal";
 
 export const metadata: Metadata = {
   title: "Zásady ochrany osobních údajů",
@@ -10,16 +11,17 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 const PrivacyPage = () => (
-  <LegalPage title="Zásady ochrany osobních údajů" updated="13. 8. 2026" path="/zasady-ochrany-osobnich-udaju">
+  <LegalPage title="Zásady ochrany osobních údajů" updated="14. 10. 2026" path="/zasady-ochrany-osobnich-udaju">
     <p>
       Tenhle web provozuju já, Bohuslav Čermák. Když mi přes formulář napíšete, zpracovávám vaše údaje
       jako správce. Níže je popsané přesně to, co se s nimi děje — žádné obecné fráze.
     </p>
     <h2>Kdo je správce</h2>
     <p>
-      Bohuslav Čermák, kontakt{" "}
+      {BUSINESS_NAME}, IČO {BUSINESS_ICO}, se sídlem {BUSINESS_ADDRESS}. Kontakt{" "}
       <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>, telefon{" "}
-      <a href={CONTACT_PHONE_HREF}>{CONTACT_PHONE}</a>.
+      <a href={CONTACT_PHONE_HREF}>{CONTACT_PHONE}</a>. Pověřence pro ochranu osobních údajů
+      nemám jmenovaného — na všechno odpovídám přímo já.
     </p>
     <h2>Jaké údaje sbírám</h2>
     <ul>
@@ -74,7 +76,13 @@ const PrivacyPage = () => (
       <li>nechat je opravit nebo smazat</li>
       <li>omezit jejich zpracování nebo proti němu vznést námitku</li>
       <li>odvolat souhlas</li>
-      <li>podat stížnost u Úřadu pro ochranu osobních údajů</li>
+      <li>
+        podat stížnost u{" "}
+        <a href="https://uoou.gov.cz" target="_blank" rel="noopener noreferrer">
+          Úřadu pro ochranu osobních údajů
+        </a>
+        , Pplk. Sochora 27, 170 00 Praha 7
+      </li>
     </ul>
     <p>
       Stačí napsat na <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. Ozvu se nejpozději

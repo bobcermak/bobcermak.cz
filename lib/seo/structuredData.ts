@@ -2,6 +2,7 @@ import { yearsSince } from "@/lib/age";
 import { ABOUT_BIRTH, ABOUT_STACK } from "@/types/about";
 import { projectTypes } from "@/types/calculator";
 import { CONTACT_EMAIL, CONTACT_PHONE, GITHUB_URL, LINKEDIN_URL } from "@/types/contact";
+import { BUSINESS_ICO } from "@/types/legal";
 import { PROJECT_GROUPS } from "@/types/projectCatalog";
 import { services } from "@/types/services";
 import { absoluteUrl, SITE_DESCRIPTION, SITE_FAMILY_NAME, SITE_GIVEN_NAME, SITE_NAME, SITE_NAME_ALTS, SITE_URL, SITE_LANG } from "@/types/site";
@@ -19,6 +20,7 @@ export const personSchema = () => ({
   url: SITE_URL,
   email: CONTACT_EMAIL,
   telephone: CONTACT_PHONE,
+  taxID: BUSINESS_ICO,
   jobTitle: "Full stack developer",
   description:
     "Full stack developer — weby s administrací, rezervační a vlastní systémy a mobilní aplikace v Next.js, React Native a Supabase.",

@@ -77,11 +77,9 @@ const CookieBanner: FC = () => {
           </div>
           <p className="mb-1.5 text-[13.5px] leading-[1.5] text-text-2">{CONSENT_TEXTS.lead}</p>
           <p className="mb-5 text-[12.5px] leading-[1.5] text-text-3">{CONSENT_TEXTS.detail}</p>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="flex flex-col gap-2.5">
             <Button
               type="button"
-              size="sm"
-              isArrow={false}
               onClick={close(accept)}
               wFull
               ariaLabel={CONSENT_TEXTS.accept}
@@ -90,7 +88,6 @@ const CookieBanner: FC = () => {
             </Button>
             <Button
               type="button"
-              size="sm"
               variant="dark"
               onClick={close(reject)}
               wFull
