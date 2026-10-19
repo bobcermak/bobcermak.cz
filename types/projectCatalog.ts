@@ -224,6 +224,7 @@ export const PROJECT_GROUPS: ProjectGroup[] = [
         fit: "contain",
         imgBg: "white",
         href: "https://bobcermak.github.io/CHRIS/",
+        github: "https://github.com/bobcermak/chris-app",
       },
       {
         slug: "clash-of-brynza",
