@@ -97,7 +97,7 @@ export const PROJECT_GROUPS: ProjectGroup[] = [
         year: "2026",
         status: "Rozpracované",
         desc: "Web servisu na renovaci DPF a FAP filtrů v Liberci — jak čištění funguje, ceník, doručení filtru a objednávka renovace se zárukou 100 000 km.",
-        types: ["Web"],
+        types: ["Web", "Systém/CMS"],
         context: "Klientské",
         stack: ["Web"],
         img: "/images/content/dpfrenovace-mockup.png",
