@@ -105,6 +105,18 @@ export const PROJECT_GROUPS: ProjectGroup[] = [
         imgBg: "white",
       },
       {
+        slug: "admin",
+        title: "Admin CarElectronic + DPF Renovace",
+        year: "2026",
+        desc: "Společná administrace obou webů dílny — poptávky, zakázky, měření na dynu, certifikáty, zákazníci, obsah webů a média na jednom místě. Role pro admina, mechanika i editora, světlý a tmavý režim.",
+        types: ["Systém/CMS"],
+        context: "Klientské",
+        stack: ["React 19", "Vite", "TypeScript", "Tailwind CSS", "Supabase", "TanStack Query", "GSAP"],
+        img: "/images/content/admin-mockup.png",
+        fit: "contain",
+        imgBg: "white",
+      },
+      {
         slug: "alexandra-abertamy",
         title: "Chata Alexandra",
         year: "2024-25",
