@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo/metadata";
 import LegalPage from "@/components/layout/legal/LegalPage";
 import { formatCzk } from "@/lib/calculator";
 import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_HREF } from "@/types/contact";
-import { BUSINESS_ADDRESS, BUSINESS_ICO, BUSINESS_NAME, BUSINESS_REGISTRY } from "@/types/legal";
+import { ARES_URL, BUSINESS_ADDRESS, BUSINESS_ICO, BUSINESS_NAME, BUSINESS_REGISTRY } from "@/types/legal";
 import { YEARLY_PRICE } from "@/types/calculator";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Obchodní podmínky",
   description: "Jak probíhá spolupráce, co znamená cena z kalkulačky a co platí u zakázek.",
-  alternates: { canonical: "/obchodni-podminky" },
-  robots: { index: true, follow: true },
-};
+  path: "/obchodni-podminky",
+});
 const TermsPage = () => (
   <LegalPage title="Obchodní podmínky" updated="14. 10. 2026" path="/obchodni-podminky">
     <p>
@@ -19,7 +19,8 @@ const TermsPage = () => (
     </p>
     <h2>Kdo je dodavatel</h2>
     <p>
-      {BUSINESS_NAME}, IČO {BUSINESS_ICO}, se sídlem {BUSINESS_ADDRESS}. {BUSINESS_REGISTRY}.
+      {BUSINESS_NAME}, IČO{" "}
+      <a href={ARES_URL} target="_blank" rel="noopener noreferrer">{BUSINESS_ICO}</a>, se sídlem {BUSINESS_ADDRESS}. {BUSINESS_REGISTRY}.
       Kontakt <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>, telefon{" "}
       <a href={CONTACT_PHONE_HREF}>{CONTACT_PHONE}</a>.
     </p>

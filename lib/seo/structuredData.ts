@@ -1,5 +1,5 @@
 import { yearsSince } from "@/lib/age";
-import { ABOUT_BIRTH, ABOUT_STACK } from "@/types/about";
+import { ABOUT_BIRTH, ABOUT_PHOTO, ABOUT_STACK } from "@/types/about";
 import { projectTypes } from "@/types/calculator";
 import { CONTACT_EMAIL, CONTACT_PHONE, GITHUB_URL, LINKEDIN_URL } from "@/types/contact";
 import { BUSINESS_ICO } from "@/types/legal";
@@ -18,6 +18,7 @@ export const personSchema = () => ({
   givenName: SITE_GIVEN_NAME,
   familyName: SITE_FAMILY_NAME,
   url: SITE_URL,
+  image: absoluteUrl(ABOUT_PHOTO),
   email: CONTACT_EMAIL,
   telephone: CONTACT_PHONE,
   taxID: BUSINESS_ICO,

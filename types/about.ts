@@ -1,5 +1,5 @@
 export const ABOUT_SECTION_ID = "o-mne";
-export const ABOUT_PHOTO = "/images/content/bob-profile.png";
+export const ABOUT_PHOTO = "/images/content/bob-profile.webp";
 export const ABOUT_SIGNATURE = "/images/vectors/podpis.svg";
 export const ABOUT_BIRTH = { year: 2007, month: 9, day: 23 };
 export const aboutBio = (age: number) =>

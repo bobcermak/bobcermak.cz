@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo/metadata";
 import LegalPage from "@/components/layout/legal/LegalPage";
 import ConsentControls from "@/components/layout/legal/ConsentControls";
 import { CONTACT_EMAIL } from "@/types/contact";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Cookies",
   description: "Jaké cookies a měření bobcermak.cz používá, k čemu slouží a jak souhlas kdykoli změnit.",
-  alternates: { canonical: "/cookies" },
-  robots: { index: true, follow: true },
-};
+  path: "/cookies",
+});
 const CookiesPage = () => (
   <LegalPage title="Cookies" updated="13. 8. 2026" path="/cookies">
     <p>

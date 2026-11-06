@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo/metadata";
 import Link from "next/link";
 import LegalPage from "@/components/layout/legal/LegalPage";
 import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_HREF } from "@/types/contact";
 import { BUSINESS_ADDRESS, BUSINESS_ICO, BUSINESS_NAME } from "@/types/legal";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Zásady ochrany osobních údajů",
   description: "Jaké údaje sbírám přes formuláře na bobcermak.cz, proč je zpracovávám a jak s nimi nakládám.",
-  alternates: { canonical: "/zasady-ochrany-osobnich-udaju" },
-  robots: { index: true, follow: true },
-};
+  path: "/zasady-ochrany-osobnich-udaju",
+});
 const PrivacyPage = () => (
   <LegalPage title="Zásady ochrany osobních údajů" updated="14. 10. 2026" path="/zasady-ochrany-osobnich-udaju">
     <p>

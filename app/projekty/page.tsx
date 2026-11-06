@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo/metadata";
 import { RevealSection } from "@/components";
 import GithubSection from "@/components/layout/github/GithubSection";
 import CatalogCard from "@/components/layout/projects/browser/CatalogCard";
@@ -11,12 +12,11 @@ import { getGithubActivity } from "@/lib/services/github/activity";
 import { buildIndex } from "@/lib/projects";
 import { PROJECT_GROUPS, PROJECTS_TITLE, PROJECTS_TOTAL } from "@/types/projectCatalog";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Projekty",
   description: "Weby s administrací, rezervační systémy a mobilní appky — klientské zakázky i vlastní produkty a soutěžní projekty.",
-  alternates: { canonical: "/projekty" },
-  robots: { index: true, follow: true },
-};
+  path: "/projekty",
+});
 const ProjectsPage = async () => {
   const github = await getGithubActivity();
   return (
