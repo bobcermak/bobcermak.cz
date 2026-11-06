@@ -57,7 +57,7 @@ const Footer = () => (
       </div>
       <div className="flex flex-col gap-4 border-t border-border py-6 text-sm laptop:flex-row laptop:items-center laptop:justify-between">
         <p className="text-text-3">
-          © {new Date().getFullYear()} Bob Čermák · IČO{" "}
+          © {new Date().getFullYear()} Bob Čermák - Všechna práva vyhrazena · IČO{" "}
           <Link href={ARES_URL} target="_blank" rel="noopener noreferrer" className={MUTED_LINK}>
             {BUSINESS_ICO}
           </Link>
